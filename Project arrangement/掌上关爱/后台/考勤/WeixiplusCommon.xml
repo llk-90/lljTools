@@ -125,7 +125,7 @@
 		where IcNo = #{IcNo}
 		and type = '0'
 		and times like CONCAT(#{date},"%")
-	    and DATE_FORMAT(times,'%H-%m-%d') between '00:00:00' and '08:00:00'
+	    and DATE_FORMAT(times,'%H-%m-%d') between '00:00:00' and '23:59:59'
 
 		UNION ALL
 		select
@@ -139,7 +139,7 @@
 		where IcNo = #{IcNo}
 		and type = '1'
 		and times like CONCAT(#{date},"%")
-		and DATE_FORMAT(times,'%H-%m-%d') between '08:00:00' and '12:00:00'
+		and DATE_FORMAT(times,'%H-%m-%d') between '00:00:00' and '23:59:59'
 
 		UNION ALL
 		SELECT
@@ -153,7 +153,7 @@
 		where IcNo = #{IcNo}
 		and type = '0'
 		and times like CONCAT(#{date},"%")
-		and DATE_FORMAT(times,'%H-%m-%d') between '12:00:00' and '13:00:00'
+		and DATE_FORMAT(times,'%H-%m-%d') between '00:00:00' and '23:59:59'
 
 		UNION ALL
 		select
@@ -167,7 +167,7 @@
 		where IcNo = #{IcNo}
 		and type = '1'
 		and times like CONCAT(#{date},"%")
-		and DATE_FORMAT(times,'%H-%m-%d') between '13:00:00' and '16:30:00'
+		and DATE_FORMAT(times,'%H-%m-%d') between '00:00:00' and '23:59:59'
 	</select>
 
 	<!-- 根据openid获取用户IC卡号 -->
@@ -204,21 +204,55 @@
 	</select>
 
 
-	<select id="getRank" parameterType="pd" resultType="String">
-		select 
-		  b.rowno as rowmo
+	<select id="getRank" parameterType="pd" resultType="pd">
+	<!-- 	select 
+		  b.rowno as rank,  
+          DATE_FORMAT(b.times,'%H:%i:%s') as date,
+		  b.stuName
 		from 
 		(
 		select 
 		gai.IcNo,
 		gai.times,
-		<![CDATA[(@rowno:=@rowno+1)]]> as rowno 
+		<![CDATA[(@rowno:=@rowno+1)]]> as rowno,
+		qsi.UserName AS stuName
 		from qry_student_info
 		qsi,guanai_attendance_info gai,(select <![CDATA[(@rowno:=0)]]>) b 
 		where qsi.IcNo = gai.IcNo and qsi.ClassId = #{ClassId} and times like CONCAT(#{date},"%")
 		ORDER BY gai.times asc) b 
-		where b.IcNo =#{IcNo} ORDER BY b.times
-		asc limit 1
+		where b.IcNo =#{IcNo} ORDER BY b.rowno
+		asc limit 1  -->
+		select 
+		  b.rowno as rank,  
+      DATE_FORMAT(b.times,'%H:%i:%s') as date,
+		  b.stuName
+		from 
+		(
+		select     
+		gai.IcNo,
+		gai.times,
+		(@rowno:=@rowno+1) as rowno,
+		qsi.UserName AS stuName,
+    gai.type
+		from qry_student_info
+		qsi,guanai_attendance_info gai,(select (@rowno:=0)) b 
+		where qsi.IcNo = gai.IcNo and qsi.ClassId = #{ClassId} and times like CONCAT(#{date},"%") and gai.type = '0'
+		ORDER BY gai.times asc) b 
+		where b.IcNo =#{IcNo} ORDER BY b.rowno
+		asc limit 1 
+	</select>
+	
+	
+	
+	
+	<select id="getAllIcNoByClassId" parameterType="String" resultType="String">
+	SELECT
+		IcNo
+	FROM
+		qry_student_info
+	WHERE
+		ClassId = #{IcNo}
+	AND (IcNo != '' || IcNo != NULL)
 	</select>
 
 
