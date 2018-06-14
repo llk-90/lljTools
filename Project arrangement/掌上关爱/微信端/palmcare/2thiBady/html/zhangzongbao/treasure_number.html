@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>号码管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="../../css/mui.min.css">
+    <link rel="stylesheet" href="../../css/app/zhangzongbao/treasure_number.css">
+    <script src="../../js/app/common/cvi_busy_lib.js"></script>
+    <script src="../../js/iBaby2.jquery-2.1.0.min.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <script src="../../js/mui.min.js"></script>
+    <!--浮动按钮-->
+    <link rel="stylesheet" href="../../css/app/common/SuspendedBall.css">
+    <script src="../../js/mui.min.js"></script>
+    <script src="../../js/app/common/PublicJs.js"></script>
+    <script src="../../js/app/common/SuspendedBall.js"></script>
+    <script src="../../js/app/common/Common.js"></script>
+</head>
+<body>
+
+<div class="tltle">
+    <label>监护人(亲情号码前两位一致)</label>
+</div>
+
+<div id="phone1" class="content">
+</div>
+
+<div class="tltle">
+    <label>紧急求助(SOS键求助号码)</label>
+</div>
+
+<div id="phone2" class="content">
+
+</div>
+
+<div class="tltle">
+    <label>亲情号码</label>
+</div>
+
+<div id="phone3" class="content">
+
+</div>
+
+<div>
+    <button type="button" class="mui-btn mui-btn-primary mui-btn-block" style="background-color: #59c671;border: 0px;margin-top: 2%;" onclick="uploadConnect()">确定保存</button>
+</div>
+</body>
+<script type="text/javascript">
+    var i = 0;
+    var j = 1;
+    var familynum = [];
+    var tempArr =["","",""]
+    //页面初始化
+    function init(){
+        var numphone1 = 2
+        var numphone2 = 4
+        var numphone3 = 4
+        for(var i=1;i<=numphone1;i++){
+            var div = "<div id='guardian"+i+"' class='phone'>"+
+                    "<div id='image' style='width: 20%;margin-left: 2%;height: 3.8rem;display: flex;flex-direction: column;justify-content: space-around;align-items: center'>"+
+                    "<img src='../../img/zhangzongbao/手机.png' style='width: 50%'>"+
+                    "</div>"+
+                    "<div id='number' style='width: 75%;margin-left: 2%;height: 3.8rem;display: flex;flex-direction: column;justify-content: space-around;align-items: center'>"+
+                    "<input id='parentNum"+i+"' style='border: 0px'>"+
+                    "</div>"+
+                    "</div>"
+                    $("#phone1").append(div);
+        }
+        for(var i=1;i<=numphone2;i++){
+            var div = "<div id='sos"+i+"' class='phone'>"+
+                    "<div id='image' style='width: 20%;margin-left: 2%;height: 3.8rem;display: flex;flex-direction: column;justify-content: space-around;align-items: center'>"+
+                    "<img src='../../img/zhangzongbao/手机.png' style='width: 50%'>"+
+                    "</div>"+
+                    "<div id='number' style='width: 75%;margin-left: 2%;height: 3.8rem;display: flex;flex-direction: column;justify-content: space-around;align-items: center'>"+
+                    "<input id='sosNum"+i+"' style='border: 0px'>"+
+                    "</div>"+
+                    "</div>"
+            $("#phone2").append(div);
+        }
+        FamilyNum();
+    }
+
+    $(function(){
+        init();
+    })
+
+    //初始化亲情号码list
+    function initnum(){
+        console.log(123);
+        console.log(familynum.length);
+        for(var i=1;i<=familynum.length;i++) {
+            var div = "<div id='familynum" + i + "' class='phone'>" +
+                    "<div id='image' style='width: 20%;margin-left: 2%;height: 3.8rem;display: flex;flex-direction: column;justify-content: space-around;align-items: center'>" +
+                    "<img src='../../img/zhangzongbao/手机.png' style='width: 50%'>" +
+                    "</div>" +
+                    "<div id='number' style='width: 75%;margin-left: 2%;height: 3.8rem;display: flex;flex-direction: column;justify-content: space-around;align-items: center'>" +
+                    "<input id='LoveNum" + i + "' style='border: 0px'>" +
+                    "</div>" +
+                    "</div>"
+            $("#phone3").append(div);
+        }
+            for(var i=1;i<=familynum.length;i++){
+                var c=i-1;
+                    document.getElementById("LoveNum"+i).value =familynum[c].telNumber;
+            }
+
+    }
+
+    //向后台访问数据
+    function  FamilyNum() {
+        console.log("访问数据")
+//        var openid = GetQueryString('openid');
+//        var stuid = GetQueryString('stuid');
+        var d = {
+            openid: GetQueryString('openid'),
+            stuId: GetQueryString('stuid')
+        };
+        //showLoadMask();
+        setTimeout(function() {
+            //var xval=getBusyOverlay('viewport',{color:'white', opacity:0.75, text:'加载中', style:'text-shadow: 0 0 3px black;font-weight:bold;font-size:16px;color:white'},{color:'#59bf6b', size:70, type:'o'});
+            mui.ajax(baseURL+"/familyNumApp/familyNumInfo.webapp", {
+                data: d,
+                dataType: 'json', //服务器返回json格式数据
+                type: 'post', //HTTP请求类型
+                timeout: 10000, //超时时间设置为10秒；
+                async:false,
+              /*   beforeSend:function(){
+                    if(xval) {
+                        xval.settext("加载中，请稍后......");
+                    }
+                }, */
+                success: function(data) {
+                    console.log(data);
+                    //xval.remove();
+                    var statCode = data.statCode;
+                    if ( statCode == '200' ) {
+                        console.log(111)
+                        console.log("data.sos1:"+data.sos1)
+                        if(data.sos1==""){
+                            data.sos1 = "请输入求助号码"
+                        }
+                        if(data.sos2==""){
+                            data.sos2 = "请输入求助号码"
+                        }
+                        if(data.sos3==""){
+                            data.sos3 = "请输入求助号码"
+                        }
+                        if(data.sos4==""){
+                            data.sos4 = "请输入求助号码"
+                        }
+                        if(data.guardian1==""){
+                            data.guardian1 = "监护人手机号码1"
+                        }
+                        if(data.guardian2==""){
+                            data.guardian2 = "监护人手机号码2"
+                        }
+                        familynum = data.telBookList;
+                        document.getElementById("sosNum1").value = data.sos1;
+                        document.getElementById("sosNum2").value = data.sos2;
+                        document.getElementById("sosNum3").value = data.sos3;
+                        document.getElementById("sosNum4").value = data.sos4;
+                        document.getElementById("parentNum1").value = data.guardian1;
+                        document.getElementById("parentNum2").value = data.guardian2;
+                        // 清空数组
+//                        familynum.splice(0,familynum.length);
+//                        mui.each(data.telBookList, function(i, item) {
+//                            // 将 用户名 电话号  编号传到二维数组中
+//                            familynum[i] = [item.userName, item.telNumber,item.telId];
+//                            // 根据数据初始化页 面
+//                        });
+                        initnum();
+                        //hiddenLoadMask();
+                    }else{
+                        mui.toast("请求数据失败");
+                    }
+                },
+                error: function(xhr, type, errorThrown) {
+                    mui.toast("请求数据失败");
+                }
+            });
+        }, 100);
+    }
+
+    //提交更新号码请求
+    function  uploadConnect() {
+
+        console.log("提交数据")
+        var openid = GetQueryString('openid');
+        var stuid = GetQueryString('stuid');
+
+        var sos1 = document.getElementById("sosNum1").value;
+        var sos2 = document.getElementById("sosNum2").value;
+        var sos3 = document.getElementById("sosNum3").value;
+        var sos4 = document.getElementById("sosNum4").value;
+
+        var guardian1 = document.getElementById("parentNum1").value;
+        var guardian2 = document.getElementById("parentNum2").value;
+
+
+        var jsonObj = new Object();
+        var jsonArr = new Array();
+
+
+
+//        for (var i = 1; i <=familynum.length; i++) {
+//            console.log("i:"+$("#LoveNum" + i).val())
+//        }
+        for (var i = 1; i <=familynum.length; i++) {
+            var c = i-1;
+            jsonObj = {};
+            jsonObj.UserName = familynum[c].userName;
+            jsonObj.TelNumber = $("#LoveNum" + i).val();
+            jsonObj.TelId = familynum[c].telId;
+            jsonArr.push(jsonObj);
+        }
+
+
+        var d = {
+            openid: GetQueryString('openid'),
+            stuId: GetQueryString('stuid'),
+            sos1: sos1,
+            sos2: sos2,
+            sos3: sos3,
+            sos4: sos4,
+            guardian1: guardian1,
+            guardian2: guardian2,
+            familynum: jsonArr
+        };
+
+        var flag = true;
+//        if(!p1.test(sos1)){
+//            console.log("1")
+//            flag = false;
+//            mui.toast("号码"+sos1+"格式不正确")
+//        }
+//        else if(!p1.test(sos2)){
+//            console.log("2")
+//            flag = false
+//            mui.toast("号码"+sos2+"格式不正确")
+//        }
+//        else if(!p1.test(sos3)){
+//            console.log("3")
+//            flag = false
+//            mui.toast("号码"+sos1+"格式不正确")
+//        }
+//        else if(!p1.test(sos4)){
+//            console.log("4")
+//            flag = false
+//            mui.toast("号码"+sos1+"格式不正确")
+//        }
+//        else if(!p1.test(guardian1)){
+//            console.log("5")
+//            flag = false
+//            mui.toast("号码"+guardian1+"格式不正确")
+//        }
+//        else if(!p1.test(guardian2)){
+//            console.log("6")
+//            flag = false
+//            mui.toast("号码"+guardian2+"格式不正确")
+//        }
+
+//            for(var i=1;i<=familynum.length;i++){
+//                if(!p1.test($("#LoveNum" + i).val())){
+//                    console.log("i"+i)
+//                    flag = false
+//                    //mui.toast("号码"+$("#LoveNum" + i).val()+"格式不正确")
+//                }
+//            }
+        //if(flag){
+            setTimeout(function () {
+                //var xval=getBusyOverlay('viewport',{color:'white', opacity:0.75, text:'加载中', style:'text-shadow: 0 0 3px black;font-weight:bold;font-size:16px;color:white'},{color:'#59bf6b', size:70, type:'o'});
+                mui.ajax(baseURL + "/familyNumApp/sendFamilyNumInfo.webapp", {
+                    data: d,
+                    dataType: 'json', //服务器返回json格式数据
+                    type: 'post', //HTTP请求类型
+                    timeout: 10000, //超时时间设置为10秒；
+                    async:false,
+              /*       beforeSend:function(){
+                        if(xval) {
+                            xval.settext("加载中，请稍后......");
+                        }
+                    }, */
+                    success: function (data) {
+                       // xval.remove();
+                        var statCode = data.statCode;
+                        if (statCode == '200') {
+                            mui.toast("更新数据成功");
+                            location.reload();
+                        } else if (data.result != '200') {
+                            mui.toast("更新成功&同步失败");
+                        }
+                        else {
+                            mui.toast("更新数据失败");
+                        }
+                    },
+                    error: function (xhr, type, errorThrown) {
+                        mui.toast("更新数据失败");
+                    }
+                });
+            }, 100);
+        //}
+    }
+</script>
+
+<script>
+    $(function () {
+        SuspendedBall.Add();//添加悬浮球
+        // SuspendedBall.BoxHtml("<ul class=\"SMenu\">" + $("#MenuInfo").html() + "</ul>");//添加菜单框的内容当然，具体的样式和里面的内容需要自己去写
+        SuspendedBall.Move();//这个就是让悬浮球动起来的方法。为啥单独写个不写到add方法里面呢？因为你可以在页面中直接写入悬浮球的两个div。这个方法里面可以添加一个参数，这个参数是个function。当鼠标抬起的时候会调用到这个方法。
+    });
+</script>
+</html>

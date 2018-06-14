@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+<meta name="viewport"
+	content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta http-equiv="Expires" content="0">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Cache-control" content="no-cache">
+<meta http-equiv="Cache" content="no-cache">
+<link href="../../css/app/jiaxiaohutong/Universal.css" rel="stylesheet"></link>
+<script src="../../js/app/jiaxiaohutong/jquery.cookie.js"></script>
+<style type="text/css">
+#chat-top {
+	height: 10%;
+	width: 100%;
+	background-color: #54c069;
+	position:fixed;
+	top:0px;
+	z-index:10
+}
+.ccontent{
+height:190%;
+width:100%;
+position:fixed;
+	top:10%;
+	overflow: auto
+}
+#chat-content {
+z-index:1;
+ position:fixed;
+	top:10%;
+	height: 65%;
+	width: 100%;
+	overflow: auto /*  border:solid 2px white;
+border-bottom-color: #BDBDBD; */
+}
+
+#chat-bottom {
+z-index:1;
+ position:fixed;
+	top:75%;
+	height: 25%;
+	width: 100%;
+}
+
+#fri-info {
+	height: 70%;
+	width: 30%
+}
+
+.chat-top-img {
+	height: 70%;
+	width: 35%
+}
+
+.font-style-1 {
+	font-weight: bold;
+	color: white
+}
+
+#input-box {
+	height: 65%;
+	width: 100%;
+}
+
+#send {
+	height: 35%;
+	width: 100%;
+}
+
+.send-button {
+
+	height: 80%;
+	width: 30%;
+	border-radius: 10px;
+	outline: none;
+	margin-right: 5%;
+	border: none;
+	color: white;
+	background-color: #54c069;
+}
+
+.input-text {
+	height: 95%;
+	width: 98%;
+	border: solid 2px #E8E8E8;
+	outline: none;
+	border-radius: 10px;
+}
+
+.chat-show {
+	height: 40px;
+	width: 100%;
+}
+
+.chat-show-img {
+	height: 75%;
+	width: 10%;
+	margin-right: 5%;
+	margin-left: 5%;
+}
+
+.chat-show-span {
+	background-color: #54c069;
+	height: 80%;
+	border-radius: 10px;
+}
+</style>
+<script>
+	var ipaddress = "112.74.30.126";
+	window.socket = new WebSocket("ws://" + ipaddress + ":9999/ws");
+	var url = window.location.href;
+	var obj = {};
+	var reg = /\?/;
+	if (url.match(reg)) {
+		//判断传入参数，以问号截取，问号后是参数
+		var chars = url.split('?')[1];
+		//再截&号
+		var arr = chars.split('&');
+		//获得截取后的数组为键值对字符串
+		for (var i = 0; i < arr.length; i++) {
+			//保守一点确定看是否为 name=value形式
+			var num = arr[i].indexOf("=");
+			if (num > 0) {
+				//拼接字符串
+				var name = arr[i].substring(0, num);
+				var value = arr[i].substr(num + 1);
+				//拼接对象，并转码
+				obj[decodeURIComponent(name)] = decodeURIComponent(value);
+			}
+		}
+	}
+	var sendname = obj.send;
+	var receivename = obj.receive;
+	var name = obj.name;
+	console.log("sendname=" + sendname + "receivename==" + receivename);
+	//将发送者的stuendtid作为该channel的标识保存到服务器
+	socket.onopen = function() {
+		socket.send(sendname);
+	}
+	socket.onmessage = function(event) {
+		var datas = event.data.split(",");
+		console.log(datas);
+		var friname = datas[0];
+		var message = datas[2];
+		if (datas[0] == "chatflag" && datas[1] == receivename) {
+			var text = "<div class='chat-show row-flex-start'>"
+					+ "<img src='../../img/jiaxiaohutong/mylogo.jpg' class='chat-show-img'>"
+					+ "<span class='chat-show-span row-center'>" + message
+					+ "</span>" + " </div>";
+			$("#chat-content").append(text);
+			$("#input-text").val("");
+		}
+	}
+	function send() {
+		var info = $("#input-text").val();
+		console.log(info);
+		socket.send(sendname + "," + receivename + "," + info);
+		var text = "<div class='chat-show row-flex-end'>"
+				+ "<span class='chat-show-span row-center'>"
+				+ info
+				+ "</span>"
+				+ "<img src='../../img/jiaxiaohutong/mylogo.jpg' class='chat-show-img'>"
+				+ " </div>";
+		$("#chat-content").append(text);
+		$("#input-text").val("");
+	}
+	$(
+			function() {
+				if ($.cookie(receivename) != undefined
+						&& $.cookie(receivename) != "") {
+					var text = "<div class='chat-show row-flex-start'>"
+							+ "<img src='../../img/jiaxiaohutong/mylogo.jpg' class='chat-show-img'>"
+							+ "<span class='chat-show-span row-center'>"
+							+ $.cookie(receivename) + "</span>" + " </div>";
+					$("#chat-content").append(text);
+					$("#input-text").val("");
+				}
+				console.log("..cok==" + $.cookie(receivename));
+				$("#rname").text(name);
+				$("#stuname").text(name);
+				 
+				 
+			})
+</script>
+<title id="stuname">chat page</title>
+</head>
+<body>
+<div id="chat-top" class="row-center">
+			<div id="fri-info" class="row-center">
+				<img src="../../img/jiaxiaohutong/mylogo.jpg" class="chat-top-img">
+				<div class="row-center font-style-1" id="rname"></div>
+			</div>
+		</div>
+	<div class="ccontent ">
+		 
+		
+		<div id="chat-content"></div>
+		<div id="chat-bottom" class="colum-center">
+			<div id="input-box">
+				<textarea class="input-text" id="input-text"></textarea>
+			</div>
+			<div id="send" class="row-flex-end">
+				<button class="send-button" onclick="send()">发送</button>
+			</div>
+		</div>
+		
+	</div>
+</body>
+</html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta http-equiv="cache-control" content="private">
+    <meta http-equiv="expires" content="0">
+    <title>系统设置</title>
+    <link rel="stylesheet" href="../iBaby/css/iBabyindex.css">
+    <script src="js/iBaby.location/mui.min.js"></script>
+    <link rel="stylesheet" href="css/mui.min.css">
+    <script src="js/iBady.Common.js"></script>
+    <script src="js/iBaby.location/mui.dtpicker.js"></script>
+    <link rel="stylesheet" href="css/mui.dtpicker.css">
+
+    <script src="js/iBaby.location/mui.poppicker.js"></script>
+    <link rel="stylesheet" href="css/mui.poppicker.css">
+    <script src="js/iBaby.location/mui.picker.js"></script>
+    <link rel="stylesheet" href="css/mui.picker.css">
+    <style type="text/css">
+        #bangding{
+            color:white;
+            font-size:15px;
+            float: right;
+            color: yellow;
+        }
+        #usename{
+            color:white;
+            font-size:22px;
+            margin-right:30px;
+        }
+        #img_haoma {
+            padding-right: 10px;
+        }
+
+
+    </style>
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="js/iBaby.sysset.js"></script>
+
+
+</head>
+
+
+<body id="ibaby_id_1" onload="iniSet()">
+<section  id="ibaby_id_2" class="sys-cont moni-box">
+    <section style="height:44px; background-color:#96d1ba; display:-webkit-box; -webkit-box-align:center; -webkit-box-pack:center; color:#ffffff; font-size:16px; font-weight:bold;">
+        系统设置
+
+    </section>
+    <div style="vertical-align: middle;height: 30px;line-height: 30px"><b style="margin-left: 10px;color: gray">开关机设置</b></div>
+    <!------------------------------第一层------------------------------------------------>
+    <div id="ibaby_id_16" class="m-box ">
+        <div id="jianhu">
+            <div class="box-ct">
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;">
+                    <label style="display : inline-flex;align-items:center;font-size: 15px">
+                        自动开机1</label>
+                    <label  style="font-size:10px;color: #999; ">
+                        <img name="0" id="swith-0" src="../iBaby/images/iBaby.common/Switch-off.png"
+                             style="margin-bottom:-8px;" onclick="switchClick('0')" ondragend="switchClick('0')"></label>
+                </p>
+
+
+                <!-- -----------------------------自动开机1 ----------------------------------------  -->
+
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;">
+                    <label style="display : inline-flex;align-items:center;font-size: 15px">
+                        开机时间</label>
+                    <a id="start-timeA" style="margin-right:-13em;font-size: 13px;color: black">06:00</a>
+                        <img onclick="showDateChoose(0)" src="../iBaby/images/iBaby.common/right-arr.png"
+                             style="margin-bottom: -3px"></label>
+                </p>
+
+                <!-- -----------------------------开机时间----------------------------------------  -->
+
+
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;">
+                    <label style="display : inline-flex;align-items:center;font-size: 15px">
+                        自动关机1</label>
+                    <label  style="font-size:10px;color: #999; ">
+                        <img onclick="switchClick('1')" ondragend="switchClick('1')" name="0" id="swith-1" src="../iBaby/images/iBaby.common/Switch-off.png"
+                             style="margin-bottom:-8px;"></label>
+                </p>
+
+
+                <!-- ----------------------------自动关机1----------------------------------------  -->
+
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;">
+                    <label style="display : inline-flex;align-items:center;font-size: 15px">
+                        关机时间</label>
+                    <a id="end-timeA" style="margin-right:-13em;font-size: 13px;color: black">06:00</a>
+                    <img onclick="showDateChoose(1)"  src="../iBaby/images/iBaby.common/right-arr.png"
+                         style="margin-bottom: -3px"></label>
+                </p>
+                <!-- -----------------------------关机时间----------------------------------------  -->
+            </div>
+        </div>
+    </div>
+
+
+    <!------------------------------第二层------------------------------------------------>
+    <div style="background: rgba(51,51,51,0.1);width: 100%;height: 1px"></div>
+    <div id="ibaby_id_16" class="m-box ">
+        <div id="jianhu">
+            <div class="box-ct">
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;">
+                    <label style="display : inline-flex;align-items:center;font-size: 15px">
+                        自动开机2</label>
+                    <label  style="font-size:10px;color: #999; ">
+                        <img name="0" id="swith-2" src="../iBaby/images/iBaby.common/Switch-off.png"
+                             style="margin-bottom:-8px;" onclick="switchClick('2')" ondragend="switchClick('2')"></label>
+                </p>
+
+
+                <!-- -----------------------------自动开机2 ----------------------------------------  -->
+
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;">
+                    <label style="display : inline-flex;align-items:center;font-size: 15px">
+                        开机时间</label>
+                    <a id="start-timeB" style="margin-right:-13em;font-size: 13px;color: black">06:00</a>
+                    <img onclick="showDateChoose(2)"  src="../iBaby/images/iBaby.common/right-arr.png"
+                         style="margin-bottom: -3px"></label>
+                </p>
+
+                <!-- -----------------------------开机时间----------------------------------------  -->
+
+
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;">
+                    <label style="display : inline-flex;align-items:center;font-size: 15px">
+                        自动关机2</label>
+                    <label  style="font-size:10px;color: #999; ">
+                        <img onclick="switchClick('3')" ondragend="switchClick('3')" name="0" id="swith-3" src="../iBaby/images/iBaby.common/Switch-off.png"
+                             style="margin-bottom:-8px;"></label>
+                </p>
+
+
+                <!-- ----------------------------自动关机2----------------------------------------  -->
+
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;">
+                    <label style="display : inline-flex;align-items:center;font-size: 15px">
+                        关机时间</label>
+                    <a id="end-timeB" style="margin-right:-13em;font-size: 13px;color: black">06:00</a>
+                    <img onclick="showDateChoose(3)"  src="../iBaby/images/iBaby.common/right-arr.png"
+                         style="margin-bottom: -3px"></label>
+                </p>
+                <!-- -----------------------------关机时间----------------------------------------  -->
+            </div>
+        </div>
+    </div>
+
+
+
+    <div style="vertical-align: middle;height: 30px;line-height: 30px"><b style="margin-left: 10px;color: gray">GPS省电管理</b></div>
+    <!------------------------------第三层------------------------------------------------>
+    <div id="ibaby_id_16" class="m-box ">
+        <div id="jianhu">
+            <div class="box-ct">
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;">
+                    <label style="display:inline-flex;align-items:center;font-size: 15px">
+                        夜间时间</label>
+                    <!--<label  style="font-size:10px;color: #999; ">-->
+                        <!--<img onclick="switchClick('8')" ondragend="switchClick('8')" name="0"  id="swith-8" src="../iBaby/images/iBaby.common/Switch-off.png"-->
+                             <!--style="margin-bottom:-8px;"></label>-->
+                    <label style="font-size: 15px">正常</label>
+                    <input id="night-0" name="checkbox1" value="Item 1" type="radio"  onclick="radioBoxClick('night',0)">
+                    <label style="font-size: 15px">省电模式</label>
+                    <input id="night-1" name="checkbox1" value="Item 1" type="radio"  onclick="radioBoxClick('night',1)">
+                    <label style="font-size: 15px">关闭GPS</label>
+                    <input id="night-2" name="checkbox1" value="Item 1" type="radio"  onclick="radioBoxClick('night',2)">
+                </p>
+
+
+                <!-- -----------------------------夜间时间 ----------------------------------------  -->
+
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;">
+                    <label style="display : inline-flex;align-items:center;font-size: 15px">
+                        上课时段</label>
+                    <label style="font-size: 15px">正常</label>
+                    <input id="class-0" name="checkbox2" value="Item 1" type="radio"  onclick="radioBoxClick('class',0)">
+                    <label style="font-size: 15px">省电模式</label>
+                    <input id="class-1" name="checkbox2" value="Item 1" type="radio"  onclick="radioBoxClick('class',1)">
+                    <label style="font-size: 15px">关闭GPS</label>
+                    <input id="class-2" name="checkbox2" value="Item 1" type="radio"  onclick="radioBoxClick('class',2)">
+                </p>
+
+                <!-- -----------------------------上课时段----------------------------------------  -->
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;">
+                    <label style="display : inline-flex;align-items:center;font-size: 15px">
+                        其他时间</label>
+                    <label style="font-size: 15px">正常</label>
+                    <input id="other-0" name="checkbox3" value="Item 1" type="radio"  onclick="radioBoxClick('other',0)">
+                    <label style="font-size: 15px">省电模式</label>
+                    <input id="other-1" name="checkbox3" value="Item 1" type="radio"  onclick="radioBoxClick('other',1)">
+                    <label style="font-size: 15px">关闭GPS</label>
+                    <input id="other-2" name="checkbox3" value="Item 1" type="radio"  onclick="radioBoxClick('other',2)">
+                </p>
+
+                <!-- -----------------------------其他时间----------------------------------------  -->
+
+
+            </div>
+        </div>
+    </div>
+
+
+<!--     <div style="vertical-align: middle;height: 30px;line-height: 30px"><b style="margin-left: 10px;color: gray">其他设置</b></div>
+    ----------------------------第四层----------------------------------------------
+    <div id="ibaby_id_16" class="m-box ">
+        <div id="jianhu">
+            <div class="box-ct">
+                <p  id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;">
+                    <label style="display:inline-flex;align-items:center;font-size: 15px;color: lightgray">
+                        修改家长密码(尚未开通)</label>
+                    <label class="gray-col icon-ar-back"  style="font-size:10px;color: #999; ">
+                        <img  name="0"  id="swith-8" src="../iBaby/images/iBaby.common/right-arr.png"
+                             style="margin-bottom:-8px;"></label>
+                </p>
+
+
+                -----------------------------远程休眠 ---------------------------------------- 
+            </div>
+        </div>
+    </div> -->
+
+    
+</section>
+<div class="order-bot1" id="saves"
+		style="padding-bottom: 10px; display: -webkit-box;">
+		<a href="javascript:void(0)" onclick="updateToSever()" id="savephone"
+			class="gre-col"
+			style="width: 100%; text-align: center; display: -webkit-box;
+			 padding-right: 0px; -webkit-box-align: center; -webkit-box-pack: center;
+			  line-height: 40px; height: 40px; margin-top: 0px; margin-bottom: 10px; 
+			  font-size: 20px; background-color: #96d1ba; -webkit-border-radius: 4px; 
+			  color: #FFF;">确定保存</a>
+	</div>
+
+<div style=" z-index: 9999; font: 'Hiragino Kaku Gothic ProN';text-align: center;color: white;font-size:1.5em;background-color:#00AFF0;display: none; position:fixed;margin:auto;left:0; right:0; top:0; bottom:0;width:95%; height:63px;border-radius: 7px;line-height: 63px;" id="tsk"></div>
+<!--显示修改密码-->
+<div style="font: 'Hiragino Kaku Gothic ProN';color: white;background-color:whitesmoke;display: none; position:fixed;margin:auto;margin-left: 100%;left:0; right:0; top:0; bottom:0;width:100%; height:100%;" id="changepsw">
+    <!--<section  id="ibaby_id_2" class="sys-cont moni-box">-->
+        <section style="height:40px;color: white;background-color:#96d1ba ;text-align: center;line-height: 40px;font-size:15px" >
+            密码修改
+        </section>
+    <label  style="margin-left: 15px;height: 30px;line-height: 30px;color: black;font-size: 15px">原密码:</label>
+        <input id="old-password" style="margin-left: 5%; border-color:rgba(0,0,0,0);width: 90%;height: 30px;font-size: 15px;color: black" type="text" placeholder="请输入原家长密码" >
+    <label style="margin-left: 15px;height: 30px;line-height: 30px;color: black;font-size: 15px">新密码:</label>
+    <input id="new-password" style="margin-left: 5%;border-color: rgba(0,0,0,0);width: 90%;height: 30px;font-size: 15px;color: black" type="password" placeholder="请输入新家长密码">
+
+    <input style="margin-top: 20px;margin-left: 5%;background-color:#96d1ba ;border-color: rgba(0,0,0,0);width: 90%;height: 30px;border-radius: 15px;color: white" type="button" onclick="changePassword()" value="确定保存">
+    <input style="margin-top: 20px;margin-left: 5%;background-color:#96d1ba ;border-color: rgba(0,0,0,0);width: 90%;height: 30px;border-radius: 15px;color: white" type="button" onclick="showorHiddenPassword('hide')" value="返回">
+</div>
+</body>
+</html>
+
+

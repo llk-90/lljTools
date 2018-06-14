@@ -1,0 +1,16 @@
+一：本机无密码访问
+1:下载安装redis:https://github.com/MSOpenTech/redis/releases
+2:打开一个 cmd 窗口 使用cd命令切换目录到redis安装目录 运行 redis-server.exe redis.windows.conf.
+此时服务已经启动。
+3:打开另一个cmd窗口，进入redis安装目录  ，运行redis-cli.exe -h 127.0.0.1 -p 6379.
+设置键值对 set myKey abc
+取出键值对 get myKey
+可设可去，表明成功。
+
+
+二：本机有密码访问：
+1：打开redis.windows.conf文件，找到requirepass foobared复制到下一行，foobared设置成需要设置的密码，去掉#号。
+2：运行 redis-server.exe redis.windows.conf.
+3: 运行redis-cli.exe -h 127.0.0.1 -p 6379 -a 密码  注意：结尾没有句号。
+4：输入命令：keys *
+5：有结果就表明成功。

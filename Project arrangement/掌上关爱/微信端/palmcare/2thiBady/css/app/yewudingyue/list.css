@@ -1,0 +1,36 @@
+#main-section {
+	width: 100%;
+	margin-bottom: 0px;
+}
+.list-item {
+	border: solid 1px #F43C5B;
+	border-bottom-width: 0px;
+	height: 40px;
+}
+.item-li {
+	font-size: 0.8em;
+	margin-top: 4px;
+	height: 14px;
+	text-align: left;
+	width: 30%;
+	line-height: 14px;
+}
+.btn-li {
+	width: 90%;
+	margin-left: 5%;
+	margin-top: 10px;
+	text-align: center;
+	display: inline-flex;
+	justify-content: space-between;
+}
+.detail {
+	width: 60px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	-o-text-overflow: ellipsis;
+}
+.mui-navigate-right{
+	margin-left:7px;
+}
+html, body{ margin:0; height:100%; }

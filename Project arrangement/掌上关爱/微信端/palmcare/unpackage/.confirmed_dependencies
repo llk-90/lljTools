@@ -1,0 +1,159 @@
+{
+  "courseware/text.html": {
+    "resources": [
+      "css/text.css",
+      "js/mui.min.js",
+      "css/mui.min.css",
+      "css/icon/dropdown/iconfont.css",
+      "css/icon/dropdown/iconfont.woff",
+      "courseware/courseware_type.html"
+    ],
+    "refer": []
+  },
+  "grades/all_grades.html": {
+    "resources": [
+      "css/video_picture.css",
+      "js/mui.min.js",
+      "css/mui.min.css",
+      "css/icon/dropdown/iconfont.css",
+      "css/icon/dropdown/iconfont.woff"
+    ],
+    "refer": []
+  },
+  "courseware/video.html": {
+    "resources": [
+      "css/video_picture.css",
+      "js/mui.min.js",
+      "css/mui.min.css",
+      "css/icon/dropdown/iconfont.css",
+      "css/icon/dropdown/iconfont.woff",
+      "images/testimg/img.jpg",
+      "courseware/courseware_type.html"
+    ],
+    "refer": []
+  },
+  "binding/bind.html": {
+    "resources": [
+      "js/mui.min.js",
+      "css/mui.min.css"
+    ],
+    "refer": []
+  },
+  "pay/pay.html": {
+    "resources": [
+      "css/message_edit.css",
+      "images/quanrizhi.png",
+      "js/mui.min.js",
+      "css/common.css",
+      "fonts/mui.ttf",
+      "css/mui.min.css"
+    ],
+    "refer": []
+  },
+  "pay/payDefeated.html": {
+    "resources": [
+      "js/mui.min.js",
+      "css/mui.min.css",
+      "images/kulian.png"
+    ],
+    "refer": []
+  },
+  "pay/paySuccess.html": {
+    "resources": [
+      "js/mui.min.js",
+      "css/mui.min.css",
+      "images/xiaolian.png"
+    ],
+    "refer": []
+  },
+  "login.html": {
+    "resources": [
+      "js/mui.min.js",
+      "css/common.css",
+      "css/mui.min.css"
+    ],
+    "refer": []
+  },
+  "personal_center/personal_center_parent.html": {
+    "resources": [
+      "css/svg/feather.svg",
+      "css/svg/boy.svg",
+      "css/personal_center.css",
+      "css/svg/custom.svg",
+      "images/personal_center/cute-baby.jpg",
+      "js/mui.min.js",
+      "css/common.css",
+      "css/svg/msg.svg",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "css/svg/notice.svg",
+      "images/personal_center/baby-one.jpg"
+    ],
+    "refer": []
+  },
+  "datepicker_qingjia/leaveApplication.html": {
+    "resources": [
+      "datepicker_qingjia/next.png",
+      "datepicker_qingjia/title_bg.png",
+      "js/mui.min.js",
+      "datepicker_qingjia/prev.png",
+      "datepicker_qingjia/jquery.min.js",
+      "css/mui.min.css",
+      "datepicker_qingjia/daterange.js",
+      "datepicker_qingjia/index.css"
+    ],
+    "refer": []
+  },
+  "courseware/courseware_type.html": {
+    "resources": [
+      "images/c_image/document.jpg",
+      "js/mui.min.js",
+      "images/c_image/video.jpg",
+      "images/c_image/picture.jpg",
+      "css/mui.min.css",
+      "courseware/picture.html",
+      "courseware/video.html",
+      "courseware/text.html"
+    ],
+    "refer": []
+  },
+  "courseware/picture.html": {
+    "resources": [
+      "css/video_picture.css",
+      "css/icon/dropdown/iconfont.css",
+      "css/icon/dropdown/iconfont.woff",
+      "images/testimg/img.jpg",
+      "courseware/courseware_type.html",
+      "js/mui.min.js",
+      "css/mui.min.css"
+    ],
+    "refer": []
+  },
+  "courseware/picture_details.html": {
+    "resources": [
+      "css/video_picture.css",
+      "js/mui.min.js",
+      "css/mui.min.css",
+      "images/testimg/img.jpg"
+    ],
+    "refer": []
+  },
+  "message/messageContent.html": {
+    "resources": [
+      "images/cbd.jpg",
+      "images/muwu.jpg",
+      "js/mui.min.js",
+      "css/mui.min.css"
+    ],
+    "refer": []
+  },
+  "teacher/contacts.html": {
+    "resources": [
+      "css/video_picture.css",
+      "js/mui.min.js",
+      "css/mui.min.css",
+      "css/icon/dropdown/iconfont.css",
+      "images/testimg/img.jpg"
+    ]
+  }
+}

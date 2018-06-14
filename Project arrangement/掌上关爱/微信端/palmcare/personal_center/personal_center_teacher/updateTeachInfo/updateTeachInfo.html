@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <title>信息修改</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <script src="../../../js/config.js" type="text/javascript" charset="utf-8"></script>
+        <!--标准mui.css-->
+        <link rel="stylesheet" href="../../../css/mui.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../css/common.css" />
+        <!--App自定义的css-->
+        <link rel="stylesheet" type="text/css" href="../../../css/message_edit.css" />  
+        <style>
+ 			html,
+            body,
+            .mui-content {
+                height: 100%!important;
+                background-color: white;
+            }
+            .three-btn-container {
+                height: 45px;
+                background-color: rgb(251, 251, 251);
+                box-shadow: 0 1px rgba(0, 0, 0, 0.1);
+                padding: 12px 0px;
+            }
+            
+            .three-btn-item {
+                float: left;
+                height: 100%;
+            }
+            .mui-table-view:before {
+				top: -15px !important;
+			}
+            
+            .three-btn {
+                width: 33%;
+                text-align: center;
+            }
+            
+            .three-btn-split {
+                width: 0.5%;
+                background-color: rgb(231, 231, 231);
+            }
+            
+            .mui-navigate-right {
+                padding-left: 15px !important;
+            }
+            
+            .mui-navigate-right span {
+                margin-left: 10px;
+                display: block;
+                line-height: 30px;
+            }
+            
+            .mui-navigate-right span,
+            .mui-navigate-right div,
+            .mui-navigate-right img {
+                float: left;
+            }
+            .title {
+				margin: 30px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+        </style>
+        <script src="../../../js/mui.min.js"></script>
+        <script src="../../../js/loginValidate.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../js/template.js" type="text/javascript" charset="utf-8"></script>
+        <script type="text/javascript"></script>
+        <script id="data-temp" type="text/html">   		
+            	<li class="mui-table-view-cell">
+                      <p class='' style="margin:0px 0px -10px 0px;">个人信息</p>
+                </li>
+                <li class="mui-table-view-cell">
+                    <a  class="mui-navigate-right" open-type="common"  data-href = "upload_avatar.html?photo={{photo}}">
+                        <div class="icon-touxiang"></div>
+                        <span>头像</span>
+                        <span style="float: right;margin-right: 14px;"><img class="" src="{{photo}}" height="35" width="35" /></span>
+                    </a>   
+                </li>        
+                 <li class="mui-table-view-cell">
+                    <a  class="mui-navigate-right" open-type="common" data-href="name.html?name={{name}}">
+                        <div class="icon-xingming"></div>
+                        <span>姓名</span>
+                        <span style="float: right;margin-right: 14px;color:#B6B6B6" id="name">
+                      	{{name}}
+                        </span>
+                    </a>
+                </li>
+                <li class="mui-table-view-cell">
+                    <a  class="mui-navigate-right" open-type="common" data-href="address.html?address={{address}}">
+                        <div class="icon-address"></div>
+                        <span>地址</span>
+                        <span style="float: right;margin-right: 14px;color:#B6B6B6">{{address}}</span>
+                    </a>
+                </li><li class="mui-table-view-cell">
+                    <a  class="mui-navigate-right" open-type="common" data-href="#">
+                        <div class="icon-class"></div>
+                        <span>班级</span>
+                        <span style="float: right;margin-right: 14px;color:#B6B6B6">{{zclass}}</span>
+                    </a>
+                </li>
+                <li class="mui-table-view-cell">
+                      <p class='' style="margin:15px 0px -10px 0px;">联系信息</p>
+                </li>
+                </li><li class="mui-table-view-cell">
+                    <a  class="mui-navigate-right" open-type="common" data-href="">
+                        <div class="icon-tel"></div>
+                        <span>手机号码</span>
+                        <span style="float: right;margin-right: 14px;color:#B6B6B6">{{phone}}</span>
+                    </a>
+                </li>
+                </li><li class="mui-table-view-cell">
+                    <a  class="mui-navigate-right" open-type="common" data-href="sex.html?sex={{sex}}">
+                        <div class="icon-sex"></div>
+                        <span>性别</span>
+                        <span style="float: right;margin-right: 14px;color:#B6B6B6">{{sex}}</span>
+                    </a>
+                </li>
+                </li><li class="mui-table-view-cell">
+                    <a  class="mui-navigate-right" open-type="common" data-href="birthday.html?birthday={{birthday}}">
+                        <div class="icon-birthday"></div>
+                        <span>生日</span>
+                        <span style="float: right;margin-right: 14px;color:#B6B6B6">{{birthday}}</span>
+                    </a>
+                </li>  
+            </ul>
+       </script>
+    </head>
+
+    <body>
+        <div class="mui-content">
+        	 <div class="insert-pointer">
+           
+            </div>
+            
+        </div>
+       
+    </body>
+    
+     <script type="text/javascript">
+            mui.init({
+            	swipeBack: false //启用右滑关闭功能
+            }); 
+            var table = document.body.querySelector('.insert-pointer');
+            
+		      function getvalue(param) {
+					var str = decodeURI(window.location.search);
+					if(str.indexOf(param) != -1) {
+						var pos_start = str.indexOf(param) + param.length + 1;
+						var pos_end = str.indexOf("&", pos_start);
+						if(pos_end == -1) {
+							return str.substring(pos_start);
+						} else {
+							alert("没有此值~~");
+						}
+					}
+				}
+		    var userId = getvalue('user_id');  
+		    var mask = mui.createMask();   
+		    mui.ready(function(){
+		    	mask.show();
+            mui.ajax("/messageedit/showInfo.webapp", {
+                data: {
+                    user_id: userId
+                },
+                
+                dataType: 'json', //服务器返回json格式数据
+                type: 'post', //HTTP请求类型
+                timeout: 10000, //超时时间设置为10秒；
+                success: function(data) {
+                		mask.close();
+                		mui.each(data, function(i, item) {               			
+        					var jisShuJu = {
+        						photo: item.HEAD_PHOTO,
+        						name: item.NAME,
+        						address: item.ADDRESS,
+        						zclass: item.ZCLASS,
+        						phone: item.PHONE,
+        						sex: item.SEX,
+        						birthday: item.BIRTHDAY
+        					}
+        					var html = template("data-temp", jisShuJu);
+                        	var li = document.createElement('ul');
+                            li.className = 'mui-table-view';
+                            li.innerHTML = html;
+                            table.insertBefore(li, table.firstChild);
+                    });            
+                },
+                error: function(xhr, type, errorThrown) {
+                    mui.toast(type + errorThrown);
+                }
+            });
+		    })
+		    
+            mui(".insert-pointer").on("tap",".mui-navigate-right",function(){
+            	var id = this.getAttribute("data-href"); 
+            	if(id!=""){
+	            	window.location.assign(encodeURI(id));	
+	           		location.href=id;
+            	}
+            });
+        </script>
+</html>

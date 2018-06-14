@@ -1,0 +1,60 @@
+/*.icon-myorder{
+    background-image: url();
+}*/
+
+.icon-touxiang {
+    background-image: url(../images/m_image/touxiang.png);
+    height: 30px;
+    width: 30px;
+}
+.icon-xingming {
+    background-image: url(../images/m_image/xingming.png);
+    height: 30px;
+    width: 30px;
+    background-repeat: no-repeat;
+    background-position-y: center;
+}
+.icon-address {
+    background-image: url(../images/m_image/dizhi.png);
+    height: 30px;
+    width: 30px;
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: center;
+}
+
+.icon-class {
+    background-image: url(../images/m_image/banji.png);
+    height: 30px;
+    width: 30px;
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: center;
+}
+
+.icon-tel {
+    background-image: url(../images/m_image/tel.png);
+    height: 30px;
+    width: 30px;
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: center;
+}
+
+.icon-sex {
+    background-image: url(../images/m_image/sex.png);
+    height: 30px;
+    width: 30px;
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: center;
+}
+
+.icon-birthday {
+    background-image: url(../images/m_image/birthday.png);
+    height: 30px;
+    width: 30px;
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: center;
+}

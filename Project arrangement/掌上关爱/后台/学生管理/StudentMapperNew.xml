@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="StudentMapperNew">
+
+	<sql id="getCityIdByUserId">
+		SELECT
+		city.CityId
+		FROM
+		qry_city_info city
+		INNER JOIN T_USER_AREA_MANAGER T ON
+		T.UAM_ZONE_ID = city.ID
+		AND
+		T.UAM_USER_ID =(
+		SELECT K.PARENT_ID
+		FROM SYS_USER X,
+		SYS_USER K
+		WHERE X.PARENT_ID=K.USER_ID AND X.USER_ID=
+	</sql>
+	
+	<!--获取区域id-->
+	<select id="getCityId" parameterType="pd" resultType="pd">
+        <include refid="getCityIdByUserId"/>#{userId}	   
+	</select>
+	
+	<select id="getStuInfolistPage" parameterType="Page" resultType="pd">
+		select
+		qsi.StudentId,
+		qsi.SeqStudent,
+		qsi.UserName,
+		qsi.Sex,
+		qspi.ParUserName,
+		qspi.ParLoginName,
+		qspi.ParentId
+		from
+		qry_city_info qc
+		INNER JOIN qry_batch_school qbs
+		on qc.CityId = qbs.CityId
+		INNER JOIN qry_batch_class qbc
+		on qbs.SchoolId = qbc.SchoolId
+		INNER JOIN qry_student_info qsi
+		on qbc.ClassId = qsi.ClassId
+		INNER JOIN qry_stuparent_info qspi
+		on qsi.StudentId = qspi.StudentId
+		where
+		qc.CityId =
+		(
+		<include refid="getCityIdByUserId" />
+		#{pd.userId})
+		)
+		<if test="pd.schoolParam !=null and pd.schoolParam !=''">
+		   and qbs.SchoolId = #{pd.schoolParam}
+		</if>
+		<if test="pd.gradeParam !=null and pd.gradeParam !=''">
+		  and qbc.GradeId = #{pd.gradeParam}
+		</if>
+		<if test="pd.classParam !=null and pd.classParam !=''">
+			and qbc.ClassId = #{pd.classParam}
+		</if>
+		<if test="pd.stuName !=null and pd.stuName !=''">
+			and qsi.UserName = #{pd.stuName}
+		</if>
+	</select>
+
+	<!--获取学校信息 -->
+	<select id="getSchoolInfo" parameterType="pd" resultType="pd">
+		select
+		SchoolId,
+		SchoolName
+		from
+		qry_batch_school
+		where
+		CityId =(
+		<include refid="getCityIdByUserId" />
+		#{userId})
+		)
+	</select>
+
+
+	<!--获取班级信息 -->
+	<select id="getClassInfo" parameterType="pd" resultType="pd">
+		select
+		ClassId,
+		ClassName
+		from
+		qry_batch_class
+		where GradeId =#{GradeId}
+	</select>
+	
+	<!--获取年级-->
+	<select id="getGradeInfo" parameterType="pd" resultType="pd">
+	 SELECT 
+	 GradeId,
+	 GradeName 
+	 from 
+	 qry_batch_class 
+	 where SchoolId = #{schoolId}
+	</select>
+	
+    <!--检查学号是否存在-->
+    <select id="checkStuNoIs" parameterType="pd" resultType="Integer">
+       select count(SeqStudent) stuNo from qry_student_info where  SeqStudent=#{stuNo}
+    </select>
+    
+    <!--检查卡号是否存在-->
+    <select id="checkStuIcNoIs" parameterType="pd" resultType="Integer">
+       select count(IcNo) stuNo from qry_student_info where IcNo=#{stuIcNo}
+    </select>
+
+    <!--获取学生所在的学校年级班级-->
+       <select id="getSchAndGradeBstuId" parameterType="pd" resultType="pd">
+           select 
+	            qsti.schoolId,
+	            qsti.UserName,
+	            qsti.Sex,
+	            qsti.SeqStudent,
+	            qsti.IcNo,
+	            qbs.SchoolName,
+	            qbc.GradeName,
+	            qbc.GradeId,
+	            qbc.ClassId
+            from 
+	            qry_student_info qsti
+	            inner join qry_batch_class qbc
+	            on qsti.ClassId = qbc.ClassId
+	            inner join qry_batch_school qbs
+	            on qbc.SchoolId = qbs.SchoolId
+            where 
+               qsti.StudentId=#{studentId}
+       </select>
+       
+      <!--获取学生家长信息-->
+       <select id="getParentInfo" parameterType="pd" resultType="pd">
+           select 
+           DISTINCT 
+              qspi.ParUserName,
+              qspi.ParentId,   
+              qspi.ParLoginName  
+           from 
+              qry_student_info qsti INNER JOIN qry_stuparent_info qspi on qsti.StudentId = qspi.StudentId
+          where  
+              qsti.StudentId =#{studentId}
+              and qspi.ParentId = #{parentId}      
+       </select>
+       
+          
+
+	<!-- 批量删除学生 -->
+	<delete id="deletesStu" parameterType="String" flushCache="false">
+			DELETE 
+		qry_student_info,qry_stuparent_info
+		from 
+		qry_student_info
+		LEFT JOIN qry_stuparent_info
+		 ON
+		qry_student_info.StudentId=qry_stuparent_info.StudentId 
+		WHERE
+		qry_student_info.StudentId in  
+		<foreach item="item" index="index" collection="array" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<!--更新学生表数据-->
+	<update id="updateStuInfo" parameterType="pd">
+     Update 
+     qry_student_info
+　　　   <set>
+	     <if test="s_stu_no !=null || s_stu_no !=''">
+	        SeqStudent =#{s_stu_no},
+	     </if>
+	     <if test="s_stu_icno !=null || s_stu_icno !=''">
+	        IcNo =#{s_stu_icno},
+	     </if>
+	     <if test="s_sex !=null || s_sex !=''">
+	        Sex =#{s_sex},
+	     </if>
+	     <if test="classParam !=null || classParam !=''">
+	         ClassId=#{classParam},
+	     </if>
+	     <if test="modefiyTime !=null || modefiyTime !=''">
+	         ModifyTime =#{modefiyTime}
+	     </if>
+    </set>
+     where
+       StudentId=#{studentId}
+	</update>
+	
+	<!--更新学生家长信息-->
+	<update id="updateStuParInfo" parameterType="pd">
+   Update 
+        qry_stuparent_info,
+        qry_student_info
+     set
+        qry_stuparent_info.Sex  = qry_student_info.Sex,
+        qry_stuparent_info.IcNo = qry_student_info.IcNo,
+        qry_stuparent_info.StudentSeq  = qry_student_info.SeqStudent,
+        <if test="phone !=null || phone !=''">
+            qry_stuparent_info.ParLoginName =#{phone},
+        </if>
+        <if test="NAME !=null || NAME != ''">
+            qry_stuparent_info.ParUserName =#{NAME}
+        </if>
+     where
+         qry_student_info.StudentId  = qry_stuparent_info.StudentId 
+         AND
+         qry_student_info.StudentId =#{studentId}
+         and qry_stuparent_info.ParentId = #{parentId}
+	</update>
+	
+	<!--更新t_user_student中的IcNo-->
+	<update id="updateIcNo" parameterType="pd">
+	   update t_user_student
+	   set IcNo = #{s_stu_icno},
+	   modity_time = #{modefiyTime}
+	   where us_stu_id =#{studentId}
+	</update>
+     
+     <!--获取通过关爱后台新增的studentId-->
+	<select id="gethoutaiAddStuId" parameterType="pd" resultType="String">
+	  select StudentId
+	   from qry_student_info
+	    where 
+	    StudentId like
+	    #{StrStuId}
+	    ORDER BY ModifyTime DESC
+	</select>
+	
+	<!--添加学生信息-->
+	<insert id="saveStuInfo" parameterType="pd">
+	  insert into qry_student_info
+	  (
+	  SchoolId,
+	  ClassId,
+	  StudentId,
+	  SeqStudent,
+	  UserName,
+	  IcNo,
+	  Sex,
+	  ModifyTime
+	  )
+	  values
+	  (
+	   #{schoolParam},
+	   #{classParam},
+	   #{studentId},
+	   #{s_stu_no},
+	   #{s_name},
+	   #{stu_icno},
+	   #{s_sex},
+	   #{modifyTime}
+	  )
+	</insert>
+	
+	<!--添加学生家长信息-->
+	 <insert id="saveStuParInfo" parameterType="pd">
+	    insert into qry_stuparent_info
+	    (
+	    StudentId,
+	    StudentSeq,
+	    UserName,
+	    LoginName,
+	    HeadImage,
+	    IcNo,
+	    Sex,
+	    ParentId,
+	    ParLoginName,
+	    ParUserName,
+	    ModifyTime
+	    )
+	    values
+	    (
+	   #{StudentId},
+	   #{SeqStudent},
+	   #{UserName},
+	   #{LoginName},
+	   #{HeadImage},
+	   #{IcNo},
+	   #{Sex},
+	   #{parentId},
+	   #{phone},
+	   #{NAME},
+	   #{modifyTime}
+	    )
+	 </insert>
+	
+	<!--根据学生ID获取学生信息-->
+	<select id="getStuById" parameterType="pd" resultType="pd">
+	   select 
+	      StudentId,
+	      SeqStudent,
+	      UserName,
+	      LoginName,
+	      HeadImage,
+	      IcNo,
+	      Sex
+	    from 
+	      qry_student_info 
+	   where 
+	   StudentId = #{studentId}
+	</select>
+	
+	
+<!--                              导入                                                    -->
+	<select id="getCityIdBycityName" parameterType="String" resultType="String">
+	  select
+	   CityId 
+	  from 
+	   qry_city_info
+	  where CityName= #{cityName}
+	</select>
+	
+	<!--检验区域下是否有该学校-->
+	<select id="isSchool" parameterType="pd" resultType="pd">
+	  select 
+        SchoolId,
+        SchoolName
+	  from 
+	    qry_batch_school
+	  where 
+	  1=1
+	  <if test="cityId !=null and cityId !=''">
+	    and CityId = #{cityId}
+	  </if>
+	  <if test="schoolName != null and schoolName !=''">
+	     and SchoolName = #{schoolName}
+	  </if>
+	</select>
+	
+	<!--检验改学校写是否包含年级以及班级-->
+	<select id="isGradeAndClass" parameterType="pd" resultType="pd">
+	   select
+	    SchoolId,
+	    ClassId
+       from 
+	   qry_batch_class
+	   where 
+	    SchoolId =#{SchoolId} and
+	    GradeName =#{gradeName} and
+	    ClassName =#{className}
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- 批量删除微信关联 -->
+	<!-- <delete id="deleteRelationWx" parameterType="String">
+		delete from T_USER_WEIXIN
+		where
+		uw_user_id in
+		<foreach item="item" index="index" collection="array" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete> --> 
+</mapper>

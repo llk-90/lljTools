@@ -1,0 +1,220 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>发布新动态</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<meta http-equiv="Content-Type" content="multipart/form-data; charset=utf-8" />
+<link href="../../css/app/common/member_home.css" rel="stylesheet">
+<link href="../../css/mui.css" rel="stylesheet">
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/app/common/zepto.js"></script>
+<script src="../../js/app/common/popup.js"></script>
+<script src="../../js/app/common/Common.js"></script>
+<!--<script src="../../js/mui.js"></script>-->
+<script src="../../js/iBaby2.jquery-2.1.0.min.js"></script>
+<script src="../../js/app/Common2.js"></script>
+
+<script type="text/javascript">
+mui.init({
+	  gestureConfig:{
+	   tap: true, //默认为true
+	   doubletap: true, //默认为false
+	   longtap: true, //默认为false
+	   swipe: true, //默认为true
+	   drag: true, //默认为true
+	   hold:false,//默认为false，不监听
+	   release:false//默认为false，不监听
+	  },
+    swipeBack: true//启用右滑关闭功能
+	});
+</script>
+<script>
+    var openid;
+	function getBasicInfo() {
+        var url = location.search; //获取url中含"?"符后的字串
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            var strs = str.split("&");
+            $.each(strs, function(index,obj){
+                var key = obj.split("=")[0];
+                var value = obj.split("=")[1];
+                if(key=="openid"){
+                    openid = value;
+                }else if(key=="uid"){
+                    uid = value;
+                }else if(key=="classId"){
+                    classId = value;
+				}else if(key=="usertype"){
+                    usertype = value;
+                }
+            })
+
+        }
+    }
+var uid;
+var classId;
+var usertype;
+getBasicInfo();
+//选中图片数量,用于限制图片上传数量
+var imagenum=0;
+//监听页面宽度
+var width = $(window).width();
+console.log(width);
+function chooseImage(e){
+	$(e).next().click();
+};
+//检查文件类型和大小
+function checkFile(file) {
+	var filetypes = [ ".jpg", ".png", ".gif", ".ps", ".jpeg" ];
+	var filemaxsize = 1024 * 2;//2M 
+	var flag = false;
+	var size=Math.round(file.size * 100 / (1024 * 1024)) / 100;
+	var type=file.name.substring(file.name.lastIndexOf(".")).toLowerCase();
+	if (filetypes && filetypes.length > 0) {
+		for (var i = 0; i < filetypes.length; i++) {
+			if (filetypes[i] == type) {
+				flag = true;
+				break;
+			}
+		}
+	}
+	if(!flag){
+		mui.toast("不接受此文件类型。");
+		return false;
+	}
+	if (size > filemaxsize) {
+        mui.toast("附件大小不能大于" + filemaxsize / 1024 + "M。");
+		return false;
+	}
+	if (size <= 0) {
+        mui.toast("附件大小不能为0M。");
+		target.value = "";
+		return false;
+	}
+	console.log("文件大小："+size+"M，文件类型："+type);
+	return true;
+}
+//获取文件路径
+function getObjectURL(file) {  
+    var url = null;  
+    if (window.createObjcectURL != undefined) {  
+        url = window.createOjcectURL(file);  
+    } else if (window.URL != undefined) {  
+        url = window.URL.createObjectURL(file);  
+    } else if (window.webkitURL != undefined) {  
+        url = window.webkitURL.createObjectURL(file);  
+    }  
+    console.log(url);
+    return url;  
+} 
+//图片预览
+function showIllegalImage(e){
+	var src="";
+	$.each(e.files, function(index,obj){
+		var isNext = checkFile(obj);
+		if(isNext){
+			imagenum++;
+			if(imagenum>4){
+			    return false;
+			}
+			var objURL = getObjectURL(obj);
+		     src = src+'<div class="image" style="position:relative;height: auto;list-style-type: none; display: inline-block; width: 22.5%;margin:2% 1.2%;" touchstart="return false">'+
+ 			     '<img onclick="deletePic(this)" src="../../img/banjiquan/del.png" style="position: absolute;z-index: 99;width: 18px;top:0;right:0;">'+
+			     '<img style="height:'+width/5.8+'px;width:'+width/5.8+'px;z-index:-1;" src="'+objURL+'">'+
+		     '</div>';
+			console.log(imagenum);
+		}
+	});
+	if(src.length!=0){
+		 $("#preview").css({"display":"block"});
+		 $("#preview").append(src);
+	}
+	//长按图片删除
+    /*mui("#preview").on("longtap",".image",function(){
+        event.preventDefault();
+        var that = $(this);
+        that.children().first().css({"display":"inline"});
+	});*/
+
+}
+
+
+function deletePic(e) {
+    imagenum--;
+    if(imagenum==0){
+        $(e).parent().css({"display":"none"});
+    }
+    $(e).parent().remove();
+}
+
+
+
+function saveOneMoment(){
+	var formData = new FormData($("#saveMoment")[0]);//表单id
+	formData.append("uid",uid);
+	formData.append("classId",classId);
+    formData.append("usertype",usertype);
+    console.log(formData);
+    if (null!=$("#textTitle").val()&&$("#textTitle").val().trim()!=''&&null!=$("#textContent").val()&&$("#textContent").val().trim()!=''){
+        $.ajax({
+            url: '/classMoment/addMoment.webapp' ,
+            type: 'POST',
+            data: formData,
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType : 'json',
+            success: function (data) {
+                if(data.errMsg=="OK"){
+                    mui.toast("发布成功");
+                    window.location.href='bjq.html?openid='+openid+'&uid='+uid+'&classId='+classId+'&usertype='+usertype;
+                }else{
+                    mui.toast(data.errMsg);
+                }
+            }
+        });
+	} else {
+        mui.toast("请填写标题及内容");
+	}
+
+}
+</script>
+
+</head>
+<body style="background-color:#EAEEF9;height: auto;">
+	<div style="background-color:transparent;height: 80%;margin-top: 2%;width: auto;margin-bottom:25%">
+	<form method="post" enctype="multipart/form-data" id="saveMoment">
+		<div style="height: 75px;line-height: 75px;background-color:white;width: 90%;margin:0 auto;margin-top: 5%;border-radius: 5px">
+			<label style="padding-left: 5%">标题：</label>
+			<input type="text" name="title" class="required" id="textTitle" style="margin:5%;width: 60%;height: 50%; text-align: center;border: 0px">
+		</div>
+		<div style="height: 75px;line-height: 75px;background-color:white;width: 90%;margin:0 auto;margin-top: 3%;border-radius: 5px">
+			<label style="padding-left: 5%;padding-right: 5%;width: 80px;">上传图片</label>
+			<span style="display:inline-block;height:100%;float:right;margin-right: 20px;">
+			<img alt="" src="" style="position: fixed;">
+				<img style="width: 30px;height: 30px;vertical-align: middle;opacity:0.5;" src="../../img/banjiquan/addPic.png" onclick="chooseImage(this)"/>
+				<input type="file" name="pictureList" value="" id="picture" style="display: none"  multiple="multiple" onchange="showIllegalImage(this)">
+			</span>
+		</div>
+		<div id="preview" style="display: none;height: auto;background-color:white;width: 90%;margin:0 auto;padding-left: 3%">
+		
+		</div>
+		<div style="height:20%;background-color:white;width: 90%;margin:0 auto;margin-top: 2%;border-radius: 5px">
+			<div style="height:75px;line-height: 75px">
+				<label style="padding-left: 5%">发布内容 :</label>
+			</div>
+			<div style="border:0.5px solid #F0F3F8;width: 100%;"></div>
+			<div style="margin-top: 10px;margin-bottom: 15px">
+				<textarea class="required" cols="25" rows="20" name="content" id="textContent" style="width: 90%;margin: 0 5%;background-color: #F0F3F8;border: 0px;height:280px"></textarea>
+			</div>
+		</div>
+		<div style="height: auto;line-height: 75%;background-color:white;width: 90%;margin:0 auto;margin-top: 5%;">
+			<input type="button" value="确认发布" style="background-color:#F6A839;width: 100%;height: 50px;color: white;font-size: 1.1em;border: 0px" onclick="saveOneMoment(this);">
+		</div>
+	</form>
+</div>
+</body>
+
+</html>

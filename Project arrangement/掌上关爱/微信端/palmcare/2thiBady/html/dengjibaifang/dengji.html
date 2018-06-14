@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>拜访申请</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <link href="../../css/mui.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../../css/mui.picker.min.css" />
+    <style>
+        .nav_badge{
+            position: absolute;
+            z-index: 99;
+            margin-left: -10px;
+            color: #dd524d;
+            background-color: #ffffff;
+        }
+        .mui-scrollbar{
+            display: none;
+        }
+    </style>
+    <link href="../../css/app/common/member_home.css" rel="stylesheet"/>
+    <style>
+        .index_content img{
+            width: 100%;
+            vertical-align: top;
+        }
+        .index_content p{
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+    <script src="../../js/app/common/zepto.js"></script>
+    <script src="../../js/app/common/popup.js"></script>
+    <script src="../../js/app/common/Common.js"></script>
+    <script src="../../js/mui.js"></script>
+    <script src="../../js/mui.dtpicker.js"></script>
+    <script src="../../js/iBaby2.jquery-2.1.0.min.js"></script>
+
+    <script src="../../js/mui.min.js"></script>
+    <script src="../../js/mui.picker.min.js"></script>
+    <script src="../../js/app/common/cvi_busy_lib.js"></script>
+    <script src="../../js/app/Common2.js"></script>
+</head>
+<body>
+<div class="mui-content wb100" style="padding: 2px 10px;">
+    <a onclick="tiaozhuan()"  class="btn_tjsq" style="margin-top: 2px;margin-bottom:4px;background-color: white;color:#695b62;">拜访查询</a>
+    <div class="mui-my-header" class="box-shadow: 0px 4px 8px rgba(4,6,44,0);">
+        <div class="my-logo">
+            <img src="../../img/dengjibaifang/mylogo.jpg">
+        </div>
+        <div class="my-name4">
+            <h1><span class="mui-icon mui-icon-user"></span><span id="parName" style="color: #695b62;"></span>家长</h1>
+            <span id="parPhone" class="mui-icon mui-icon-tel2"></span>
+        </div>
+        <!--<div class="my-member4">-->
+            <!--<h1 style="color:#695b62"><span class="mui-icon mui-icon-user" style="color: #53bf68"></span>李元，学生</h1>-->
+            <!--<p>学号：201524239D</p>-->
+        <!--</div>-->
+    </div>
+
+    <div class="mui-my-header" style="margin-top:1px;box-shadow: 0px 4px 8px rgba(4,6,44,0);">
+        <div class="my-logo">
+            <img src="../../img/dengjibaifang/mylogo.jpg">
+        </div>
+        <div class="my-name4">
+            <h1><span class="mui-icon mui-icon-user"></span><span id="teaName" style="color: #695b62;"></span>班主任</h1>
+            <span id="teaPhone" class="mui-icon mui-icon-tel2"></span>
+        </div>
+    </div>
+
+    <div class="qingjiatiao" style="margin-top:1px;">
+        <div class="qjtform">
+            <span class="mui-icon mui-icon-date"></span>
+            <input id="beginDay" type="button" class="tdate2" onclick="fun1()" style="font-size:13px;color: #c9cacd;"> ~
+            <input id="endDay" type="button" class="tdate2" onclick="fun2()" style="font-size:13px;color: #c9cacd;"> 日期
+        </div>
+        <div class="qjtform" style="margin-top: 10px;">
+            <span></span>
+            <input id="beginTime" type="button" class="tdate2" onclick="fun3()" style="font-size:13px;color: #c9cacd;"> ~
+            <input id="endTime" type="button" class="tdate2" onclick="fun4()" style="font-size:13px;color: #c9cacd;"> (时间段)
+        </div>
+    </div>
+    <div class="qingjiatiao" style="margin-top: 10px;padding-top: 10px">
+        <div class="qjtform">
+            拜访内容
+            <textarea id="visitContent" class="dd2"></textarea>
+        </div>
+        <a href="javascript:void(0)" onclick="aClick()" class="btn_tjsq" style="margin-top: 10px;">申请拜访</a>
+
+    </div>
+</div>
+
+<nav class="mui-bar mui-bar-tab mid">
+    <span id="nav_home" class="mui-tab-item" href="javascript:;" onclick="jumpPage(0)">
+        <span class="mui-icon mui-icon-nav-home"></span>
+        <span class="mui-tab-label">微校园</span>
+    </span>
+    <span id="nav_yoga" class="mui-tab-item" href="javascript:;" onclick="jumpPage(1)">
+        <span class="mui-icon mui-icon-nav-hutong"></span>
+        <span class="mui-tab-label">家校互通</span>
+    </span>
+    <span id="nav_mall" class="yuan plus_icon" href="javascript:;" style="display: table-cell;
+    width: 1%;
+    height: 60px;
+    color: #cbbec7;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: middle;">
+        <p></p>
+        <span class="mui-icon mui-icon-jia"><i>首页</i></span>
+    </span>
+    <span id="nav_class" class="mui-tab-item" href="javascript:;" onclick="jumpPage(2)">
+        <span class="mui-icon mui-icon-nav-quan"></span>
+        <span class="mui-tab-label">班级圈</span>
+    </span>
+    <span id="nav_person" class="mui-tab-item mui-active" href="javascript:;" onclick="jumpPage(3)">
+        <span class="mui-icon mui-icon-nav-my"></span>
+        <span class="mui-tab-label">我的</span>
+    </span>
+</nav>
+
+
+<div class="circle_menu_div" id="circle_menu_div">
+    <svg id="menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-2 -2 560 560" style="transition: transform .3s; -webkit-transition: -webkit-transform .3s; -webkit-transition: transform .3s; transform-origin: 50% 50% 0px; -webkit-transform-origin: 50% 50% 0px; transform: translate3d(0px, 0px, 0px) rotate(-180deg); -webkit-transform: translate3d(0px, 0px, 0px) rotate(-180deg); touch-action: none; -webkit-user-select: none;">
+        <style type="text/css">
+            .st0{fill:#EAEAEA;}
+            .st1{fill:#4E4E4E;}
+            .st2{fill:#5ebb83;}
+            .st3{fill:#FFFFFF;}
+            .st4{opacity:0.9;fill:#757575;enable-background:new    ;}
+            .st5{font-family:'MicrosoftSansSerif';}
+            .st6{font-size:18.1077px;}
+            .st7{fill:#F2755B;}
+            .st8{fill:#79C1DD;}
+            .st9{fill:#006280;}
+            .st10{fill:url(#SVGID_1_);}
+            .st11{fill:#00789C;}
+            .st12{fill:url(#SVGID_2_);}
+            .st13{fill:url(#SVGID_3_);}
+            .st14{fill:url(#SVGID_4_);}
+            .st15{fill:url(#SVGID_5_);}
+            .st16{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_6_);}
+            .st17{fill-rule:evenodd;clip-rule:evenodd;fill:#6D9AE8;}
+            .st18{fill:#D17466;}
+            .st19{fill:#E58171;}
+            .st20{fill:#F8E9D5;}
+            .st21{fill:#EBDCC9;}
+            .st22{fill:#E48171;}
+            .st23{fill:#CC7465;}
+            .st24{fill:#BF6D5F;}
+            .st25{fill:#C47061;}
+            .st26{fill:#E3D5C3;}
+            .st27{fill:#6D5148;}
+            .st28{fill:#D1C4B3;}
+            .st29{fill:#C4B8A9;}
+            .st30{fill:#DED0BF;}
+            .st31{fill:#F0E1CE;}
+            .st32{opacity:5.000000e-02;}
+            .st33{fill:#42312C;}
+            .st34{fill:#81875A;}
+            .st35{fill:#959C67;}
+            .st36{font-family:'PangMenZhengDao';}
+            .st37{font-size:2.6866px;}
+            .st38{fill:#999999;}
+            .st39{fill:#888888;}
+            .st40{fill:#656666;}
+            .st41{opacity:0.5;}
+            .st42{font-size:2.8944px;}
+            .st43{fill:#DDDDDD;}
+            .st44{fill:#FC5B5B;}
+
+            #menu {
+                display: block;
+                margin: 0 auto;
+            }
+
+            a {
+                cursor: pointer;
+                outline: none;
+            }
+
+            .item .sector {
+                transition: all .1s linear;
+                fill: #f6f6f6;
+                stroke: none;
+            }
+
+            .item:nth-child(2) .sector {
+                transition: all .1s linear;
+                fill: #f6f6f6;
+                stroke: none;
+            }
+
+            .item:nth-child(3) .sector {
+                transition: all .1s linear;
+                fill: #eaeaea;
+                stroke: none;
+            }
+
+            .item:nth-child(4) .sector {
+                transition: all .1s linear;
+                fill: #EAEAEA;
+                stroke: none;
+            }
+
+            .item:hover .sector, .item:focus .sector {
+                fill: #e1e5ec;
+            }
+
+            .menu-trigger:hover, .menu-trigger:focus {
+                cursor: pointer;
+            }
+
+            .menu-trigger {
+                fill: #EA2A55;
+                pointer-events: auto;
+            }
+
+            symbol {
+                overflow: visible;
+            }
+        </style>
+        <a class="item" id="item-1" href="../kaoqin/attendance.html" xlink:title=" ">
+            <path class="sector" d="M102.6,63.4C54.9,100.4,19.2,152,2,211.5h125c12.6-23.9,30.6-44.5,52.5-60.2L102.6,63.4z"/>
+            <g>
+                <path class="st1" d="M123.9,191.9c-0.5-0.2-1-0.4-1.5-0.6c0.5-0.7,1.2-1.8,2.1-3.2c0.6-0.8,0.6-1.4,0.1-1.8
+			c-0.3-0.3-0.7-0.6-1.1-0.9l-4.3,6.5l-1.4-1.4c-0.1,1.2-0.3,2.5-0.5,3.8c-0.6-0.1-1.2-0.2-1.8-0.3c0.6-2.9,1-5.4,1.1-7.7l-3.7,5.6
+			l-1.2-0.8l3.1-4.6l-1.4-1l-2.4,3.5l-1.2-0.8l2.4-3.5l-1.4-0.9l1-1.4l1.4,0.9l2-3l1.2,0.8l-2,3l1.4,1l1-1.4c-0.2-2.1-0.4-4.1-0.8-6
+			l1.7-0.6c0.2,1.5,0.4,3,0.6,4.4l2.4-3.5l1.2,0.8L118,184c0,0.7,0,1.4,0,2.2l3.9-5.9l1.2,0.8l-5,7.5l0.9,0.9l4.3-6.5
+			c0.2,0.2,0.6,0.5,1.1,0.9c0.6,0.5,1,0.9,1.3,1.1c1.2,0.9,1.3,2.1,0.3,3.5C125.8,189,125.1,190.1,123.9,191.9z"/>
+                <path class="st1" d="M135.4,175.2c-0.5,0.1-1,0.2-1.6,0.3c-0.6,0.9-1.5,2.5-2.9,4.8c-0.6,1-1.1,1.8-1.4,2.3l-1.1-0.6l2.2-3.4
+			l-0.9-0.6l-1.9,2.8l-0.9-0.6l1.9-2.8l-0.8-0.5l-2,3l-0.9-0.6l2-3l-0.8-0.5l-1.9,2.8l-2.8-1.9l1.9-2.8l-0.8-0.5l-1.3,2l-1.7-1.1
+			l-0.9,1.3l-1.1-0.7l0.9-1.3l-1-0.7l0.8-1.3l1,0.7l1.8-2.7l-1-0.7l0.8-1.2l1,0.7l0.8-1.3l1.1,0.7l-0.8,1.3l1.7,1.1l-1.4,2l0.8,0.5
+			l1.9-2.9l2.8,1.9l-1.9,2.9l0.8,0.5l1.9-2.9l0.9,0.6l-1.9,2.9l0.8,0.5l1.8-2.7l0.9,0.6l-1.8,2.7l0.8,0.6l1.8-2.9
+			c0,0,0.1,0.1,0.2,0.1c0,0.1,0.1,0.1,0.1,0.2c-0.5-1.7-2.4-3.7-5.7-5.9c-0.4-0.3-0.8-0.5-1-0.7l-0.8,1.2l-1.3-0.9l0.8-1.2
+			c-0.9-0.6-1.8-1.2-2.8-1.8l0.9-1.3l2.8,1.8l1.8-2.7c0.7,0.4,2,1.3,3.9,2.7c2.1,1.4,3.4,2.4,4.1,2.9c1.3,0.9,1.6,1.9,0.9,3
+			c-0.3,0.5-0.6,1-1,1.5c-0.5-0.2-1-0.4-1.5-0.6c0.3-0.4,0.5-0.8,0.8-1.2c0.4-0.6,0.3-1.1-0.5-1.6c-0.1,0-0.2-0.1-0.4-0.3
+			c-2.7-1.9-4.6-3.3-5.9-4.1l-1,1.4c0.3,0.2,0.6,0.4,0.9,0.6c2.3,1.7,3.9,2.9,4.7,3.8C134.1,172.3,134.9,173.6,135.4,175.2z
+			 M123.4,176.2l1,0.7l1.1-1.7l-1-0.7L123.4,176.2z M120.7,173.1l0.8,0.5l1.8-2.7l-0.8-0.5L120.7,173.1z M126.4,171.7l-1.1,1.7
+			l1,0.7l1.1-1.7L126.4,171.7z"/>
+            </g>
+            <g>
+                <path class="st2" d="M63.3,125.3c-13.7,9.7-16.9,28.7-7.2,42.3s28.7,16.9,42.3,7.2s16.9-28.7,7.2-42.3S77,115.6,63.3,125.3z"/>
+                <path id="Base" class="st3" d="M57.1,152.9l17.5-26.4c0.7-1,2.1-1.3,3.1-0.6l26.4,17.5c1,0.7,1.3,2.1,0.6,3.1L87.3,173
+			c-0.7,1-2.1,1.3-3.1,0.6l-26.4-17.5C56.7,155.4,56.4,154,57.1,152.9z"/>
+
+                <rect x="92.3" y="134.4" transform="matrix(0.5537 -0.8327 0.8327 0.5537 -72.3245 138.2966)" class="st3" width="1.1" height="4.5"/>
+
+                <rect x="72.9" y="163.6" transform="matrix(0.5537 -0.8327 0.8327 0.5537 -105.3214 135.1583)" class="st3" width="1.1" height="4.5"/>
+                <text id="_23" transform="matrix(0.5537 -0.8327 0.8327 0.5537 82.4261 163.0441)" class="st4 st5 st6">23</text>
+                <path id="Top" class="st7" d="M60.6,158l-2.8-1.9c-1-0.7-1.3-2.1-0.6-3.1l17.5-26.4c0.7-1,2.1-1.3,3.1-0.6l2.8,1.9L60.6,158z"/>
+            </g>
+        </a>
+        <a class="item" id="item-2" href="javascript:void(0)" onclick="judge3()" xlink:href=""  xlink:title=" ">
+            <path class="sector" d="M102.6,63.4l76.9,88C207.8,131,242.6,119,280.1,119V2.5C213.2,2.5,151.6,25.2,102.6,63.4z"/>
+            <g>
+                <path class="st1" d="M195.8,111.8l-0.4-1.2l4.7-1.7c0-0.1,0-0.3,0-0.6c0-0.2,0-0.3,0-0.5c-0.6,0.3-1.3,0.5-2.1,0.8
+			c-0.7,0.3-1.7,0.6-3.1,1.1l-0.6-1.2c4.4-1.6,8.7-3.3,12.9-5l0.6,1.2c-2,0.8-3.9,1.7-6,2.4l0,1.1l6.2-2.3l0.4,1.2l-6.7,2.4
+			l-0.2,1.3l8.4-3l0.4,1.2l-9.1,3.3c-0.1,0.5-0.2,0.9-0.3,1.2l8.2-2.9l2.7,7.6l-1.6,0.6l-0.2-0.6l-7.4,2.7l0.2,0.6l-1.6,0.6
+			l-1.9-5.2c-0.5,0.9-1,1.8-1.6,2.7c-0.1-0.1-0.2-0.3-0.5-0.5c-0.4-0.3-0.6-0.6-0.8-0.8c1.4-1.9,2.3-3.7,2.8-5.2l-3.9,1.4l-0.4-1.2
+			l4.7-1.7c0-0.2,0.1-0.4,0.1-0.7c0.1-0.3,0.1-0.4,0.1-0.6L195.8,111.8z M200.6,114.9l0.4,1l7.4-2.7l-0.4-1L200.6,114.9z
+			 M201.3,116.9l0.4,1l7.4-2.7l-0.4-1L201.3,116.9z M202,118.8l0.3,0.9l7.4-2.7l-0.3-0.9L202,118.8z"/>
+                <path class="st1" d="M212.8,111.4c-0.2-0.3-0.5-0.8-1-1.5c-0.1-0.2-0.2-0.3-0.3-0.3c0.6-2.6,0.8-5.4,0.6-8.4l1.8-0.1
+			c0.1,1.2,0.1,2.4,0,3.7l4.1,11.2l-1.6,0.6l-2.9-8.1C213.3,109.4,213,110.4,212.8,111.4z M217.1,107.8c-0.5-0.2-1.1-0.5-1.6-0.8
+			c0.7-2.1,1-4.5,0.8-7.3l1.9-0.3c0,0.3,0,0.8,0,1.5c0,0.4,0,0.7,0,0.9l6.9-2.5l0.6,1.6l-5.2,1.9l0.8,2.3l4.3-1.6l0.6,1.6l-4.3,1.6
+			l0.9,2.4l4.7-1.7l0.5,1.5l-4.7,1.7l1.2,3.2l-1.6,0.6l-4-11l-0.8,0.3C217.8,105,217.5,106.4,217.1,107.8z"/>
+                <path class="st1" d="M230.2,110.6l-0.6-1.6l4.5-1.6l-4.5-12.4l1.7-0.6l4.5,12.4l2.4-0.9l-4.5-12.4l1.7-0.6l4.5,12.4l4.6-1.6
+			l0.6,1.6L230.2,110.6z M231.4,105.5c-1.6-2-3.2-3.9-4.7-5.7l1.3-1c2.1,2.4,3.7,4.3,4.7,5.6L231.4,105.5z M240.8,102.1L239,102
+			c0.1-1.6,0.2-4,0.3-7.2l1.8,0C241,97.7,240.9,100.2,240.8,102.1z"/>
+            </g>
+            <g>
+                <path class="st2" d="M181.2,37c-13.2,10.4-15.4,29.5-5,42.6s29.5,15.4,42.6,5s15.4-29.5,5-42.6S194.3,26.6,181.2,37z"/>
+                <g>
+                    <path class="st8" d="M204.2,75.7c0.4,1,0,2.1-0.9,2.4l-12.9,5.1c-0.9,0.3-1.9-0.2-2.3-1.2l-11.2-28.5c-0.4-1,0-2.1,0.8-2.4
+				l13.3-4.3c0.9-0.3,1.9,0.2,2.3,1.2L204.2,75.7z"/>
+                    <path class="st9" d="M223,68.2c0.4,1,0,2.1-0.9,2.4L209,75.9c-0.9,0.3-1.9-0.2-2.3-1.2L195.7,47c-0.4-1,0-2.1,0.9-2.4l12.9-6
+				c0.9-0.3,1.9,0.2,2.3,1.2L223,68.2z"/>
+
+                    <linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="198.9339" y1="57.0819" x2="203.4268" y2="57.0819" gradientTransform="matrix(0.9301 -0.3673 0.3673 0.9301 -8.1147 82.1586)">
+                        <stop  offset="5.617980e-02" style="stop-color:#006280"/>
+                        <stop  offset="0.9607" style="stop-color:#0086AE"/>
+                    </linearGradient>
+                    <path class="st10" d="M207.5,74.4c0.4,1,0.5,1.8,0.3,1.9l-3.3,1.3c-0.2,0.1-0.7-0.6-1.1-1.6l-10.9-27.7c-0.4-1-0.5-1.8-0.3-1.9
+				l3.3-1.3c0.2-0.1,0.7,0.6,1.1,1.6L207.5,74.4z"/>
+                    <path class="st9" d="M204.2,75.6c0.4,1,0,2.1-0.8,2.4L191,83c-0.8,0.3-1.8-0.2-2.2-1.2l-11.2-28.5c-0.4-1,0-2.1,0.8-2.4l12.8-4.1
+				c0.8-0.3,1.8,0.2,2.2,1.2L204.2,75.6z"/>
+                    <path class="st11" d="M222.4,68.5c0.4,1,0,2.1-0.8,2.4l-12.7,5c-0.9,0.3-1.9-0.2-2.3-1.2L195.7,47c-0.4-1,0-2.1,0.8-2.4l12.4-5.8
+				c0.9-0.3,1.9,0.2,2.3,1.2L222.4,68.5z"/>
+
+                    <linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="201.6808" y1="56.946" x2="217.7016" y2="56.946" gradientTransform="matrix(0.9301 -0.3673 0.3673 0.9301 -8.1147 82.1586)">
+                        <stop  offset="5.056180e-02" style="stop-color:#FFFFFF"/>
+                        <stop  offset="0.264" style="stop-color:#F0F3F5"/>
+                        <stop  offset="0.6798" style="stop-color:#F0F3F5"/>
+                        <stop  offset="0.7175" style="stop-color:#CBD4D8"/>
+                        <stop  offset="0.7303" style="stop-color:#BDC8CD"/>
+                        <stop  offset="0.7697" style="stop-color:#D5E0E6"/>
+                        <stop  offset="0.7921" style="stop-color:#BDC8CD"/>
+                        <stop  offset="0.8315" style="stop-color:#D5E0E6"/>
+                        <stop  offset="0.8708" style="stop-color:#BDC8CD"/>
+                        <stop  offset="0.9045" style="stop-color:#D5E0E6"/>
+                        <stop  offset="0.9382" style="stop-color:#BDC8CD"/>
+                        <stop  offset="0.9663" style="stop-color:#D5E0E6"/>
+                        <stop  offset="1" style="stop-color:#BDC8CD"/>
+                    </linearGradient>
+                    <path class="st12" d="M220.7,69c0.4,0.9,0,2-0.8,2.3L208,76c-0.8,0.3-1.8-0.2-2.2-1.1L195.2,48c-0.4-0.9,0-2,0.8-2.3l11.6-5.5
+				c0.8-0.3,1.8,0.2,2.2,1.1L220.7,69z"/>
+
+                    <linearGradient id="SVGID_3_" gradientUnits="userSpaceOnUse" x1="184.5474" y1="56.946" x2="201.4494" y2="56.946" gradientTransform="matrix(0.9301 -0.3673 0.3673 0.9301 -8.1147 82.1586)">
+                        <stop  offset="0" style="stop-color:#D6D9DA"/>
+                        <stop  offset="3.370790e-02" style="stop-color:#FFFFFF"/>
+                        <stop  offset="6.179780e-02" style="stop-color:#D6D9DA"/>
+                        <stop  offset="9.550560e-02" style="stop-color:#FFFFFF"/>
+                        <stop  offset="0.1404" style="stop-color:#D6D9DA"/>
+                        <stop  offset="0.1798" style="stop-color:#FFFFFF"/>
+                        <stop  offset="0.1966" style="stop-color:#E3E6E7"/>
+                        <stop  offset="0.8596" style="stop-color:#F0F3F5"/>
+                        <stop  offset="0.9349" style="stop-color:#CBD4D8"/>
+                        <stop  offset="0.9607" style="stop-color:#BDC8CD"/>
+                    </linearGradient>
+                    <path class="st13" d="M205.6,75c0.4,0.9,0,2-0.8,2.3l-12.7,5c-0.8,0.3-1.8-0.2-2.2-1.1L179,53.5c-0.4-0.9,0-2,0.8-2.3l13-4.2
+				c0.8-0.3,1.8,0.2,2.2,1.1L205.6,75z"/>
+
+                    <linearGradient id="SVGID_4_" gradientUnits="userSpaceOnUse" x1="514.8655" y1="56.0696" x2="522.311" y2="50.5123" gradientTransform="matrix(-1.0266 0.4053 0.3673 0.9301 698.9863 -197.0426)">
+                        <stop  offset="5.617980e-02" style="stop-color:#F9FAFA"/>
+                        <stop  offset="0.4213" style="stop-color:#F0F3F5"/>
+                        <stop  offset="0.5474" style="stop-color:#E7ECEE"/>
+                        <stop  offset="0.7488" style="stop-color:#D0D7DC"/>
+                        <stop  offset="0.7865" style="stop-color:#CBD3D8"/>
+                        <stop  offset="0.9607" style="stop-color:#969DA1"/>
+                    </linearGradient>
+                    <path class="st14" d="M191.2,47.7c0.6-0.2,1.3,0.4,1.7,1.3l10.6,26.8c0.4,0.9,0.2,1.9-0.3,2.1l-7.7,3c-0.6,0.2-1.3-0.4-1.7-1.3
+				L185,57.4l1.2-7.7L191.2,47.7z"/>
+
+                    <linearGradient id="SVGID_5_" gradientUnits="userSpaceOnUse" x1="516.9213" y1="43.6963" x2="513.2886" y2="46.7504" gradientTransform="matrix(-1.0266 0.4053 0.3673 0.9301 698.9863 -197.0426)">
+                        <stop  offset="5.617980e-03" style="stop-color:#BCC1C4"/>
+                        <stop  offset="3.792274e-02" style="stop-color:#CCD0D2"/>
+                        <stop  offset="9.755979e-02" style="stop-color:#E2E4E6"/>
+                        <stop  offset="0.1622" style="stop-color:#F2F3F4"/>
+                        <stop  offset="0.2347" style="stop-color:#FCFCFC"/>
+                        <stop  offset="0.3315" style="stop-color:#FFFFFF"/>
+                        <stop  offset="0.5169" style="stop-color:#F0F3F5"/>
+                        <stop  offset="0.7809" style="stop-color:#BDC8CD"/>
+                    </linearGradient>
+                    <path class="st15" d="M188.5,55.9l-3.5,1.4l1.3-7.7l2.6,4.2C189.2,54.8,189.1,55.7,188.5,55.9z"/>
+                </g>
+            </g>
+        </a>
+        <a class="item" id="item-3" href="javascript:;" onclick="jumpPage(7)"  xlink:href=""  xlink:title=" ">
+            <path class="sector" d="M457.7,63.4c47.6,37.1,83.4,88.6,100.6,148.1h-125c-12.6-23.9-30.6-44.5-52.5-60.2L457.7,63.4z"/>
+            <g>
+                <path class="st2" d="M462,121.9c-13.7,9.7-16.9,28.7-7.2,42.3c9.7,13.7,28.7,16.9,42.3,7.2s16.9-28.7,7.2-42.3
+			S475.6,112.2,462,121.9z"/>
+                <g>
+
+                    <linearGradient id="SVGID_6_" gradientUnits="userSpaceOnUse" x1="476.2999" y1="121.9482" x2="476.2999" y2="151.2423" gradientTransform="matrix(0.5667 0.8239 -0.8239 0.5667 321.7386 -322.8424)">
+                        <stop  offset="0" style="stop-color:#FEDDA8"/>
+                        <stop  offset="0.85" style="stop-color:#FEF1E0"/>
+                    </linearGradient>
+                    <path class="st16" d="M479.8,122.7l22.2,32.4c0.7,1,0.4,2.3-0.6,3l-19.3,13.2c-1,0.7-2.3,0.4-3-0.6L457,138.4
+				c-0.7-1-0.4-2.3,0.6-3l19.3-13.2C477.8,121.4,479.2,121.7,479.8,122.7z"/>
+                    <path class="st17" d="M497.3,148.1l4.8,7c0.7,1,0.4,2.3-0.6,3l-5.7,3.9L497.3,148.1z"/>
+                    <g>
+                        <g>
+
+                            <rect x="468.8" y="133.7" transform="matrix(0.8239 -0.5667 0.5667 0.8239 4.1183 291.9391)" class="st18" width="6.2" height="11.2"/>
+                        </g>
+                        <g>
+
+                            <rect x="473.2" y="142.8" transform="matrix(0.8239 -0.5667 0.5667 0.8239 1.6805 296.1605)" class="st19" width="8.6" height="5.1"/>
+                        </g>
+                        <g>
+
+                            <rect x="481.5" y="140.3" transform="matrix(0.8239 -0.5667 0.5667 0.8239 3.9677 298.1201)" class="st20" width="0.5" height="4.7"/>
+                        </g>
+                        <g>
+
+                            <rect x="481.1" y="140.9" transform="matrix(0.8239 -0.5667 0.5667 0.8239 3.6775 297.9834)" class="st20" width="0.5" height="4.4"/>
+                        </g>
+                        <g>
+
+                            <rect x="471.3" y="133.5" transform="matrix(0.8239 -0.5667 0.5667 0.8239 4.1007 291.7671)" class="st21" width="0.5" height="11.6"/>
+                        </g>
+                        <g>
+
+                            <rect x="474.3" y="131.5" transform="matrix(0.8239 -0.5667 0.5667 0.8239 5.7666 293.079)" class="st21" width="0.5" height="11.6"/>
+                        </g>
+                        <g>
+
+                            <rect x="468.3" y="135.4" transform="matrix(0.8239 -0.5667 0.5667 0.8239 2.5072 290.5121)" class="st21" width="1" height="11.6"/>
+                        </g>
+                        <g>
+
+                            <rect x="472.9" y="144.9" transform="matrix(0.8239 -0.5667 0.5667 0.8239 0.7952 294.3187)" class="st22" width="2.4" height="2"/>
+                        </g>
+                        <g>
+
+                            <rect x="472.1" y="145.8" transform="matrix(0.8239 -0.5667 0.5667 0.8239 4.298644e-04 293.6953)" class="st20" width="1" height="2.1"/>
+                        </g>
+                        <g>
+
+                            <rect x="474.7" y="144.3" transform="matrix(0.8239 -0.5667 0.5667 0.8239 1.2675 294.6907)" class="st20" width="0.4" height="2"/>
+                        </g>
+                        <g>
+
+                            <rect x="474.6" y="144.4" transform="matrix(0.8239 -0.5667 0.5667 0.8239 1.1597 294.6058)" class="st23" width="0.1" height="2"/>
+                        </g>
+                        <g>
+
+                            <rect x="473.1" y="145.5" transform="matrix(0.8239 -0.5667 0.5667 0.8239 0.2668 293.9026)" class="st23" width="0.1" height="2"/>
+                        </g>
+                        <g>
+
+                            <rect x="469.3" y="135.5" transform="matrix(0.8239 -0.5667 0.5667 0.8239 2.6956 290.8187)" class="st24" width="0.1" height="11.2"/>
+                        </g>
+                        <g>
+
+                            <rect x="471.9" y="133.7" transform="matrix(0.8239 -0.5667 0.5667 0.8239 4.1726 291.9819)" class="st24" width="0.1" height="11.2"/>
+                        </g>
+                        <g>
+
+                            <rect x="471.4" y="134" transform="matrix(0.8239 -0.5667 0.5667 0.8239 3.8751 291.7476)" class="st24" width="0.1" height="11.2"/>
+                        </g>
+                        <g>
+
+                            <rect x="474.3" y="132" transform="matrix(0.8239 -0.5667 0.5667 0.8239 5.541 293.0596)" class="st24" width="0.1" height="11.2"/>
+                        </g>
+                        <g>
+
+                            <rect x="473.5" y="146.7" transform="matrix(0.8239 -0.5667 0.5667 0.8239 0.3945 294.8275)" class="st25" width="2.4" height="0.1"/>
+                        </g>
+                        <g>
+
+                            <rect x="476.4" y="145.8" transform="matrix(0.8239 -0.5667 0.5667 0.8239 0.3918 295.9177)" class="st25" width="0.1" height="3"/>
+                        </g>
+                        <g>
+
+                            <rect x="476.3" y="143.6" transform="matrix(0.8239 -0.5667 0.5667 0.8239 1.0647 295.6755)" class="st25" width="0.1" height="5.1"/>
+                        </g>
+                        <g>
+
+                            <rect x="481.1" y="141" transform="matrix(0.8239 -0.5667 0.5667 0.8239 3.5288 297.8663)" class="st25" width="0.1" height="4.4"/>
+                        </g>
+                        <g>
+
+                            <rect x="481.5" y="140.7" transform="matrix(0.8239 -0.5667 0.5667 0.8239 3.7744 298.0597)" class="st26" width="0.1" height="4.4"/>
+                        </g>
+                        <g>
+
+                            <rect x="474.9" y="144.2" transform="matrix(0.8239 -0.5667 0.5667 0.8239 1.3235 294.7348)" class="st26" width="0.1" height="2"/>
+                        </g>
+                        <g>
+
+                            <rect x="470.1" y="134.7" transform="matrix(0.8239 -0.5667 0.5667 0.8239 6.1433 290.8449)" class="st27" width="2" height="1.7"/>
+                        </g>
+                        <g>
+
+                            <rect x="476.2" y="143.2" transform="matrix(0.8239 -0.5667 0.5667 0.8239 2.559 296.2742)" class="st27" width="3.9" height="1.7"/>
+                        </g>
+                        <g>
+
+                            <rect x="477.4" y="145" transform="matrix(0.8239 -0.5667 0.5667 0.8239 1.7488 297.303)" class="st27" width="3.9" height="1.7"/>
+                        </g>
+                        <g>
+
+                            <rect x="471.5" y="136.8" transform="matrix(0.8239 -0.5667 0.5667 0.8239 5.2306 292.0039)" class="st27" width="2" height="1.7"/>
+                        </g>
+                        <g>
+
+                            <rect x="472.9" y="138.8" transform="matrix(0.8239 -0.5667 0.5667 0.8239 4.3179 293.1628)" class="st27" width="2" height="1.7"/>
+                        </g>
+                        <g>
+
+                            <rect x="474.4" y="140.8" transform="matrix(0.8239 -0.5667 0.5667 0.8239 3.4053 294.3217)" class="st27" width="2" height="1.7"/>
+                        </g>
+                        <g>
+
+                            <rect x="467.5" y="136.6" transform="matrix(0.8239 -0.5667 0.5667 0.8239 4.5782 289.6123)" class="st27" width="1.7" height="1.7"/>
+                        </g>
+                        <g>
+
+                            <rect x="468.9" y="138.7" transform="matrix(0.8239 -0.5667 0.5667 0.8239 3.6655 290.7713)" class="st27" width="1.7" height="1.7"/>
+                        </g>
+                        <g>
+
+                            <rect x="470.3" y="140.7" transform="matrix(0.8239 -0.5667 0.5667 0.8239 2.7528 291.9302)" class="st27" width="1.7" height="1.7"/>
+                        </g>
+                        <g>
+
+                            <rect x="471.7" y="142.8" transform="matrix(0.8239 -0.5667 0.5667 0.8239 1.8401 293.089)" class="st27" width="1.7" height="1.7"/>
+                        </g>
+                        <g>
+
+                            <rect x="474.7" y="147.6" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -0.4798 295.6202)" class="st27" width="1.7" height="2"/>
+                        </g>
+                        <g>
+
+                            <rect x="475.7" y="143.4" transform="matrix(0.8239 -0.5667 0.5667 0.8239 0.9803 295.4766)" class="st20" width="0.5" height="5.4"/>
+                        </g>
+                        <g>
+
+                            <rect x="474.2" y="147.2" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -0.7701 295.0027)" class="st28" width="0.3" height="3"/>
+                        </g>
+                        <g>
+
+                            <rect x="473.9" y="147.4" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -0.93 294.8767)" class="st21" width="0.3" height="3"/>
+                        </g>
+                        <g>
+
+                            <rect x="474.2" y="147.3" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -0.8318 294.9565)" class="st29" width="0.1" height="3"/>
+                        </g>
+                        <g>
+
+                            <rect x="473.9" y="147.5" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -0.9918 294.8305)" class="st30" width="0.1" height="3"/>
+                        </g>
+                        <g>
+
+                            <rect x="473.6" y="147.6" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -1.0889 294.7516)" class="st20" width="0.3" height="3"/>
+                        </g>
+                        <g>
+
+                            <rect x="473.4" y="147.5" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -0.2362 294.3306)" class="st29" width="0.3" height="0.1"/>
+                        </g>
+                        <g>
+
+                            <rect x="473.1" y="147.7" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -0.3952 294.2055)" class="st30" width="0.3" height="0.1"/>
+                        </g>
+                        <g>
+
+                            <rect x="472.8" y="147.9" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -0.5551 294.0795)" class="st31" width="0.3" height="0.1"/>
+                        </g>
+                        <g class="st32">
+                            <polyline class="st3" points="469.8,135.4 471.5,134.3 472.4,135.6 					"/>
+                        </g>
+                        <g class="st32">
+                            <polyline class="st3" points="476,144.4 479.2,142.2 480.1,143.6 					"/>
+                        </g>
+                        <g class="st32">
+                            <polyline class="st3" points="477.3,146.2 480.5,144.1 481.4,145.4 					"/>
+                        </g>
+                        <g class="st32">
+                            <polyline class="st3" points="471.2,137.5 472.9,136.3 473.9,137.7 					"/>
+                        </g>
+                        <g class="st32">
+                            <polyline class="st3" points="472.6,139.5 474.3,138.4 475.3,139.7 					"/>
+                        </g>
+                        <g class="st32">
+                            <polyline class="st3" points="474.1,141.6 475.7,140.4 476.7,141.8 					"/>
+                        </g>
+                        <g class="st32">
+                            <polyline class="st3" points="467.2,137.2 468.6,136.3 469.5,137.6 					"/>
+                        </g>
+                        <g class="st32">
+                            <polyline class="st3" points="468.6,139.3 470,138.3 471,139.7 					"/>
+                        </g>
+                        <g class="st32">
+                            <polyline class="st3" points="470,141.3 471.4,140.4 472.4,141.7 					"/>
+                        </g>
+                        <g class="st32">
+                            <polyline class="st3" points="471.4,143.4 472.8,142.4 473.8,143.8 					"/>
+                        </g>
+                        <g>
+
+                            <rect x="480.9" y="151.3" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -3.7151 301.8858)" class="st18" width="6.2" height="11.2"/>
+                        </g>
+                        <g>
+
+                            <rect x="476.1" y="147" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -0.1828 298.5264)" class="st19" width="8.6" height="5.1"/>
+                        </g>
+                        <g>
+
+                            <rect x="484.1" y="144.2" transform="matrix(0.8239 -0.5667 0.5667 0.8239 2.2584 300.2906)" class="st20" width="0.5" height="4.7"/>
+                        </g>
+                        <g>
+
+                            <rect x="483.6" y="144.5" transform="matrix(0.8239 -0.5667 0.5667 0.8239 2.0574 300.0405)" class="st20" width="0.5" height="4.4"/>
+                        </g>
+                        <g>
+
+                            <rect x="483.7" y="151.4" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -3.8865 301.9091)" class="st21" width="0.5" height="11.6"/>
+                        </g>
+                        <g>
+
+                            <rect x="486.6" y="149.4" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -2.2206 303.221)" class="st21" width="0.5" height="11.6"/>
+                        </g>
+                        <g>
+
+                            <rect x="480.6" y="153.3" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -5.4799 300.6541)" class="st21" width="1" height="11.6"/>
+                        </g>
+                        <g>
+
+                            <rect x="477.5" y="151.5" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -2.1808 298.0975)" class="st22" width="2.4" height="2"/>
+                        </g>
+                        <g>
+
+                            <rect x="476.7" y="152.5" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -2.9731 297.471)" class="st20" width="1" height="2.1"/>
+                        </g>
+                        <g>
+
+                            <rect x="479.3" y="151" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -1.7084 298.4695)" class="st20" width="0.4" height="2"/>
+                        </g>
+                        <g>
+
+                            <rect x="479.2" y="151.1" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -1.8162 298.3846)" class="st23" width="0.1" height="2"/>
+                        </g>
+                        <g>
+
+                            <rect x="477.7" y="152.2" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -2.7091 297.6814)" class="st23" width="0.1" height="2"/>
+                        </g>
+                        <g>
+
+                            <rect x="481.4" y="153.1" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -5.1378 300.7654)" class="st24" width="0.1" height="11.2"/>
+                        </g>
+                        <g>
+
+                            <rect x="484" y="151.3" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -3.6608 301.9286)" class="st24" width="0.1" height="11.2"/>
+                        </g>
+                        <g>
+
+                            <rect x="483.5" y="151.6" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -3.9583 301.6943)" class="st24" width="0.1" height="11.2"/>
+                        </g>
+                        <g>
+
+                            <rect x="486.4" y="149.6" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -2.2924 303.0063)" class="st24" width="0.1" height="11.2"/>
+                        </g>
+                        <g>
+
+                            <rect x="476.8" y="151.6" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -1.7801 297.5888)" class="st25" width="2.4" height="0.1"/>
+                        </g>
+                        <g>
+
+                            <rect x="478.1" y="148.3" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -0.7208 297.3306)" class="st25" width="0.1" height="3"/>
+                        </g>
+                        <g>
+
+                            <rect x="479.2" y="147.8" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -0.7986 298.0414)" class="st25" width="0.1" height="5.1"/>
+                        </g>
+                        <g>
+
+                            <rect x="483.6" y="144.7" transform="matrix(0.8239 -0.5667 0.5667 0.8239 1.9088 299.9234)" class="st25" width="0.1" height="4.4"/>
+                        </g>
+                        <g>
+
+                            <rect x="484" y="144.4" transform="matrix(0.8239 -0.5667 0.5667 0.8239 2.1544 300.1168)" class="st26" width="0.1" height="4.4"/>
+                        </g>
+                        <g>
+
+                            <rect x="479.5" y="150.9" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -1.6525 298.5135)" class="st26" width="0.1" height="2"/>
+                        </g>
+                        <g>
+
+                            <rect x="486.2" y="158.2" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -4.3041 304.1109)" class="st27" width="2" height="1.7"/>
+                        </g>
+                        <g>
+
+                            <rect x="479.9" y="148.6" transform="matrix(0.8239 -0.5667 0.5667 0.8239 0.1337 299.3538)" class="st27" width="3.9" height="1.7"/>
+                        </g>
+                        <g>
+
+                            <rect x="478.6" y="146.8" transform="matrix(0.8239 -0.5667 0.5667 0.8239 0.9439 298.325)" class="st27" width="3.9" height="1.7"/>
+                        </g>
+                        <g>
+
+                            <rect x="484.8" y="156.1" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -3.3915 302.952)" class="st27" width="2" height="1.7"/>
+                        </g>
+                        <g>
+
+                            <rect x="483.4" y="154.1" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -2.4787 301.7931)" class="st27" width="2" height="1.7"/>
+                        </g>
+                        <g>
+
+                            <rect x="482" y="152" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -1.5661 300.6342)" class="st27" width="2" height="1.7"/>
+                        </g>
+                        <g>
+
+                            <rect x="483.6" y="160.1" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -5.8693 302.8783)" class="st27" width="1.7" height="1.7"/>
+                        </g>
+                        <g>
+
+                            <rect x="482.2" y="158" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -4.9566 301.7194)" class="st27" width="1.7" height="1.7"/>
+                        </g>
+                        <g>
+
+                            <rect x="480.8" y="156" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -4.0439 300.5604)" class="st27" width="1.7" height="1.7"/>
+                        </g>
+                        <g>
+
+                            <rect x="479.4" y="153.9" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -3.1312 299.4016)" class="st27" width="1.7" height="1.7"/>
+                        </g>
+                        <g>
+
+                            <rect x="475.8" y="149.2" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -1.2144 296.5529)" class="st27" width="1.7" height="2"/>
+                        </g>
+                        <g>
+
+                            <rect x="478.8" y="147.9" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -1.0117 298.006)" class="st20" width="0.5" height="5.4"/>
+                        </g>
+                        <g>
+
+                            <rect x="475.9" y="149.7" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -1.8828 296.4155)" class="st28" width="0.3" height="3"/>
+                        </g>
+                        <g>
+
+                            <rect x="475.6" y="149.9" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -2.0427 296.2896)" class="st21" width="0.3" height="3"/>
+                        </g>
+                        <g>
+
+                            <rect x="475.9" y="149.8" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -1.9421 296.3664)" class="st29" width="0.1" height="3"/>
+                        </g>
+                        <g>
+
+                            <rect x="475.7" y="150" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -2.1021 296.2403)" class="st30" width="0.1" height="3"/>
+                        </g>
+                        <g>
+
+                            <rect x="475.4" y="150.1" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -2.2016 296.1644)" class="st20" width="0.3" height="3"/>
+                        </g>
+                        <g>
+
+                            <rect x="476.7" y="152.4" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -2.411 297.092)" class="st29" width="0.3" height="0.1"/>
+                        </g>
+                        <g>
+
+                            <rect x="476.5" y="152.6" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -2.5698 296.9668)" class="st30" width="0.3" height="0.1"/>
+                        </g>
+                        <g>
+
+                            <rect x="476.2" y="152.8" transform="matrix(0.8239 -0.5667 0.5667 0.8239 -2.7299 296.8409)" class="st31" width="0.3" height="0.1"/>
+                        </g>
+                        <g class="st32">
+                            <polyline class="st3" points="478.5,148 481.7,145.9 482.6,147.2 					"/>
+                        </g>
+                        <g class="st32">
+                            <polyline class="st3" points="479.8,149.9 482.9,147.7 483.9,149.1 					"/>
+                        </g>
+                        <g class="st32">
+                            <polyline class="st3" points="481.7,152.7 483.4,151.6 484.3,152.9 					"/>
+                        </g>
+                        <g class="st32">
+                            <polyline class="st3" points="483.1,154.8 484.8,153.6 485.8,155 					"/>
+                        </g>
+                        <g class="st32">
+                            <polyline class="st3" points="484.5,156.8 486.2,155.7 487.2,157 					"/>
+                        </g>
+                        <g class="st32">
+                            <polyline class="st3" points="486,158.9 487.6,157.7 488.6,159.1 					"/>
+                        </g>
+                        <g class="st32">
+                            <polyline class="st3" points="479.1,154.5 480.5,153.6 481.4,154.9 					"/>
+                        </g>
+                        <g class="st32">
+                            <polyline class="st3" points="480.5,156.6 481.9,155.6 482.9,157 					"/>
+                        </g>
+                        <g class="st32">
+                            <polyline class="st3" points="481.9,158.6 483.3,157.7 484.3,159 					"/>
+                        </g>
+                        <g class="st32">
+                            <polyline class="st3" points="483.3,160.7 484.7,159.7 485.7,161.1 					"/>
+                        </g>
+                    </g>
+                    <g>
+                        <g>
+                            <g>
+
+                                <rect x="460.4" y="137.1" transform="matrix(0.8239 -0.5667 0.5667 0.8239 3.523 285.8871)" class="st27" width="3" height="0.3"/>
+                            </g>
+                            <g>
+
+                                <rect x="460.3" y="137.1" transform="matrix(0.8239 -0.5667 0.5667 0.8239 3.5645 285.8344)" class="st33" width="3" height="0.1"/>
+                            </g>
+                            <g>
+
+                                <rect x="461.5" y="136.6" transform="matrix(0.4195 -0.9077 0.9077 0.4195 144.1214 498.7929)" class="st27" width="1.2" height="0.1"/>
+                            </g>
+                            <g>
+                                <polygon class="st33" points="462.3,136.2 462.3,136.1 461.7,137.2 461.8,137.2 						"/>
+                            </g>
+                            <g>
+
+                                <rect x="462.3" y="136.9" transform="matrix(0.9943 -0.1064 0.1064 0.9943 -11.9501 50.053)" class="st27" width="1.2" height="0.1"/>
+                            </g>
+                            <g>
+                                <polygon class="st33" points="463.5,136.9 463.5,136.8 462.3,137 462.3,137 						"/>
+                            </g>
+                        </g>
+                        <g>
+
+                            <ellipse transform="matrix(0.8239 -0.5667 0.5667 0.8239 4.628 286.7517)" class="st34" cx="463.8" cy="135.9" rx="1.2" ry="1.8"/>
+                        </g>
+                        <g>
+                            <path class="st35" d="M464.8,135.2C464.8,135.2,464.8,135.2,464.8,135.2l-2.1,1.4c0,0,0,0,0,0c-0.6-0.8-0.6-1.8,0-2.2
+						C463.3,134,464.2,134.4,464.8,135.2z"/>
+                        </g>
+                        <g>
+
+                            <ellipse transform="matrix(0.8239 -0.5667 0.5667 0.8239 4.5236 285.9232)" class="st34" cx="462.4" cy="135.7" rx="0.5" ry="0.7"/>
+                        </g>
+                        <g>
+
+                            <ellipse transform="matrix(0.8239 -0.5667 0.5667 0.8239 3.9369 287.1281)" class="st34" cx="464.1" cy="137.2" rx="0.5" ry="0.7"/>
+                        </g>
+                        <g>
+                            <path class="st35" d="M462.8,135.4l-0.8,0.5c-0.2-0.3-0.2-0.7,0-0.8C462.2,135,462.6,135.1,462.8,135.4z"/>
+                        </g>
+                        <g>
+                            <path class="st35" d="M464.4,137C464.5,137,464.5,137,464.4,137l-0.8,0.6c0,0,0,0,0-0.1c-0.2-0.3-0.2-0.7,0-0.9
+						C463.9,136.5,464.2,136.6,464.4,137z"/>
+                        </g>
+                    </g>
+                    <g>
+                        <g>
+                            <g>
+
+                                <rect x="464.3" y="140.2" transform="matrix(0.8239 -0.5667 0.5667 0.8239 2.4241 288.3516)" class="st27" width="2" height="0.2"/>
+                            </g>
+                            <g>
+
+                                <rect x="464.2" y="140.2" transform="matrix(0.8239 -0.5667 0.5667 0.8239 2.4524 288.3157)" class="st33" width="2" height="0.1"/>
+                            </g>
+                            <g>
+
+                                <rect x="465" y="139.8" transform="matrix(0.4195 -0.9077 0.9077 0.4195 143.1785 503.6789)" class="st27" width="0.8" height="0.1"/>
+                            </g>
+                            <g>
+                                <polygon class="st33" points="465.6,139.5 465.5,139.5 465.2,140.2 465.2,140.3 						"/>
+                            </g>
+                            <g>
+
+                                <rect x="465.6" y="140" transform="matrix(0.9943 -0.1064 0.1064 0.9943 -12.2621 50.3977)" class="st27" width="0.8" height="0.1"/>
+                            </g>
+                            <g>
+                                <polygon class="st33" points="466.4,140 466.4,140 465.6,140.1 465.6,140.1 						"/>
+                            </g>
+                        </g>
+                        <g>
+
+                            <ellipse transform="matrix(0.8239 -0.5667 0.5667 0.8239 3.1776 288.9412)" class="st34" cx="466.6" cy="139.4" rx="0.9" ry="1.2"/>
+                        </g>
+                        <g>
+                            <path class="st35" d="M467.3,138.9C467.3,138.9,467.3,138.9,467.3,138.9l-1.4,1c0,0,0,0,0,0c-0.4-0.6-0.4-1.2,0-1.5
+						C466.3,138.1,466.9,138.3,467.3,138.9z"/>
+                        </g>
+                        <g>
+
+                            <ellipse transform="matrix(0.8239 -0.5667 0.5667 0.8239 3.1064 288.3763)" class="st34" cx="465.6" cy="139.2" rx="0.3" ry="0.5"/>
+                        </g>
+                        <g>
+
+                            <ellipse transform="matrix(0.8239 -0.5667 0.5667 0.8239 2.7064 289.1978)" class="st34" cx="466.8" cy="140.2" rx="0.3" ry="0.5"/>
+                        </g>
+                        <g>
+                            <path class="st35" d="M465.9,139l-0.5,0.4c-0.1-0.2-0.1-0.5,0-0.6C465.5,138.7,465.8,138.8,465.9,139z"/>
+                        </g>
+                        <g>
+                            <path class="st35" d="M467,140.1C467,140.1,467.1,140.1,467,140.1l-0.5,0.4c0,0,0,0,0,0c-0.1-0.2-0.2-0.5,0-0.6
+						C466.6,139.7,466.9,139.8,467,140.1z"/>
+                        </g>
+                    </g>
+                    <text transform="matrix(0.5667 0.8239 -0.8239 0.5667 476.1081 125.2433)" class="st18 st36 st37">校园卡充值</text>
+                    <g>
+                        <g>
+                            <path class="st38" d="M477.8,160c0,0,0.1-0.2,0.1-0.3c0-0.1-0.1-0.3-0.2-0.3c0,0-0.3,0-0.3,0.1c0,0.1,0.1,0.3,0.1,0.3
+						C477.5,159.9,477.7,160.2,477.8,160z"/>
+                        </g>
+                        <g>
+                            <path class="st39" d="M477.6,160.1c0,0,0.1,0.1,0.2-0.1c0-0.2,0-0.1,0-0.2c0,0,0-0.1-0.1-0.1c-0.1,0-0.1,0-0.1-0.1
+						c0-0.1-0.1,0-0.2,0c0,0-0.1,0-0.1,0S477.4,159.9,477.6,160.1z"/>
+                        </g>
+                        <g>
+                            <path class="st40" d="M477.6,160.1c0,0,0-0.1-0.1-0.2c0-0.1,0-0.2-0.1-0.2c-0.1,0-0.1-0.1-0.1,0
+						C477.4,159.7,477.5,159.9,477.6,160.1z"/>
+                        </g>
+                        <g>
+                            <path class="st38" d="M477,158.1c0,0,0.5,0,0.7,0.1c0.2,0.1,0.4,0.5,0.4,0.5c0,0.1-0.3,0.5-0.5,0.6c-0.2,0-0.4-0.3-0.5-0.4
+						C477.1,158.8,476.5,158.1,477,158.1z"/>
+                        </g>
+                        <g>
+                            <path class="st39" d="M476.8,158.4c0,0,0-0.3,0.3-0.2c0.3,0.1,0.3,0,0.3,0.1c0.1,0.1,0.1,0.1,0.1,0.3c0,0.2,0,0.1,0,0.3
+						c0.1,0.1,0,0.2-0.1,0.3c-0.1,0.1-0.1,0.2-0.1,0.2S477,158.9,476.8,158.4z"/>
+                        </g>
+                        <g>
+                            <path class="st40" d="M476.8,158.4c0,0,0.2,0.1,0.3,0.2c0.1,0.1,0.3,0.2,0.3,0.3c0,0.1,0,0.2,0,0.2
+						C477.3,159.1,477,158.8,476.8,158.4z"/>
+                        </g>
+                    </g>
+                    <g>
+                        <path class="st3" d="M487.9,145.8c0,0.1,1.4,1.4,1.3,1.4c0-0.1-0.1-0.7-0.1-0.7l0.7,0.9c0,0,0-1.3,1-0.8c1,0.5,0.9,1.7,0.8,2.1
+					c0,0,0.7-0.5,1.1,0.6c0.4,1-0.1,1.1-0.1,1.1s0.6,0.8-0.4,0.7l0.6,1.6L487.9,145.8z"/>
+                    </g>
+                    <g class="st41">
+                        <path class="st3" d="M490.6,147.9c0,0,1,1,1,1c0,0-0.1-0.5-0.1-0.5l0.5,0.7c0,0,0-1,0.7-0.6c0.7,0.4,0.6,1.2,0.6,1.5
+					c0,0,0.5-0.3,0.8,0.4c0.3,0.8-0.1,0.8-0.1,0.8s0.5,0.6-0.3,0.5l0.4,1.2L490.6,147.9z"/>
+                    </g>
+                    <text transform="matrix(-7.635732e-02 0.9971 -0.9971 -7.635732e-02 497.8129 152.9053)" class="st3 st36 st42">¥50</text>
+                </g>
+            </g>
+            <g>
+                <path class="st1" d="M419.9,145.6l1.3-0.9l1.1,1.6l2.6-1.8l1,1.4l-2.6,1.8l0.9,1.3l-1.3,0.9l-0.9-1.3l-1.2,0.9c0,0.1,0,0.2,0,0.3
+			c0,0.6-0.1,1.4-0.2,2.3l-1.7,0l0.4-1.6l-6.3,4.4l-1-1.4l6.2-4.4c-1.4,0.4-2.8,0.7-4.1,0.8c0.2-0.2,0.4-0.5,0.8-0.9
+			c0.4-0.4,0.7-0.7,0.8-0.9c1.5-0.1,3.3-0.4,5.3-1.1L419.9,145.6z M419.7,164.1c-0.4-1.8-0.7-3.4-0.7-5c-1.3-0.3-2.9-1.2-4.9-2.4
+			c0.3-0.5,0.5-1.1,0.7-1.7c1.6,1.3,3.1,2.1,4.4,2.5c0.3-1.2,0.9-2.6,1.8-4l1.3,0.8c-0.7,1.2-1.2,2.3-1.5,3.4c1,0.1,2.2,0,3.7-0.5
+			l0.5,1.6c-1.7,0.5-3.2,0.7-4.5,0.5c-0.1,1.3,0.2,2.8,0.9,4.6c-0.2,0-0.5,0-1,0C420.2,164.1,419.9,164.1,419.7,164.1z M420.3,153
+			c0.2-0.5,0.3-1,0.5-1.5c1.3,0.4,2.8,0.7,4.6,0.9l-0.2,1.6C423.3,153.7,421.7,153.4,420.3,153z M424,149.9l1.3-0.9l2.4,3.4
+			c0.4-0.5,0.9-1.1,1.3-1.7l1.2,1.3l-1.5,1.9l2.3,3.2l-1.3,0.9L424,149.9z M425.5,159.9c0.3-1.6,0.4-3.2,0.5-4.8l1.5,0.3
+			c-0.1,1.1-0.2,2.5-0.4,4.3c0,0.1,0,0.2,0,0.3L425.5,159.9z"/>
+                <path class="st1" d="M424.1,170.8l6.1-4.3l1.1,1.6l-6.1,4.3L424.1,170.8z M427.1,161.3l1.4-1l3.5,4.9l5.1-3.6l1.1,1.6l-1.8,1.3
+			l3.8,5.4l-1.4,1l-3.8-5.4l-1.9,1.3l4.6,6.5l-1.4,1L427.1,161.3z M430.2,176.1c-0.2-2.9-0.5-5.1-0.7-6.7l1.8,0
+			c0.1,0.7,0.3,1.8,0.5,3.3c0.2,1.6,0.3,2.7,0.4,3.4L430.2,176.1z"/>
+                <path class="st1" d="M440.5,172.9l1.4-1l4.1,5.8c0.1-0.1,0.2-0.3,0.4-0.5c0.4-0.5,0.6-0.8,0.7-1l1.3,1.6c-0.2,0.2-0.4,0.5-0.8,1.1
+			c-0.2,0.3-0.4,0.5-0.5,0.6l3.7,5.3l-1.4,1l-4.4-6.3c-2.1-0.4-3.8-0.7-5.2-1.1l4.3,5.8c0.1-0.3,0.2-0.7,0.2-1.3
+			c0.1-0.6,0.2-1,0.2-1.3l1.4,0.4c-0.2,2-0.4,4.1-0.7,6.3l-1.8-0.4l0.3-1.5l-1.4-1.9l-3.4,2.4c-0.6,0.4-0.7,0.9-0.2,1.5l0.5,0.8
+			c0.5,0.7,1,0.8,1.5,0.5c0.7-0.3,1.2-0.6,1.7-0.9c0.1,0.6,0.3,1.2,0.4,1.7c-0.7,0.4-1.4,0.7-2,0.9c-1,0.4-1.9,0-2.7-1.2l-1.1-1.6
+			c-0.9-1.2-0.8-2.2,0.4-3l3.8-2.7l-1.4-1.8c-2.7,2.2-5.7,2-9-0.5c0.1-0.2,0.2-0.6,0.4-1.1c0.1-0.3,0.2-0.5,0.3-0.7
+			c1.6,1.2,2.9,1.9,3.8,1.9c0.9,0.2,2-0.2,3.3-1.1c-0.1-0.2-0.3-0.4-0.4-0.6c-0.7-0.8-1.1-1.3-1.4-1.5l0.9-1.7
+			c0.6,0.4,1.2,0.6,1.8,0.7c1.2,0.4,2.5,0.6,4,0.8L440.5,172.9z"/>
+                <path class="st1" d="M441.2,195l6.8-4.8c-0.8,0.1-1.7,0.1-2.6,0.2c0.2-0.2,0.4-0.4,0.7-0.8c0.4-0.4,0.7-0.7,0.8-0.9
+			c2.7-0.2,5.3-0.7,7.9-1.7l0.7,1.6c-1.3,0.4-2.6,0.8-3.9,1l-9.5,6.7L441.2,195z M453.6,190l1.1-0.8l2.6,3.6l1.1-0.8l1,1.4l-1.1,0.8
+			l2.8,3.9l-1.1,0.8l-2.8-3.9l-1.1,0.8l2.2,3.1l-8,5.7l0.7,1l-1.1,0.8l-6.9-9.8l1.1-0.8l0.8,1.1l8-5.7l2.2,3.1l1.1-0.8L453.6,190z
+			 M446.7,197.7l-0.9,0.7l3.5,4.9l0.9-0.7L446.7,197.7z M448.7,196.3l-1,0.7l3.5,4.9l1-0.7L448.7,196.3z M450.8,194.8l-1,0.7
+			l3.5,4.9l1-0.7L450.8,194.8z M452.8,193.4l-1,0.7l3.5,4.9l1-0.7L452.8,193.4z"/>
+            </g>
+        </a>
+        <a class="item" id="item-4" href="javascript:void(0)" onclick="judge2()" xlink:href=""  xlink:title=" ">
+            <path class="sector" d="M457.7,63.4l-76.9,88C352.5,131,317.7,119,280.1,119V2.5C347.1,2.5,408.7,25.2,457.7,63.4z"/>
+            <g>
+                <path class="st1" d="M326.2,110.8l-0.5-1.6c0.4-0.2,0.6-0.5,0.7-0.9l1.9-5.8L327,102l0.5-1.6l3.1,1l-2.3,6.9
+			c0.6-0.2,1.1-0.4,1.7-0.6c0,0.2-0.1,0.6-0.2,1c0,0.4-0.1,0.7-0.1,0.8c-1.1,0.3-1.9,0.6-2.4,0.8C327,110.4,326.6,110.6,326.2,110.8
+			z M330.6,100c-0.2-0.5-0.4-1.2-0.8-2.2c-0.2-0.5-0.3-0.8-0.4-1.1l1.6-0.4c0.1,0.3,0.3,0.7,0.5,1.2c0.4,1,0.6,1.6,0.8,2L330.6,100z
+			 M333,99.2l0.4-1.1l4.3,1.4l0.4-1.2l1.6,0.5l-0.4,1.2l4.5,1.5l-0.4,1.1l-4.5-1.5l-0.3,0.9l4.1,1.4l-0.4,1.1l-4.1-1.4l-0.3,0.9
+			l4.8,1.6l-0.4,1.1l-11.1-3.7l0.4-1.1l4.7,1.6l0.3-0.9l-4-1.4l0.4-1.1l4,1.4l0.3-0.9L333,99.2z M329.3,112.1l2.6-7.7l9,3L339,113
+			c-0.4,1.3-1.2,1.8-2.6,1.3c-0.7-0.2-1.4-0.5-2.3-0.8c0-0.2,0-0.5,0-1c0-0.2,0-0.4,0-0.5c0.4,0.2,1.1,0.5,2.1,0.8
+			c0.7,0.3,1.1,0.1,1.3-0.5l0.1-0.3l-5.9-2l-0.8,2.5L329.3,112.1z M333.1,106l-0.3,1l5.9,2l0.3-1L333.1,106z M332.4,108l-0.3,1
+			l5.9,2l0.3-1L332.4,108z"/>
+                <path class="st1" d="M341.8,116.3l2.7-8.1c-0.6,0.6-1.2,1.2-1.9,1.8c0-0.2,0.1-0.5,0.1-0.9c0.1-0.6,0.1-1,0.1-1.3
+			c1.7-1.5,3.3-3.6,4.8-6.2l1.4,0.9c-0.6,0.9-1.2,1.8-1.9,2.7l-3.9,11.7L341.8,116.3z M344.6,117.3l4.8-14.4l4.8,1.6l-1.8,5.2
+			l-3.3-1.1l-0.5,1.6l2.8,1l-0.5,1.4l-2.8-1l-0.5,1.6l3,1l-0.5,1.4l-3-1l-1.1,3.1L344.6,117.3z M350.5,104.9l-0.8,2.3l1.9,0.6
+			l0.8-2.3L350.5,104.9z M354.8,120.6c-0.9-1-1.6-1.8-2.1-2.7c-1,0.4-2.3,0.7-3.9,0.9c-0.1-0.4-0.2-1-0.4-1.6
+			c1.7-0.1,2.9-0.3,3.7-0.7c-0.4-1.1-0.5-2.5-0.3-4.2l0.5,0l-0.6-0.2l0.5-1.4l5.4,1.8l-0.4,1.3c-0.9,1.5-1.9,2.6-3,3.3
+			c0.5,0.9,1.1,1.6,2,2.3c-0.1,0.1-0.3,0.3-0.5,0.5C355.2,120.2,355,120.5,354.8,120.6z M353.2,109.9l0.5-1.4l3.1,1.1l0.7-2.2
+			l-3.1-1.1l0.5-1.4l4.6,1.5l-1.7,5L353.2,109.9z M355.6,113.5l-2.3-0.8c-0.1,1.1,0,2.2,0.3,3.1C354.3,115.2,355,114.4,355.6,113.5z
+			"/>
+            </g>
+            <g>
+                <path class="st2" d="M344.3,35.6c-13.7,9.7-16.9,28.7-7.2,42.3s28.7,16.9,42.3,7.2s16.9-28.7,7.2-42.3S357.9,25.9,344.3,35.6z"/>
+                <path class="st43" d="M347.7,46.3l-8.1,24c-0.3,0.8,0.2,1.8,1,2.1l31,10.4c0.9,0.3,1.8-0.2,2.1-1l8.1-24L347.7,46.3z"/>
+                <path class="st3" d="M350.1,47.1l29.4,9.9l-7.8,23.2l-29.4-9.9L350.1,47.1z"/>
+                <path class="st44" d="M381.8,57.7l2.3-7c0.3-0.9-0.2-1.8-1-2.1l-31-10.4c-0.9-0.3-1.8,0.2-2.1,1l-2.3,7L381.8,57.7z"/>
+                <path class="st3" d="M352.1,43c-0.2,0.4,0.1,0.9,0.5,1.1c0.4,0.2,0.9-0.1,1.1-0.5l0,0c0.2-0.4-0.1-0.9-0.5-1.1
+			S352.2,42.6,352.1,43z"/>
+                <path class="st3" d="M354.5,43.8c-0.1,0.4,0.1,0.9,0.5,1.1s0.9-0.1,1.1-0.5c0.1-0.4-0.1-0.9-0.5-1.1S354.7,43.4,354.5,43.8z"/>
+                <path class="st3" d="M356.9,44.6c-0.2,0.4,0.1,0.9,0.5,1.1c0.4,0.2,0.9-0.1,1.1-0.5l0,0c0.2-0.4-0.1-0.9-0.5-1.1
+			C357.6,44,357.1,44.2,356.9,44.6z"/>
+                <path class="st43" d="M372.9,58.6c-0.2,0.6-0.8,0.9-1.4,0.7l-19.6-6.6c-0.6-0.2-0.9-0.8-0.7-1.4l0.1-0.3c0.2-0.6,0.8-0.9,1.4-0.7
+			l19.6,6.6c0.6,0.2,0.9,0.8,0.7,1.4L372.9,58.6z M365,61.2c-0.2,0.6-0.8,0.9-1.4,0.7l-13.3-4.5c-0.6-0.2-0.9-0.8-0.7-1.4l0.1-0.3
+			c0.2-0.6,0.8-0.9,1.4-0.7l13.3,4.5c0.6,0.2,0.9,0.8,0.7,1.4L365,61.2z M366.9,67.1c-0.2,0.6-0.8,0.9-1.4,0.7l-16.8-5.7
+			c-0.6-0.2-0.9-0.8-0.7-1.4l0.1-0.3c0.2-0.6,0.8-0.9,1.4-0.7l16.8,5.7c0.6,0.2,0.9,0.8,0.7,1.4L366.9,67.1z"/>
+            </g>
+        </a>
+    </svg>
+</div>
+<script src="../../js/app/dengjibaifang/dengji.js"></script>
+<script type="text/javascript" charset="utf-8">
+    function  tiaozhuan(){
+        window.location.href = "../dengjibaifang/leave_record.html?openid="+openid;
+    }
+    if ($('.circle_menu_div').length > 0) {
+        var testSize = getSize('circle_menu_div');
+        var circle_menu_div_width = -testSize.width * 5 / 8 + 57;
+        $('.circle_menu_div').css({ 'bottom': circle_menu_div_width + 'px', 'height': testSize.width + 'px' });
+    }
+
+   /*  //底部菜单 加号弹出菜单层
+    $(function () {
+        $('.plus_icon').on('click', function () {
+            if ($(this).children('span').hasClass('rote_roll')) {
+                $('#menu').attr('style', 'transition: transform .3s; -webkit-transition: -webkit-transform .3s; -webkit-transition: transform .3s; transform-origin: 50% 50% 0px; -webkit-transform-origin: 50% 50% 0px; transform: translate3d(0px, 0px, 0px) rotate(-180deg); -webkit-transform: translate3d(0px, 0px, 0px) rotate(-180deg); touch-action: none; -webkit-user-select: none;');
+                $(this).children('span').removeClass("rote_roll");
+                window.setTimeout(function () {
+                    $('.circle_menu_div').hide();
+                }, 500);
+            } else {
+                $('.circle_menu_div').show();
+                $(this).children('span').addClass("rote_roll");
+                window.setTimeout(function () {
+                    $('#menu').attr('style', 'transition: transform .3s; -webkit-transition: -webkit-transform .3s; -webkit-transition: transform .3s; transform-origin: 50% 50% 0px; -webkit-transform-origin: 50% 50% 0px; transform: translate3d(0px, 0px, 0px) rotate(0deg); -webkit-transform: translate3d(0px, 0px, 0px) rotate(0deg); touch-action: none; -webkit-user-select: none;');
+                }, 100);
+            }
+        });
+    }); */
+
+</script>
+<script type="text/javascript" charset="utf-8">
+
+	document.getElementById("nav_home").addEventListener('tap',function(){  
+         jumpPage(0);
+    });  
+		document.getElementById("nav_yoga").addEventListener('tap',function(){  
+         jumpPage(1);
+    });  
+		document.getElementById("nav_class").addEventListener('tap',function(){  
+         jumpPage(2);
+    });  
+		document.getElementById("nav_person").addEventListener('tap',function(){  
+         jumpPage(3);
+    });  
+</script>
+</body>
+</html>

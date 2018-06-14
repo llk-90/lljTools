@@ -1,0 +1,47 @@
+#markimg
+{
+     margin-top: 10%;
+    height: 30%;
+    width: 30%;
+}
+.mainview
+{
+    text-align: center;
+}
+ .title {
+     margin: 20px 15px 10px;
+     color: #6d6d72;
+     font-size: 15px;
+ }
+.mainalert
+{
+    color: black;
+    font-size: 1.5em;
+
+}
+.mainalertview
+{
+    margin-top: 30px;
+}
+.subalertview
+{
+    margin-top: 30px;
+}
+.subalert
+{
+    color: darkgray;
+    font-size: 0.9em;
+}
+.mainactionview
+{
+    margin-top: 30px;
+}
+.mainaction
+{
+    width: 90%;
+   background-color: #1aae18;
+    color: white;
+    border: 0px;
+    height: 40px;
+    font-size: 1.0em;
+}

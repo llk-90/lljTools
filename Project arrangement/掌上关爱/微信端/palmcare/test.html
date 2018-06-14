@@ -1,0 +1,101 @@
+<html>
+<head>
+<script src="http://code.jquery.com/jquery-1.4.1.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+var myArrs = new Array("1","2","3","4");
+var myArrs0 = new Array("5","6","7","8");
+$.each(myArrs,function(i,k){
+var table = document.body.querySelector('#list-view');
+var li = document.createElement('li');	
+table.appendChild(li);
+li.innerHTML = '<a id=a href=attendance_Ranking_List.html?querydate=' + '&openid=' + 0 + '> <i>' +0 + '日</i> <span>' + 1 + '</span></a>';
+$.each(myArrs0, function(i, n){
+	if(i==0){
+    $("<p><b>上午</b>" + myArrs0[0] + "到 ~ "+"</p>").appendTo("#a");
+    table.appendChild(li);
+	}if(i==1){
+     $("p").append(myArrs0[1]+" 离");
+	}if(i==2){
+    $("<p id=b><b>下午</b>"+myArrs0[2]+"到 ~ "+"</p> ").appendTo("#a");
+    table.appendChild(li);
+	}if(i==3){
+		 $("#b").append(myArrs0[3]+ " 离");
+	}
+	
+	});
+});
+});
+function setAlignItems(value){
+	  document.getElementById("main").style.alignItems = value;
+	}
+	
+function getNowFormatDate() {
+    var date = new Date();
+    var seperator1 = "-";
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var strDate = date.getDate();
+    if (month >= 1 && month <= 9) {
+        month = "0" + month;
+    }
+    if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+    }
+    var currentdate = year + seperator1 + month + seperator1 + strDate;
+    return currentdate;
+}
+var date = getNowFormatDate();
+alert(date);
+$("#div").html("vsf");
+</script>
+<style type="text/css">
+div#main{
+  height:300px;
+  border:1px solid black;
+  display:flex;
+}
+
+div#main div{
+  border:1px solid black;
+}
+	
+#div1{
+	height:100px;
+}
+</style>
+<style rel="stylesheet" type="text/css" >
+#top{height:140px;}
+#top ul{text-align:center;list-style-type:none;}
+#top ul li{display:inline;list-style-type:none;}
+</style>
+</head>
+<body>
+<p>This is a paragraph.</p>
+<p>This is another paragraph.</p>
+
+<ul id = "list-view">
+</ul>
+<body>
+
+<div id="main">
+  <div id="div1" style="background-color:coral;">红色</div>
+  <div style="background-color:lightblue;">蓝色</div>  
+  <div style="background-color:lightgreen;">带有更多内容的绿色 div</div>
+</div>
+
+  <p>点击下面的按钮设置align-items的值</p>
+
+<button onclick="setAlignItems('flex-start')">居上： "flex-start"。</button>
+  
+<button onclick="setAlignItems('center')">居中： "center"。</button>
+  
+ <button onclick="setAlignItems('flex-end')">沉底："flex-end"。</button>
+<div id="top">        
+    <ul><li><a href="#">刘雯</a></li>
+    <li><a href="#">章子怡</a></li>
+    <li><a href="#">韩雪</a></li>
+    </ul></div>
+<div id="div"></div>
+</body>
+</html>

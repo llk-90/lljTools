@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <title>成绩查询</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+        <script src="../js/config.js" type="text/javascript" charset="utf-8"></script>
+        <link rel="stylesheet" href="../css/mui.min.css">
+        <link rel="stylesheet" type="text/css" href="../css/video_picture.css" />
+        <link rel="stylesheet" type="text/css" href="../css/icon/dropdown/iconfont.css" />
+        <style type="text/css">
+            html,
+            body,
+            .mui-content {
+                /*height: 100%!important;*/
+                background-color: white;
+            }
+            
+            header li {
+                width: 100%!important;
+            }
+            
+            .self-grades-container {
+                text-align: center;
+                border-radius: 12px;
+                overflow: hidden;
+                margin: 2px;
+            }
+            
+            .self-grades-block {
+                background-color: white;
+                height: 70px;
+                line-height: 70px;
+            }
+            
+            .self-grades-block:hover {
+                background-color: rgba(255, 255, 255, 0.2);
+                color: white;
+            }
+            
+            .self-proj-name,
+            .self-grades-block {
+                width: 100%;
+                text-align: center;
+                font-size: 25px;
+            }
+            
+            .self-proj-name {
+                height: 30px;
+                line-height: 30px;
+                color: white;
+            }
+            
+            .mui-pull-leftpoint {
+                float: left;
+            }
+        </style>
+        <script src="../js/mui.min.js"></script>
+        <script src="../js/loginValidate.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../js/template.js" type="text/javascript" charset="utf-8"></script>
+        <script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+        <script id="data-temp" type="text/html">
+            {{if chinese != undefined}}
+            <div class="mui-col-xs-4 mui-col-sm-3 mui-pull-left" data-href="grades.html?subject=chinese">
+                <div class="self-grades-container" style="background-color: dodgerblue;border: 1px solid dodgerblue;">
+                    <div class="self-grades-block">
+                        {{chinese}}
+                    </div>
+                    <div class="self-proj-name">
+                        语文
+                    </div>
+                </div>
+            </div>
+            {{/if}} {{if maths != undefined}}
+            <div class="mui-col-xs-4 mui-col-sm-3 mui-pull-left" data-href="grades.html?subject=maths">
+                <div class="self-grades-container" style="background-color: darksalmon;border: 1px solid darksalmon;">
+                    <div class="self-grades-block">
+                        {{maths}}
+                    </div>
+                    <div class="self-proj-name">
+                        数学
+                    </div>
+                </div>
+            </div>
+            {{/if}} {{if english != undefined}}
+            <div class="mui-col-xs-4 mui-col-sm-3 mui-pull-left" data-href="grades.html?subject=english">
+                <div class="self-grades-container" style="background-color: #F6B446;border: 1px solid #F6B446;">
+                    <div class="self-grades-block">
+                        {{english}}
+                    </div>
+                    <div class="self-proj-name">
+                        外语
+                    </div>
+                </div>
+            </div>
+            {{/if}} {{if hysics != undefined}}
+            <div class="mui-col-xs-4 mui-col-sm-3 mui-pull-left" data-href="grades.html?subject=hysics">
+                <div class="self-grades-container" style="background-color: forestgreen;border: 1px solid forestgreen;">
+                    <div class="self-grades-block">
+                        {{hysics}}
+                    </div>
+                    <div class="self-proj-name">
+                        物理
+                    </div>
+                </div>
+            </div>
+            {{/if}} {{if biology != undefined}}
+            <div class="mui-col-xs-4 mui-col-sm-3 mui-pull-left" data-href="grades.html?subject=biology">
+                <div class="self-grades-container" style="background-color: mediumpurple;border: 1px solid mediumpurple;">
+                    <div class="self-grades-block">
+                        {{biology}}
+                    </div>
+                    <div class="self-proj-name">
+                        生物
+                    </div>
+                </div>
+            </div>
+            {{/if}} {{if chemistry != undefined}}
+            <div class="mui-col-xs-4 mui-col-sm-3 mui-pull-left" data-href="grades.html?subject=chemistry">
+                <div class="self-grades-container" style="background-color: cadetblue;border: 1px solid cadetblue;">
+                    <div class="self-grades-block">
+                        {{chemistry}}
+                    </div>
+                    <div class="self-proj-name">
+                        化学
+                    </div>
+                </div>
+            </div>
+            {{/if}} {{if geography != undefined}}
+            <div class="mui-col-xs-4 mui-col-sm-3 mui-pull-left" data-href="grades.html?subject=geography">
+                <div class="self-grades-container" style="background-color: #F7D63D;border: 1px solid #F7D63D;">
+                    <div class="self-grades-block">
+                        {{geography}}
+                    </div>
+                    <div class="self-proj-name">
+                        地理
+                    </div>
+                </div>
+            </div>
+            {{/if}} {{if historys != undefined}}
+            <div class="mui-col-xs-4 mui-col-sm-3 mui-pull-left" data-href="grades.html?subject=historys">
+                <div class="self-grades-container" style="background-color: #FB7B3A;border: 1px solid #FB7B3A;">
+                    <div class="self-grades-block">
+                        {{historys}}
+                    </div>
+                    <div class="self-proj-name">
+                        历史
+                    </div>
+                </div>
+            </div>
+            {{/if}} {{if politics != undefined}}
+            <div class="mui-col-xs-4 mui-col-sm-3 mui-pull-left" data-href="grades.html?subject=politics">
+                <div class="self-grades-container" style="background-color: #F96B6A;border: 1px solid #F96B6A;">
+                    <div class="self-grades-block">
+                        {{politics}}
+                    </div>
+                    <div class="self-proj-name">
+                        政治
+                    </div>
+                </div>
+            </div>
+            {{/if}} {{if art != undefined}}
+            <div class="mui-col-xs-4 mui-col-sm-3 mui-pull-left" data-href="grades.html?subject=art">
+                <div class="self-grades-container" style="background-color: #1527EA;border: 1px solid #1527EA;">
+                    <div class="self-grades-block">
+                        {{art}}
+                    </div>
+                    <div class="self-proj-name">
+                        美术
+                    </div>
+                </div>
+            </div>
+            {{/if}} {{if music != undefined}}
+            <div class="mui-col-xs-4 mui-col-sm-3 mui-pull-left" data-href="grades.html?subject=music">
+                <div class="self-grades-container" style="background-color: #0AE515;border: 1px solid #0AE515;">
+                    <div class="self-grades-block">
+                        {{music}}
+                    </div>
+                    <div class="self-proj-name">
+                        音乐
+                    </div>
+                </div>
+            </div>
+            {{/if}} {{if sport != undefined}}
+            <div class="mui-col-xs-4 mui-col-sm-3 mui-pull-left" data-href="grades.html?subject=sport">
+                <div class="self-grades-container" style="background-color: #E50A5A;border: 1px solid #E50A5A;">
+                    <div class="self-grades-block">
+                        {{sport}}
+                    </div>
+                    <div class="self-proj-name">
+                        体育
+                    </div>
+                </div>
+            </div>
+            {{/if}} {{if moral != undefined}}
+            <div class="mui-col-xs-4 mui-col-sm-3 mui-pull-left" data-href="grades.html?subject=moral">
+                <div class="self-grades-container" style="background-color: #E5830A;border: 1px solid #E5830A;">
+                    <div class="self-grades-block">
+                        {{moral}}
+                    </div>
+                    <div class="self-proj-name">
+                        德育考核
+                    </div>
+                </div>
+            </div>
+            {{/if}} {{if labor != undefined}}
+            <div class="mui-col-xs-4 mui-col-sm-3 mui-pull-left" data-href="grades.html?subject=labor">
+                <div class="self-grades-container" style="background-color: #0AE5D8;border: 1px solid #0AE5D8;">
+                    <div class="self-grades-block">
+                        {{labor}}
+                    </div>
+                    <div class="self-proj-name">
+                        劳动技术
+                    </div>
+                </div>
+            </div>
+            {{/if}} {{if computer != undefined}}
+            <div class="mui-col-xs-4 mui-col-sm-3 mui-pull-left" data-href="grades.html?subject=computer">
+                <div class="self-grades-container" style="background-color: #F96B6A;border: 1px solid #F96B6A;">
+                    <div class="self-grades-block">
+                        {{computer}}
+                    </div>
+                    <div class="self-proj-name">
+                        计算机
+                    </div>
+                </div>
+            </div>
+            {{/if}} {{if phytest != undefined}}
+            <div class="mui-col-xs-4 mui-col-sm-3 mui-pull-left" data-href="grades.html?subject=phytest">
+                <div class="self-grades-container" style="background-color: #62A7A5;border: 1px solid #62A7A5;">
+                    <div class="self-grades-block">
+                        {{phytest}}
+                    </div>
+                    <div class="self-proj-name">
+                        物理实验
+                    </div>
+                </div>
+            </div>
+            {{/if}} {{if chetest != undefined}}
+            <div class="mui-col-xs-4 mui-col-sm-3 mui-pull-left" data-href="grades.html?subject=chetest">
+                <div class="self-grades-container" style="background-color: #5A4898;border: 1px solid #5A4898;">
+                    <div class="self-grades-block">
+                        {{chetest}}
+                    </div>
+                    <div class="self-proj-name">
+                        化学实验
+                    </div>
+                </div>
+            </div>
+            {{/if}} {{if biotest != undefined}}
+            <div class="mui-col-xs-4 mui-col-sm-3 mui-pull-left" data-href="grades.html?subject=biotest">
+                <div class="self-grades-container" style="background-color: #E05FE0;border: 1px solid #E05FE0;">
+                    <div class="self-grades-block">
+                        {{biotest}}
+                    </div>
+                    <div class="self-proj-name">
+                        生物实验
+                    </div>
+                </div>
+            </div>
+            {{/if}}
+            <div class="mui-col-xs-4 mui-col-sm-3 mui-pull-leftpoint">
+                <div class="self-grades-container" style="background-color: gainsboro;border: 1px solid gainsboro;">
+                    <div class="self-grades-block">
+                        {{totals}}
+                    </div>
+                    <div class="self-proj-name">
+                        总分
+                    </div>
+                </div>
+            </div>
+
+        </script>
+    </head>
+
+    <body>
+        <header class="mui-bar mui-bar-nav">
+            <ul>
+                <li class="self-select" data-checked="false">
+                    <div>
+                        <span id="testpi">                       	
+                        </span>
+                        <span class="mui-icon mui-icon-arrowdown"></span>
+                    </div>
+                    <ul class="insert-pointer-pici" id="selectpici">
+
+                    </ul>
+                </li>
+            </ul>
+        </header>
+        <div class="mui-content">
+            <div class="insert-pointer">
+                <div class="mui-col-xs-4 mui-col-sm-3 mui-pull-leftpoint" id="sort1" style="display: none;">
+                    <div class="self-grades-container" style="background-color: gainsboro;border: 1px solid gainsboro;">
+                        <div id="sort" class="self-grades-block">
+
+                        </div>
+                        <div class="self-proj-name">
+                            排行
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!--<input type="hidden" id="pici" value="" />-->
+    </body>
+
+    <script type="text/javascript">
+        mui.init({});
+        var params = {
+            pici: ''
+        };
+        /* var tablepici = $(".insert-pointer-pici");*/
+        mui.ready(function() {
+            mui.ajax("/gradesList/selectbox.webapp", {
+                data: {
+
+                },
+                dataType: 'json', //服务器返回json格式数据
+                type: 'post', //HTTP请求类型
+                timeout: 10000, //超时时间设置为10秒；
+                success: function(data) {
+                    var pici = '';
+                    mui.each(data, function(i, item) {
+                        pici += '<li>' +
+                            '<a  data-id="' + item.batch + '">' + item.batch + '</a>' +
+                            '</li>'
+                    });
+                    document.getElementById("selectpici").innerHTML = pici;
+
+                },
+
+                error: function(xhr, type, errorThrown) {
+
+                }
+            });
+            getdate();
+
+        });
+
+        function getdate() {
+            var table = document.body.querySelector('.insert-pointer');
+            var sort1 = document.getElementById("sort1");
+            mui.ajax("/gradesList/detailst.webapp", {
+                data: {
+                    pici: params.pici
+                },
+                dataType: 'json', //服务器返回json格式数据
+                type: 'post', //HTTP请求类型
+                timeout: 10000, //超时时间设置为10秒；
+                success: function(data) {
+                    if(data.faile == 'undefined') {
+                        mui.toast("该生没有考试成绩");
+                    } else {
+                        sort1.style.display = "block";
+                        var sort = data.sort;
+                        document.getElementById("sort").innerText = sort;
+                        mui.each(data.list, function(i, item) {
+                            var html = template("data-temp", item);
+                            var li = document.createElement('div');
+                            li.innerHTML = html;
+                            table.insertBefore(li, table.firstChild);
+                            document.getElementById("testpi").innerHTML = item.rc_batch;
+                        });
+                    }
+                },
+                error: function(xhr, type, errorThrown) {
+
+                }
+            });
+        }
+        mui(".insert-pointer-pici").on("tap", "a", function() {
+            var table = document.body.querySelector('.insert-pointer').firstChild;
+            /*var testpi = document.getElementById("testpi")*/
+            table.innerHTML = "";
+            var pici = this.getAttribute('data-id');
+            /*document.getElementById("pici").value = grade; */
+            params.pici = pici;
+            document.getElementById("testpi").innerText = params.pici;
+            getdate();
+        });
+
+        mui(".insert-pointer").on("tap", ".mui-pull-left", function() {
+            var stuNum = this.getAttribute("data-href");
+            window.location.assign(encodeURI(stuNum));
+            location.href = id;
+        });
+
+        var selfSelect = $(".self-select");
+        $("header").on("tap", ".self-select", function() {
+            var self = $(this);
+            var checked = this.getAttribute("data-checked");
+            if(checked == "true") {
+                console.log("true");
+                selfSelect.removeClass("lihover");
+                selfSelect.attr("data-checked", false);
+                var $icon = self.find(".mui-icon");
+                $icon.removeClass("mui-icon-arrowup");
+                $icon.addClass("mui-icon-arrowdown");
+            } else {
+                console.log("false");
+                selfSelect.removeClass("lihover");
+                $(this).addClass("lihover");
+                selfSelect.attr("data-checked", false);
+                this.setAttribute("data-checked", true);
+
+                var $iconOther = selfSelect.find(".mui-icon");
+                $iconOther.removeClass("mui-icon-arrowup");
+                $iconOther.addClass("mui-icon-arrowdown");
+
+                var $icon = self.find(".mui-icon");
+                $icon.removeClass("mui-icon-arrowdown");
+                $icon.addClass("mui-icon-arrowup");
+            }
+        });
+    </script>
+
+</html>

@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>绑定切换</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="../../css/mui.min.css">
+    <link rel="stylesheet" href="../../css/app/zhangzongbao/iBody.bind.css">
+    <script src="../../js/app/common/cvi_busy_lib.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <script src="../../js/mui.min.js"></script>
+    <!--浮动按钮-->
+    <link rel="stylesheet" href="../../css/app/common/SuspendedBall.css">
+    <script src="../../js/mui.min.js"></script>
+    <script src="../../js/iBaby2.jquery-2.1.0.min.js"></script>
+    <script src="../../js/app/common/PublicJs.js"></script>
+    <script src="../../js/app/common/SuspendedBall.js"></script>
+    <script src="../../js/app/common/Common.js"></script>
+</head>
+<body>
+<div id="top">
+<div class="top" style="z-index: 999">
+    <div class="icon" style="">
+        <img id="iconInfos" src="../../img/zhangzongbao/student.png"style="width: 100%" >
+    </div>
+    <div class="text" style="color: #8B8B8B;font-family: 'Adobe Fan Heiti Std B'">
+        头像设置
+    </div>
+
+    <div class="replace"><img src="../../img/zhangzongbao/more_unfold.png"style="width: 50%" onclick="showImage('i')"></div>
+</div >
+</div>
+<!--表单-->
+<form class="mui-group" style="background-color: transparent;color: #8B8B8B" onclick="showImage('f')">
+    <div class="content" style="margin-top: 3%;width:90%">
+        <div class="mui-card" style="width: 100%;border: 0px;box-shadow: none">
+            <!--孩子姓名-->
+            <div class="from-child" style="border-bottom: 1px solid #EEE">
+                <div class="icon" style="margin-top: 6.2%"><img src="../../img/zhangzongbao/person.png" style="width: 50%"></div>
+                <div  style="width: 30%;height: 4rem;display: flex;flex-direction: column;justify-content: space-around;">
+                    <label class="from-child-label">宝贝姓名</label>
+                </div>
+                <div id="name" class="from-child-child">
+                    <input type="text" id="childname" style="width: 100%;text-align: center;border: none">
+                </div>
+            </div>
+            <!--设备编号-->
+            <div class="from-child" style="border-bottom: 1px solid #EEE">
+                <div class="icon" style="margin-top: 6.24%"><img src="../../img/zhangzongbao/编号.png" style="width: 50%"></div>
+                <div style="width: 30%;height: 4rem;display: flex;flex-direction: column;justify-content: space-around;">
+                    <label class="from-child-label">设备编号</label>
+                </div>
+                <div id="number" class="from-child-child">
+                    <input type="text" id="imei" style="width: 100%;text-align: center;border: none">
+                </div>
+            </div>
+            <!--密码-->
+            <div class="from-child" style="border-bottom: 1px solid #EEE">
+                <div class="icon" style="margin-top: 6.2%"><img src="../../img/zhangzongbao/密码.png" style="width: 50%"></div>
+                <div style="width: 30%;height: 4rem;display: flex;flex-direction: column;justify-content: space-around;">
+                    <label class="from-child-label">输入密码</label>
+                </div>
+                <div id="word" class="from-child-child">
+                    <input type="text" id="devpassword" style="width: 100%;text-align: center;border: none">
+                </div>
+            </div>
+
+            <!--联系电话-->
+            <div class="from-child" style="border-bottom: 1px solid #EEE">
+                <div class="icon" style="margin-top: 6.2%"><img src="../../img/zhangzongbao/手机.png" style="width: 50%"></div>
+                <div style="width: 30%;height: 4rem;display: flex;flex-direction: column;justify-content: space-around;">
+                    <label class="from-child-label">手机号码</label>
+                </div>
+                <div id="phone" class="from-child-child">
+                    <input type="text" id="telnum" style="width: 100%;text-align: center;border: none">
+                </div>
+            </div>
+            <!--性别-->
+            <div class="from-child" style="border-bottom: 1px solid #EEE">
+                <div class="icon" style="margin-top:6.2%"><img src="../../img/zhangzongbao/sex48.png" style="width: 50%"></div>
+                <div style="width: 30%;height: 4rem;display: flex;flex-direction: column;justify-content: space-around;">
+                    <label class="from-child-label">性别</label>
+                </div>
+                <div style="width: 60%;height: 4rem;display: flex;flex-direction:row;justify-content: space-around;">
+                <div id="boy" style="display:flex;align-items: center;">
+                    男&nbsp
+                    <input name="checksex" id="sex1" value="男" type="radio" checked onclick="checkBoxClick('sex','0')">
+                </div>
+                <div id="girl" style="display:flex;align-items: center;">
+                    女&nbsp
+                    <input name="checksex" id="sex2" value="女" type="radio"  onclick="checkBoxClick('sex','1')">
+                </div>
+                </div>
+            </div>
+            <!--卡型-->
+            <div class="from-child" style="border-bottom: 1px solid #EEE">
+                <div class="icon" style="margin-top: 6.2%"><img src="../../img/zhangzongbao/卡.png" style="width: 50%;"></div>
+                <div style="width: 30%;height: 4rem;display: flex;flex-direction: column;justify-content: space-around;">
+                    <label class="from-child-label">IC类型</label>
+                </div>
+                <div style="width: 60%;height: 4rem;display: flex;flex-direction:row;justify-content: space-around;">
+                    <div style="display:flex;align-items: center;">
+                        2.4G&nbsp
+                        <input name="checkcard" id="gender1" value=" 2.4G" type="radio" checked onclick="checkBoxClick('type','0')">
+                    </div>
+                    <div style="display:flex;align-items: center;">
+                        13.65&nbsp
+                        <input name="checkcard" id="gender2" value="13.65" type="radio" onclick="checkBoxClick('type','1')">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+<button id="keepadd" type="button" class="mui-btn mui-btn-block" style="position:absolute;width: 90%;;background-color:#52be66;color: white;left: 5%;top: 90%">确定保存</button>
+
+</body>
+<script type="text/javascript">
+    //mui.toast("请绑定设备")
+    var htmlHead = "<div class='track-data-list'><a href='javascript:void(0)' style='font-weight: normal;' class='pos-lay tag-data'>";
+    var htmlContent1 ="<span onclick=updateCurr('";
+    var htmlContent2 ="')>";
+    var htmlContent3 ="</span>";
+    var htmlCheck = "<i class='icon-ok '></i>";
+    var htmlBottom = "</a></div>";
+    var sex = "0";
+    var cardtype = "0";
+    var flag = true;
+    var openid = "sgdfhgdfjvbsdjklfgkbvlfjzkvdfgh"
+    var dataA;
+    	/* '../../img/zhangzongbao/student.png' */
+    function showImage(q) {
+        var div = "<div id='buttomImage' class='top' style='z-index: 999;margin-top: 0px;background-color: gainsboro'>" +
+                "<div class='icon' style='width: 15%;margin-left: 0px'>" +
+                "<img id='img1' src='../../../images/img/zhangzongbao/student.png' style='width: 60%;margin-left:20%' onclick='updateImage(1)'>" +
+                "</div>" +
+                "<div class='icon' style='width: 15%;margin-left: 0px'>" +
+                "<img id='img2' src='../../../images/img/zhangzongbao/food.png' style='width: 60%;margin-left:20%' onclick='updateImage(2)'>" +
+                "</div>" +
+                "<div class='icon' style='width: 15%;margin-left: 0px'>" +
+                "<img id='img3' src='../../../images/img/zhangzongbao/user.jpg'style='width: 60%;margin-left:20%' onclick='updateImage(3)'>" +
+                "</div>" +
+                "<div class='icon' style='width: 15%;margin-left: 0px'>" +
+                "<img id='img4' src='../../../images/img/zhangzongbao/food.png'style='width: 60%;margin-left:20%'onclick='updateImage(4)'>" +
+                "</div>" +
+                "</div>";
+        if (q == 'i') {
+            if (flag) {
+                $("#top").append(div)
+                flag = false
+            }
+            else {
+                $("#buttomImage").remove()
+                flag = true
+            }
+        }
+        else if(q == 'f'){
+            $("#buttomImage").remove()
+            flag = true
+        }
+    }
+
+    function  updateImage(i){
+        $("#iconInfos").attr("src",$("#img"+i).attr("src"))
+        var a =  $("#img"+i).attr("src");
+        //document.getElementById("iconInfos").value = b;
+        getImgInfo(a)
+    }
+
+    function ons(){
+        var reg=/^1[3|4|5|7|8][0-9]\d{4,8}$/;
+        var mobile = $("#phoneNum").val();
+        if(mobile==null || mobile=="" || !reg.exec(mobile))
+        {
+            connect()
+        }
+        else
+        {
+            mui.toast("发送");
+        }
+    }
+    //弹框
+    function connect() {
+        //var info = document.getElementById("info");
+        var btnArray = ['是', '否'];
+        mui.confirm('请填写正确格式的手机号码', '提交失败', btnArray, function(e) {
+            if (e.index == 0) {
+                // 点击联系客服弹出框上的“是”按钮';
+            } else {
+                //点击联系客服弹出框上的“否”按钮'
+                cancle();
+            }
+        });
+    };
+    mui.init(list());
+   //页面初始化
+    function list() {
+        var openid = GetQueryString('openid');
+        var stuid = GetQueryString('stuid');
+        var d = {
+            openid : openid
+        };
+        setTimeout(function() {
+            var xval=getBusyOverlay('viewport',{color:'white', opacity:0.75, text:'加载中', style:'text-shadow: 0 0 3px black;font-weight:bold;font-size:16px;color:white'},{color:'#59bf6b', size:70, type:'o'});
+            var table = document.body.querySelector('.insert-pointer');
+            mui.ajax(baseURL+"/addchildInfo/list.webapp", {
+                data: d,
+                dataType: 'json', //服务器返回json格式数据
+                type: 'post', //HTTP请求类型
+                timeout: 10000, //超时时间设置为10秒；
+                async:false,
+                beforeSend:function(){
+                    if(xval) {
+                        xval.settext("加载中，请稍后......");
+                    }
+                },
+                success: function(data) {
+                    console.log(data.list[0]);
+                    var length  =data.list.length;
+                   if(length>0){
+                    configPage(data)
+                    $("#childname").attr("readonly","readonly");
+                    xval.remove();
+                    var childname = document.getElementById("childname").value;
+                    var devpassword = document.getElementById("devpassword").value;
+                    var imei = document.getElementById("imei").value;
+                    var telnum = document.getElementById("telnum").value;
+                    dataA = new Array(childname,devpassword,imei,telnum);
+                    dossa(dataA);
+                   }else{
+                	   xval.remove();
+                	   dataA = new Array();
+                	   dossa(dataA);
+                   }
+                   
+                },
+                error: function(xhr, type, errorThrown) {
+                }
+            });
+        }, 100);
+        var a = "../../img/zhangzongbao/student.png"
+        getImgInfo(a);
+    }
+    //设置图片的value
+    function getImgInfo(a){
+        document.getElementById("iconInfos").value=a;
+    }
+
+     //添加绑定
+    function addChild1() {
+        var openid = GetQueryString('openid');
+        var childname = document.getElementById("childname").value;
+//        var devaccount = document.getElementById("devaccount").value;
+        var devpassword = document.getElementById("devpassword").value;
+        var imei = document.getElementById("imei").value;
+        var telnum = document.getElementById("telnum").value;
+//        var icnum = document.getElementById("icnum").value;
+//        var iccard = document.getElementById("iccard").value;
+        var url = document.getElementById("iconInfos").value;
+       // mask.show();
+       // var xval=getBusyOverlay('viewport',{color:'white', opacity:0.75, text:'加载中', style:'text-shadow: 0 0 3px black;font-weight:bold;font-size:16px;color:white'},{color:'#59bf6b', size:70, type:'o'});
+        mui.ajax(baseURL+"/addchildInfo/addChild.webapp", {
+            data: {
+                openid : openid,
+                imgSrc : url,
+                child_name: childname,
+                sex: sex,
+                equPassword: devpassword,
+                phoneNum: telnum,
+                imeiCode: imei,
+                icCodeType: cardtype,
+            },
+            dataType: 'json', //服务器返回json格式数据
+            type: 'post', //HTTP请求类型
+            timeout: 10000, //超时时间设置为10秒；
+            async:false,
+       /*      beforeSend:function(){
+                if(xval) {
+                    xval.settext("加载中，请稍后......");
+                }
+            }, */
+            success: function(data) {
+                //xval.remove();
+                if(data.result == "success"){
+                    //mask.close();
+                    mui.toast("添加成功");
+                    var url = "Palm_treasure.html?openid="
+                            + openid + "&stuid=" +data.stuId;
+                    setTimeout("window.location.href= '" + url + "'",
+                            100)
+                } else if (data.result == "repeat"){
+                    mui.toast("您输入的宝贝名称已绑定，请重新输入");
+                } else {
+                    mui.toast("您输入的宝贝不存在，请输入正确姓名");
+                }
+            },
+            error: function(xhr, type, errorThrown) {
+                mui.toast("添加失败");
+            }
+        });
+    }
+     
+  //修改绑定信息
+    function updateChild1() {
+        var openid = GetQueryString('openid');
+        var childname = document.getElementById("childname").value;
+        var devpassword = document.getElementById("devpassword").value;
+        var imei = document.getElementById("imei").value;
+        var telnum = document.getElementById("telnum").value;
+        var url = document.getElementById("iconInfos").value;
+        mui.ajax(baseURL+"/addchildInfo/updateChild.webapp", {
+            data: {
+                openid : openid,
+                imgSrc : url,
+                child_name: childname,
+                sex: sex,
+                equPassword: devpassword,
+                phoneNum: telnum,
+                imeiCode: imei,
+                icCodeType: cardtype,
+            },
+            dataType: 'json', //服务器返回json格式数据
+            type: 'post', //HTTP请求类型
+            timeout: 10000, //超时时间设置为10秒；
+            async:false,
+     
+            success: function(data) {
+                if(data.result == "success"){
+                	 window.location.href= "Palm_treasure.html?openid=" + openid;
+                }else {
+                	list();
+                }
+            },
+            error: function(xhr, type, errorThrown) {
+                mui.toast("添加失败");
+            }
+        });
+    }
+    //点击确认按钮
+    function dossa(dataA) {
+        /* wx.config({
+         debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+         appId: appid, // 必填，公众号的唯一标识
+         timestamp: timestamp, // 必填，生成签名的时间戳
+         nonceStr: nonceStr, // 必填，生成签名的随机串
+         signature: signature, // 必填，签名，见附录1
+         jsApiList: [
+         'childname',
+         ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+         }); */
+
+        var sub = document.getElementById("keepadd");
+        mui.ready(function() {
+            sub.addEventListener("click", function() {
+                var childname = document.getElementById("childname").value;
+                var devpassword = document.getElementById("devpassword").value;
+                var imei = document.getElementById("imei").value;
+                var telnum = document.getElementById("telnum").value;
+                if(dataA.length>0 &&dataA.length<=4){
+                	updateChild1();
+                }else{
+                if(childname == null || childname == ''){
+                    mui.toast("宝贝姓名不能为空");
+                    return false;
+                }
+                if(devpassword == null || devpassword == ''){
+                    mui.toast("设备密码不能为空");
+                    return false;
+                }
+                if(imei == null || imei == ''){
+                    mui.toast("设备号不能为空");
+                    return false;
+                }
+                if(telnum == null || telnum == ''){
+                    mui.toast("手机号码不能为空");
+                    return false;
+                }
+                /* 		if(icnum == null || icnum == ''){
+                 alert("IC卡号不能为空");
+                 return false;
+                 } */
+                addChild1();
+                }
+
+            });
+        });
+    }
+    function checkBoxClick(type,value){
+        switch(type){
+            case 'sex'://切换性别
+            {
+                sex = value;
+            }
+                break;
+            case 'type'://切换IC卡类型
+            {
+                cardtype = value;
+            }
+                break;
+
+        }
+
+    }
+    
+    //初始化页面
+    function configPage(data) {
+        //初始化头像信息
+        $("#iconInfos").attr("src",data.list[0].ibaby_s_img);
+        //$("#iconInfos").attr("value",data.babyIcon);
+        //设置宝贝姓名
+        $("#childname").attr("value",data.list[0].ibaby_s_name);
+        //设置账户
+        $("#imei").attr("value",data.list[0].ibaby_imei_code);
+        //设置密码
+        $("#devpassword").attr("value",data.list[0].ibaby_equ_password);
+        //设置电话号码
+        $("#telnum").attr("value",data.list[0].ibaby_phone_num);
+        //设置性别
+        switch (data.list[0].ibaby_s_sex)
+        {
+            case '0'://当为男时
+                {
+                    $("#sex1").attr("checked","checked");
+                    $("#sex2").attr("checked",false);
+                }
+                break;
+            case '1'://当为女时
+            {
+                    $("#sex2").attr("checked","checked");
+                    $("#sex1").attr("checked",false);
+            }
+                break;
+        }
+        //设置IC卡类型
+        switch (data.list[0].ibaby_ic_code_type)
+        {
+            case '0'://当为2.4G
+            {
+                $("#gender1").attr("checked","checked");
+                $("#gender2").attr("checked",false);
+            }
+                break;
+            case '1'://13.56
+            {
+                $("#gender2").attr("checked","checked");
+                $("#gender1").attr("checked",false);
+            }
+                break;
+        }
+    }
+    
+    
+</script>
+<script>
+    $(function () {
+        SuspendedBall.Add();//添加悬浮球
+        // SuspendedBall.BoxHtml("<ul class=\"SMenu\">" + $("#MenuInfo").html() + "</ul>");//添加菜单框的内容当然，具体的样式和里面的内容需要自己去写
+        SuspendedBall.Move();//这个就是让悬浮球动起来的方法。为啥单独写个不写到add方法里面呢？因为你可以在页面中直接写入悬浮球的两个div。这个方法里面可以添加一个参数，这个参数是个function。当鼠标抬起的时候会调用到这个方法。
+    });
+</script>
+</html>

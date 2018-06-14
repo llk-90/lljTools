@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>选择服务</title>
+</head>
+<script type="text/javascript">
+    var urls={pay:"../pay/iBaby.Shop.html?",
+        bangding:"iBaby.bind.html?"
+    }
+    function GetQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r != null) return unescape(r[2]);
+        return null;
+    }
+    function jumpToPage(temp) {
+       var openid = GetQueryString('openid');
+        if (temp=='pay')
+        {
+            window.location.href= urls.pay;
+        }
+        else
+        {
+            window.location.href= urls.bangding + "openid=" + openid;
+        }
+    }
+</script>
+<body style="margin: 0px;background-color: #f9f9f9">
+<div style="text-align: center;background-color: #96d1ba">
+    <label style="color: white;font-size: 4em">选择服务</label>
+</div>
+<button id="buy" type="button" style="background-color:#96d1ba;width: 40%;height:300px;margin-left: 30%;margin-top: 400px;border-width: 0px;font-size: 3em;color: white" value="未购买设备，去购买" onclick="jumpToPage('pay')">未购买设备<br>去购买</button>
+<button id="bing" type="button" style="background-color:#96d1ba;width: 40%;height:300px;margin-left: 30%;margin-top: 200px;border-width: 0px;font-size: 3em;color: white" value="已购买设备，去绑定"onclick="jumpToPage('bing')">已购买设备<br>去绑定</button>
+</body>
+</html>

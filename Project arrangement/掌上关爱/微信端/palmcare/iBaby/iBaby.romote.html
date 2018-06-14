@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta http-equiv="cache-control" content="private">
+    <meta http-equiv="expires" content="0">
+    <title>远程遥控</title>
+    <link rel="stylesheet" href="../iBaby/css/iBabyindex.css">
+    <script src="js/iBaby.location/mui.min.js"></script>
+    <script src="js/iBady.Common.js"></script>
+    <script src="js/iBaby2.jquery-2.1.0.min.js"></script>
+    <style type="text/css">
+        #bangding{
+            color:white;
+            font-size:15px;
+            float: right;
+            color: yellow;
+        }
+        #usename{
+            color:white;
+            font-size:22px;
+            margin-right:30px;
+        }
+        #img_haoma {
+            padding-right: 10px;
+        }
+
+
+    </style>
+</head>
+
+<script type="text/javascript">
+    //点击事件相应
+    function romoteClick(type) {
+        switch (type)
+        {
+            case 'xiumian':
+            {
+                alert("即将开启远程休眠");
+                
+                postNetworkRequest("1");
+
+            }
+                break;
+            case 'jiantinga':
+            {
+                alert("即将开启家长1监听");
+
+                postNetworkRequest("2");               
+            }
+                break;
+            case 'jiantingb':
+            {
+                alert("即将开启家长2监听");
+               
+                postNetworkRequest("3");
+            }
+                break;
+            case 'close':
+            {
+                alert("即将开启远程关机");
+                
+                postNetworkRequest("4");
+            }
+                break;
+            case 'recover':
+            {
+                alert("即将开启恢复出厂设置");
+                
+                postNetworkRequest("5");
+            }
+                break;
+            case 'huanxin':
+            {
+                alert("即将开启远程唤醒");
+                
+                postNetworkRequest("6");
+            }
+                break;
+            case 'back':
+            {
+                history.back();
+            }
+                break;
+
+        }
+    }
+    function GetQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r != null) return unescape(r[2]);
+        return null;
+    }
+    //发起网络请求
+    function postNetworkRequest(temp) {
+        var openid = GetQueryString('openid');
+        var stuid = GetQueryString('stuid');
+        mui.init();
+
+	    setTimeout(function() {
+	        mui.ajax("/remoteControlApp/RemoteControl.webapp", {
+	            data:{
+	                openid : openid,
+	                stuId :stuid,
+	                temp:temp     
+	            },
+	            dataType: 'json', //服务器返回json格式数据
+	            type: 'post', //HTTP请求类型
+	            timeout: 10000, //超时时间设置为10秒；
+	            success: function(data) {
+	                if(data.statCode==="200"){
+	                    showToast("请求发送成功");
+	                }
+	                else {
+	                    showToast("请求发送失败");
+	                }
+	            },
+	            error: function(xhr, type, errorThrown) {
+	                showToast("请求发送失败");
+	            }
+	
+	        });
+	    }, 100);
+	}
+</script>
+
+<body id="ibaby_id_1" onload="">
+<section id="ibaby_id_2" class="sys-cont moni-box">
+    <section style="height:44px; background-color:#96d1ba; display:-webkit-box; -webkit-box-align:center; -webkit-box-pack:center; color:#ffffff; font-size:16px; font-weight:bold;">
+远程遥控
+
+    </section>
+
+    <!------------------------------第三层------------------------------------------------>
+    <div id="ibaby_id_16" class="m-box ">
+        <h3 id="ibaby_id_17"></h3>
+        <div id="jianhu">
+            <div class="box-ct">
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;"onclick="romoteClick('xiumian')">
+                    <label id="ibaby_id_15"style="display : inline-flex;align-items:center;">
+                        <img id="img_jishi1" alt="" src="../iBaby/images/iBaby.reomate/xiumian.png">
+                        远程休眠</label>
+                </p>
+<!-- -----------------------------远程休眠 ----------------------------------------  -->
+              <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;"onclick="romoteClick('huanxin')">
+                    <label id="ibaby_id_15"style="display : inline-flex;align-items:center;">
+                        <img id="img_jishi1" alt="" src="../iBaby/images/iBaby.reomate/xiumian.png">
+                        远程唤醒</label>
+                </p>
+<!-- -----------------------------远程唤醒 ----------------------------------------  -->
+
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;"onclick="romoteClick('jiantinga')">
+                    <label id="ibaby_id_15"style="display : inline-flex;align-items:center;">
+                        <img id="img_jishi1" alt="" src="../iBaby/images/iBaby.reomate/jiantinga.png">
+                        家长一监听</label>
+                </p>
+
+                <!-- -----------------------------家长一监听----------------------------------------  -->
+
+
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;"onclick="romoteClick('jiantingb')">
+                    <label id="ibaby_id_15"style="display : inline-flex;align-items:center;">
+                        <img id="img_jishi1" alt="" src="../iBaby/images/iBaby.reomate/jiantingb.png">
+                        家长二监听</label>
+                </p>
+
+
+                <!-- ----------------------------家长二监听----------------------------------------  -->
+
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;"onclick="romoteClick('close')">
+                    <label id="ibaby_id_15"style="display : inline-flex;align-items:center;">
+                        <img id="img_jishi1" alt="" src="../iBaby/images/iBaby.reomate/close.png">
+                        远程关机</label>
+                </p>
+                <!-- -----------------------------远程关机----------------------------------------  -->
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;"onclick="romoteClick('recover')">
+                    <label id="ibaby_id_15"style="display : inline-flex;align-items:center;">
+                        <img id="img_jishi1" alt="" src="../iBaby/images/iBaby.reomate/recover.png">
+                        恢复出厂设置</label>
+                </p>
+
+                <!-- -----------------------------恢复出厂设置----------------------------------------  -->
+
+
+            </div>
+        </div>
+    </div>
+    <input type="button" style="margin-left: 20%;margin-top: 50px;width:60%;height: 40px;background-color: #96d1ba;border: rgba(0,0,0,0);border-radius: 20px;font-size:15px;color: white" value="返回 " onclick="romoteClick('back')"></input>
+</section>
+
+<div style="font: 'Hiragino Kaku Gothic ProN';text-align: center;color: white;font-size:1.5em;background-color:#00AFF0;display: none; position:fixed;margin:auto;left:0; right:0; top:0; bottom:0;width:95%; height:63px;border-radius: 7px;line-height: 63px;" id="tsk"></div>
+</body>
+</html>
+
+

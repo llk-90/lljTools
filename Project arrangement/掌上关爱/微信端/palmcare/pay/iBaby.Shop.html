@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- 爱贝多设备支付用请求html，支付授权目录为**/pay/** 该文件实属于**/ibaby/**目录-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta http-equiv="cache-control" content="private">
+    <meta http-equiv="expires" content="0">
+    <title>支付商城</title>
+    <link rel="stylesheet" href="../iBaby/css/mui.min.css">
+    <script src="../iBaby/js/iBady.Common.js"></script>
+    <script src="../iBaby/js/iBaby2.jquery-2.1.0.min.js"></script>
+    <script src="../js/template.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../iBaby/js/iBaby.location/mui.min.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+	<script type="text/javascript">
+	var canPay = true;
+	var isBridgeReady = false;
+    mui.init();
+	function GetQueryString(name) {
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+		var r = window.location.search.substr(1).match(reg);
+		if(r != null) return unescape(r[2]);
+		return null;
+	}
+		        
+	function onBridgeReady(){
+		isBridgeReady = true;
+	}
+		        
+	if(typeof WeixinJSBridge == "undefined") {
+		if(document.addEventListener) {
+			document.addEventListener('WeixinJSBridgeReady',function onBridgeReady(){
+				isBridgeReady = true;
+			}, false);
+		} else if(document.attachEvent) {
+			document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+			document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+		}
+	} else {
+		onBridgeReady();
+	}
+ 
+	function check(){
+		
+		if($("#NameInfo").val() == ""){
+			alert("收件人姓名不能为空");
+			return false;
+		}
+		if($("#AddressInfo").val() == ""){
+			alert("联系地址不能为空");
+			return false;
+		}
+		if($("#TelInfo").val() == ""){
+			alert("电话号码不能为空");
+			return false;
+		}		
+		if($("#MailboxInfo").val() == ""){
+			alert("邮编不能为空");
+			return false;
+		}
+		pay();
+	}
+
+    function pay() {
+	
+    	var openid = GetQueryString('openid');
+    	var stuid = GetQueryString('stuid');
+		
+        var nameInfo = document.getElementById("NameInfo").value;//顾客姓名
+        var addressInfo = document.getElementById("AddressInfo").value;//地址
+        var telInfo = document.getElementById("TelInfo").value;//电话
+        var mailboxInfo = document.getElementById("MailboxInfo").value;//邮箱
+    	if(isBridgeReady==true) {
+    		$("input[name='CommodityNum']").each(function(i, item) {
+    		var sum = item.value;
+			
+            if(canPay && sum!="" && sum!="0") {
+                canPay = false;
+                var commodity_id = $(item).attr("id");     
+                $.getJSON('/payment/ibabypayPlaceOrder.webapp', {
+                	
+						openid: openid,
+						stuId: stuid,
+						commodity_id: commodity_id,
+						CommodityNum: sum,
+						nameInfo: nameInfo,
+						addressInfo: addressInfo,
+						telInfo: telInfo,
+						mailboxInfo: mailboxInfo
+                    },
+                    function(data) {
+                        if(data && data["success"] == true) {
+                            var callAppParam = data["callAppParam"];
+                            WeixinJSBridge.invoke(
+                                'getBrandWCPayRequest', {
+                                    "appId": callAppParam["appId"], //公众号名称，由商户传入     
+                                    "timeStamp": callAppParam["timeStamp"], //时间戳，自1970年以来的秒数     
+                                    "nonceStr": callAppParam["nonceStr"], //随机串     
+                                    "package": callAppParam["package"],
+                                    "signType": callAppParam["signType"], //微信签名方式：     
+                                    "paySign": callAppParam["paySign"] //微信签名 
+                                },
+                            function(res) {
+                                canPay = true;
+                                if(res.err_msg == "get_brand_wcpay_request:ok" ) {
+                                     mui.toast('支付成功&等待客服联系');
+                            	}else if(res.err_msg == "get_brand_wcpay_request:cancel"){
+                            		mui.toast('支付取消');
+                            	}else if(res.err_msg == "get_brand_wcpay_request:fail" ){
+                            		mui.toast('支付失败');
+                            	}
+                                //使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+                            });
+                        }else if(data && data["success"] == false) {
+                            alert(data['msg']);
+                            canPay = true;
+                        } else {
+                            alert('网络异常');
+                            canPay = true;
+                        }
+                    });
+                }
+	        });
+	    }
+	}   	
+	</script>
+	<script type="text/javascript">
+	//发起网络请求
+    function init() {
+		//mui.ajax("/getCommodityInfo/commodityInfo.webapp", {
+		mui.ajax("/child/getCommodityInfo/commodityInfo.webapp", {
+            data:{},
+            dataType: 'json', //服务器返回json格式数据
+            type: 'post', //HTTP请求类型
+            timeout: 10000, //超时时间设置为10秒；
+            success: function(data) {
+            	if(data.result == "success"){
+            		var table = document.body.querySelector('#main');
+            		mui.each(data.commodity, function(i, item) {
+            			var html = template("data-temp", item);
+            			var li = document.createElement('div');
+            			li.setAttribute("data-id", item.ibaby_commodity_id);
+            			li.setAttribute("style", "height: 150px;width:100%; display : inline-flex; justify-content:center;margin-top: 5px;background-color: white");
+            			li.innerHTML = html;
+            			table.insertBefore(li, table.firstChild);
+            		});
+            	} else if(data.result == "empty") {
+            		mui.toast("没有符合的商品信息")
+            	}
+				else {
+            		mui.toast("获取商品信息失败")
+            	}
+            },
+            error: function(xhr, type, errorThrown) {
+            	mui.toast("获取商品信息失败")
+            }
+        });
+    }
+		
+	//加减输入框中的文字
+	function changeInputNum(type,idmun) {
+		if (type=='add'){
+			document.getElementById(idmun).value = Number(document.getElementById(idmun).value)+1;
+		} else {
+			document.getElementById(idmun).value = Number(document.getElementById(idmun).value)-1<=0?0:Number(document.getElementById(idmun).value)-1;
+		}
+	}
+	//展示订单确认页面信息
+	function showAddressDiv(action) {
+		if (action=='show'){
+			$("#check-in").show();
+			$("#check-in").animate({bottom:'0%'});
+		} else {
+			$("#check-in").animate({bottom:'-100%'});
+			$("#check-in").hide();
+		}
+	}
+	</script>
+	<script id="data-temp" type="text/html">
+         <img src="{{ibaby_commodity_imgurl}}" style="width:30% ;height:60%;margin-top:10%" id="CommodityImg">
+         <div style="width:100%;height:100px;margin-top: 20px;padding-left: 10px;">
+             <p style="font-size:18px;color: black"  id="CommodityName">{{ibaby_commodity_name}}</p>
+             <p><span  id="CommodityDetail" style="color: black">{{ibaby_commodity_detail}}</span></p>
+             <p style="color: #ff790a">￥<span id="CommodityPrice" style="color:#ff790a">{{ibaby_commodity_price}}</span></p>
+             <div style="display: inline-flex;justify-content: space-between;width: 50%;height: 30px;line-height: 30px">
+                 <img src="../iBaby/images/iBaby.common/jianhao.png" onclick="changeInputNum('del','{{ibaby_commodity_id}}')">
+                 <input name='CommodityNum' type='number' style="width:70px;height:15px;margin-left: 10px;margin-right: 10px;margin-top: 3px;text-align: center" id="{{ibaby_commodity_id}}" value="0">
+                 <img src="../iBaby/images/iBaby.common/jiahao.png" onclick="changeInputNum('add','{{ibaby_commodity_id}}')">
+             </div>
+         </div>
+	</script>
+</head>
+
+<body id="ibaby_id_1" onload="init();">
+    <section style="height: 100%;background-color: lightgray;  " id="ibaby_id_2" class="sys-cont moni-box">
+    <section style="color: white; height:40px;text-align:center;font-size:1.5em;background-color:#96d1ba;line-height: 40px">
+        产品商城
+    </section>
+     <div id="main">
+     <!--<img src="../iBaby/images/shuijiao.jpg" style="width:30% ;height:60%;margin-top:10%"id="CommodityImg">
+         <div style="width:100%;height:100px;margin-top: 20px;padding-left: 10px;">
+             <p style="font-size:18px;color: black"  id="CommodityName">iPhone6s</p>
+             <p><span  id="CommodityDetail" style="color: black">iPhone6s爱倍多账上关爱</span></p>
+             <p style="color: #ff790a">￥<span id="CommodityPrice" style="color:#ff790a">199.5</span></p>
+             <div style="display: inline-flex;justify-content: space-between;width: 50%;height: 30px;line-height: 30px">
+                 <img src="../iBaby/images/iBaby.common/jianhao.png" onclick="changeInputNum('del','ibady222')">
+                 <input name='CommodityNum' type='number' style="width:70px;height:15px;margin-left: 10px;margin-right: 10px;margin-top: 3px;text-align: center" id="ibady222" value="1">
+                 <img src="../iBaby/images/iBaby.common/jiahao.png" onclick="changeInputNum('add','ibady222')">
+             </div>
+         </div> -->
+    
+     </div>
+
+        <img style="position: fixed;bottom: 5px;right: 5px;width:50px;height: 50px;" src="../iBaby/images/iBaby.common/dingdan.png" onclick="showAddressDiv('show')">
+
+    <div style="position: fixed;background-color: white;height: 40%;margin-top: 5px;display: none;z-index: 999;width: 100%;overflow: auto" id="check-in">
+        <div style="font-size:15px; text-align:left;background-color: #20b8bd;color: white;height: 20px;list-style: 20px;">确认您的收货地址</div>
+        <div style="margin-top: 10px;padding-left: 10px">
+            <div style="display: inline-flex;justify-content: flex-start;width:100%">
+                <label style="width:20%">姓名:</label>
+                <input type="text" style="width:80%;height:15px;border-width: 0px;border-bottom-width: 1px;font-size:10px" placeholder="输入收件人姓名" id="NameInfo" >
+            </div>
+            <div style="display: inline-flex;justify-content: flex-start;width:100%">
+                <label style="width:20%">电话:</label>
+                <input type="text" style="width:80%;height:15px;border-width: 0px;border-bottom-width: 1px;font-size:10px" placeholder="输入收件人联系电话" id="TelInfo">
+            </div>
+            <div style="display: inline-flex;justify-content: flex-start;width:100%">
+                <label style="width:20%">邮编:</label>
+                <input type="text" style="width:80%;height:15px;border-width: 0px;border-bottom-width: 1px;font-size:10px" placeholder="所在地邮政编码" id="MailboxInfo">
+            </div>
+            <div style="display: inline-flex;justify-content: flex-start;width:100%">
+                <label style="width:20%">地址:</label>
+                <input type="text" style="width:80%;height:15px;border-width: 0px;border-bottom-width: 1px;font-size:10px" placeholder="省，市，区(县)，街道" id="AddressInfo">
+            </div>
+        </div>
+        <div style="display: inline-flex;justify-content: space-between;width: 100%">
+            <button style="width:40%;font-size:8px;border-width: 0px;background-color:#20b8bd;color: white;margin-left: 5%"id="SubmitPay"onclick="check();">去支付</button>
+            <button style="width:40%;font-size:8px;border-width: 0px;background-color:darkgray;color: white;margin-right: 5%"id="SubmitPay"onclick="showAddressDiv('hide');">隐藏订单</button>
+        </div>
+        <div style="height: 10px;width: 100%"></div>
+
+    </div>
+</section>
+</body>
+
+</html>

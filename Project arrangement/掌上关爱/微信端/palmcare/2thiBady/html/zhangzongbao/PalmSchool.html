@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>校园管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="../../css/mui.min.css">
+    <link rel="stylesheet" href="../../css/mui.picker.min.css">
+    <link rel="stylesheet" href="../../css/app/zhangzongbao/PalmSchool.css">
+    <script src="../../js/app/common/cvi_busy_lib.js"></script>
+    <script src="../../js/iBaby2.jquery-2.1.0.min.js"></script>
+    <script src="../../js/app/common/Common.js"></script>
+</head>
+<body style="background-color:#eaeefa;">
+    <!--上课时间段s-->
+    <div class="inClass">
+        <img src="../../img/zhangzongbao/inClass.png" alt="上课 ">
+        <span>上课时间段</span>
+    </div>
+    <div id="inClass-sz">
+        <div style="width: 90%;height: 40px;margin-left:5%;border-bottom:2px solid #ebedf1;">
+            <div id="choose">
+                <span id="week">星期一</span>
+                <img  src="../../img/zhangzongbao/more_unfold.png" alt="下" onclick="aaa()">
+            </div>
+            <ul id="weekes" style="display: none">
+                <li class="weekesDay"><span>星期一</span></li>
+                <li class="weekesDay"><span>星期二</span></li>
+                <li class="weekesDay"><span>星期三</span></li>
+                <li class="weekesDay"><span>星期四</span></li>
+                <li class="weekesDay"><span>星期五</span></li>
+                <li class="weekesDay"><span>星期六</span></li>
+                <li class="weekesDay"><span>星期日</span></li>
+            </ul>
+            <div id="sswitch">
+                <div id="sswith-0" class="mui-switch mui-switch-mini" style="float:right;margin-top:4px;" onclick="btnClick('vaild','0')">
+                    <div class="mui-switch-handle"></div>
+                </div>
+                <span>禁用</span>
+            </div>
+        </div>
+        <div style="border:0px solid red;width: 90%;margin-left:5%;height: 70px;">
+            <div id="date">
+                <img id="dateImg" src="../../img/zhangzongbao/rili.png" alt="日历">
+                <span id="dateSpan1">监控时间设置</span>
+                <a href="#" onclick="dump()"><img id="right" src="../../img/zhangzongbao/right.png" alt="右边"></a>
+                <span id="dateSpan2">星期一</span>
+            </div>
+        </div>
+    </div>
+    <!--弹窗-->
+    <div id="impot" class="mui-popover " style="width:90%;padding:0;margin-left:5%;margin-right:auto;height:50px;background-color:white;border-radius:4px;top:40%;">
+        <div style="width:30%;height:50px;margin-left:10%;float:left;border:0px solid red;">
+            <span style="display: block;float:left;height: 50px;width:40px;line-height:50px;color:#b5b8c9;border:0px solid red;font-size:14px;">上学</span>
+            <input type="radio"  name="名称"  checked="checked" style="height: 50px;"/>
+        </div>
+        <div style="width:30%;height:50px;margin-left:10%;float:right;border:0px solid red;">
+            <span style="display: block;float:left;height: 50px;width:40px;line-height:50px;color:#b5b8c9;border:0px solid red;font-size:14px;">放学</span>
+            <input type="radio"  name="名称"  checked="checked" style="height: 50px;"/>
+        </div>
+
+    </div>
+    <!--监控时间设置-->
+    <div id="custody">
+        <img id="custodyImg1" src="../../img/zhangzongbao/car.png" alt="校车 ">
+        <span>重点监护时间</span>
+        <img id="custodyImg2"src="../../img/zhangzongbao/jia2.png" alt="+">
+    </div>
+    <ul id="school">
+        <li class="schoolli">
+            <span class="gogo-1">上学</span><span class="gogo-2">离家</span>
+            <span class="gogo-3"><button id="time1" class='goTime'  data-options='{"type":"time"}' class="btn mui-btn mui-btn-block">00:00</button></span>
+            <span class="gogo-4"><button id="time2" class='backTime'  data-options='{"type":"time"}' class="btn mui-btn mui-btn-block ">00:00</button></span><span class="gogo-5">到校</span>
+        </li>
+        <li class="schoolli">
+            <span class="gogo-1">放学</span><span class="gogo-2">离校</span>
+            <span class="gogo-3"><button id="time3" class='goTime'  data-options='{"type":"time"}' class="btn mui-btn mui-btn-block">00:00</button></span>
+            <span class="gogo-4"><button id="time4" class='backTime'  data-options='{"type":"time"}' class="btn mui-btn mui-btn-block ">00:00</button></span><span class="gogo-5">到家</span>
+        </li>
+    </ul>
+    <!--其他设置-->
+    <div id="otherInstall">
+        <img id="installImg" src="../../img/zhangzongbao/note.png" alt="校车 ">
+        <span>其他设置</span>
+    </div>
+    <ul id="install">
+        <li class="install-school">
+            <span class="school-notice">到校通知</span>
+            <div class="guardian1">
+                <span class="phone1">监护人号码1</span><input id="arr1" name="0" type="checkbox"  name="come"   style="height: 64px;" onclick="btnClick('arr1','0')"/>
+            </div>
+            <div class="guardian1">
+                <span class="phone1">监护人号码2</span><input id="arr2" name="0" type="checkbox"  name="come"   style="height: 64px;" onclick="btnClick('arr2','0')"/>
+            </div>
+        </li>
+        <li class="install-school">
+            <span class="school-notice">离校通知</span>
+            <div class="guardian1">
+                <span class="phone1">监护人号码1</span><input id="lev1" name="0" type="checkbox"  name="back"   style="height: 64px;" onclick="btnClick('lev1','0')"/>
+            </div>
+            <div class="guardian1">
+                <span class="phone1">监护人号码2</span><input id="lev2" name="0" type="checkbox"  name="back"   style="height: 64px;" onclick="btnClick('lev2','0')"/>
+            </div>
+        </li>
+    </ul>
+    <button type="button" class="mui-btn mui-btn-warning"  style="margin-top: 1px;width: 80%;height:40px;margin-left: 10%;margin-top:20px;background-color: #59c671;border:none;" onclick="Over()">
+        确认保存
+    </button>
+</body>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/mui.picker.min.js"></script>
+<script src="../../js/app/zhangzongbao/PalmSchool.js"></script>
+
+</html>

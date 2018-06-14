@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>通知发布</title>
+		<script src="../js/config.js" type="text/javascript" charset="utf-8"></script>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/weui.css" />
+		<style>
+			html,
+			body {
+				margin: 0;
+				padding: 0;
+			}
+			
+			body,
+			.mui-content {
+				background-color: #FFFFFF !important;
+			}
+			
+			.mui-content-padded>.self-txt {
+				background-color: #F5F5F5;
+				border: 0px;
+				border-radius: 0px;
+			}
+			
+			.mui-content-padded>textarea {
+				height: 150px;
+				background-color: #F5F5F5;
+				border: 1px solid #E5E5E5;
+				border-radius: 8px;
+				margin-bottom: 0px;
+			}
+			
+			.mui-content-padded {
+				margin: 25px;
+			}
+			
+			.mui-content-padded>span {
+				color: #E5E5E5;
+				font-size: 12px;
+			}
+			
+			.btn {
+				width: 100%;
+				height: 50px;
+				border: none;
+				background-color: #FF4F4F;
+				color: #FFFFFF;
+				font-size: larger;
+				border-radius: 0;
+			}
+			
+			.weui_uploader_input_wrp {
+				border: 2px dashed #E5E5E5;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="mui-content mui-content-padded">
+			<input type="text" class="self-txt" id="title" value="" min="1" maxlength="20" />
+			<br /><br />
+			<form action="" method="post">
+				<div class="weui_uploader">
+					<div class="weui_uploader_bd">
+						<ul class="weui_uploader_files">
+						</ul>
+						<div class="weui_uploader_input_wrp">
+							<div id="localImag"><img id="preview" style="diplay:none;width: 100px;" /></div>
+							</p>
+							<a id="chooseImage" class="weui_uploader_input"></a>
+						</div>
+					</div>
+				</div>
+				<br />
+				<textarea name="content" id="content" min="1" maxlength="200"></textarea>
+				<span>图片以横向为优，大小不超过2M.</span>
+				<br /><br />
+			</form>
+			<button id="sub" class="btn">提&nbsp;&nbsp;交</button>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/loginValidate.js" type="text/javascript" charset="utf-8"></script>
+		<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+		<script src="../js/zepto.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" charset="UTF-8">
+			mui.init(getConfig());
+			
+
+			/*function GetQueryString(name) {
+				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+				var r = window.location.search.substr(1).match(reg);
+				if(r != null) return unescape(r[2]);
+				return null;
+			}
+			var openid = GetQueryString('openid');*/
+			
+			var timestamp = '';
+			var nonceStr = '';
+			var signature = '';
+
+			function getConfig() {
+				var url = location.href.split('#')[0];
+				var d = {
+					url: url
+				};
+				setTimeout(function() {
+					mui.ajax("/getConfig/getConfig.webapp", {
+						data: d,
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						timeout: 10000, //超时时间设置为10秒；
+						success: function(data) {
+							appid = data.appid;
+							timestamp = data.timestamp;
+							nonceStr = data.nonceStr;
+							signature = data.signature;
+							dossa();
+						},
+						error: function(xhr, type, errorThrown) {
+						}
+					});
+				}, 100);
+			}
+		</script>
+		<script type="text/javascript">
+		var mask = mui.createMask();
+			function dossa() {
+				wx.config({
+					debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+					appId: appid, // 必填，公众号的唯一标识
+					timestamp: timestamp, // 必填，生成签名的时间戳
+					nonceStr: nonceStr, // 必填，生成签名的随机串
+					signature: signature, // 必填，签名，见附录1
+					jsApiList: [
+							'chooseImage',
+							'previewImage',
+							'uploadImage'
+						] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+				});
+				var btn = document.getElementById('chooseImage');
+				var sub = document.getElementById("sub");
+				wx.ready(function() {
+					var images = {
+						localId: [],
+						serverId: []
+					};
+					var serid;
+					btn.addEventListener("tap", function() {
+						wx.chooseImage({
+							count: 1, // 默认9
+							success: function(res) {
+								images.localId = res.localIds;
+								document.getElementById("preview").style.display = 'block';
+								document.getElementById("preview").src = images.localId;
+							}
+						});
+					});
+					sub.addEventListener("tap", function() {
+						var title = document.getElementById("title").value;
+						var content = document.getElementById("content").value;
+						if(title == null || title == ''){
+							alert("标题不能为空");
+							return false;
+						}
+						if(images.localId.length == 0) {
+							alert('请先选择图片！');
+							return;
+						}
+						if(content == null || content == ''){
+							alert("内容不能为空");
+							return false;
+						}
+						
+						length = images.localId.length;
+						images.serverId = [];
+						wx.uploadImage({
+							localId: images.localId[0],
+							success: function(res) {
+								serid = res.serverId
+								addNotice(serid);
+							},
+							fail: function(res) {
+							}
+						});
+					});
+				});
+				wx.error(function(res) {
+				});
+			}
+
+			function addNotice(picid) {
+				var title = document.getElementById("title").value;
+				var content = document.getElementById("content").value;
+				var url = location.href.split('#')[0];
+				mask.show();
+				mui.ajax("/noticeApp/addNotice.webapp", {
+					data: {
+						url : url,
+						title: title,
+						content: content,
+						picid: picid
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						if(data.result == "success"){
+							mask.close();
+							if (data.isAlert) {
+                                var str="检测到您发送的信息包含敏感词汇\n";
+                                if(data.linJie){
+                                    str+="总共"+data.linJie+"次\n";
+                                }
+                                if (data.count) {
+                                    str+="已用"+data.count+"次";
+                                }
+                                alert(str);
+                                if (parseInt(data.count)>=parseInt(data.linJie)) {
+                                    WeixinJSBridge.call('closeWindow');
+                                }
+                            }
+							WeixinJSBridge.call('closeWindow');
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+					}
+				});
+			}
+		</script>
+	</body>
+
+</html>

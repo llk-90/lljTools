@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>我的</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <link href="../../css/mui.css" rel="stylesheet"/>
+    <style>
+        .nav_badge{
+            position: absolute;
+            z-index: 99;
+            margin-left: -10px;
+            color: #dd524d;
+            background-color: #ffffff;
+        }
+        .mui-scrollbar{
+            display: none;
+        }
+    </style>
+    <link href="../../css/app/geren/location.css" rel="stylesheet"/>
+    <!--<link href="/Resource/m/css/LArea.css" rel="stylesheet"/>-->
+    <style>
+        .index_content img{
+            width: 100%;
+            vertical-align: top;
+        }
+        .index_content p{
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+    <script src="../../js/app/common/zepto.js"></script>
+    <script src="../../js/app/common/popup.js"></script>
+    <script src="../../js/app/common/Common.js"></script>
+    <!--<script src="../../js/iBaby2.jquery-2.1.0.min.js"></script>-->
+    <script src="../../js/mui.min.js"></script>
+    <script src="../../js/app/common/cvi_busy_lib.js"></script>
+
+</head>
+<body>
+<div id="car-pop-mask" class="clickbutton" style="opacity:0.3;"></div>
+<a id="addlocal" href="" class="add-address myclick" param="add">添加</a>
+<div class="mui-content">
+    <div class="address_list">
+        <ul id="localUL">
+        </ul>
+    </div>
+</div>
+
+<form id="form-1" style="display: none;">
+    <div class="addressclass"><span>地址</span>
+        <input id="demo1" type="text" readonly="" placeholder="城市选择"  value="">
+        <input id="value1" type="hidden" value="20,234,504">
+    </div>
+    <input id="addressdetail" type="text" placeholder="详细地址">
+</form>
+
+<script src="../../js/app/geren/LAreaData1.js"></script>
+<script src="../../js/app/geren/LAreaData2.js"></script>
+<script src="../../js/app/geren/LArea.js"></script>
+<script type="text/javascript" charset="utf-8">
+    var userInfo = new Object();//初始化用户obj
+    userInfo.openId = GetQueryString("openid");
+     $(function() {
+         getAllAddr();
+        $("#addlocal").click(function(){
+            var param=$(this).attr("param");
+            if(param=="add"){
+                $('body').popup({
+                    id:'pop-1',
+                    formId:'form-1',
+                    cancelOnly:true,
+                    closeOnOk:false,
+                    ok:'完成',
+                    title:'添加地址',
+                    onOk:function(){
+                        if($('#demo1').val() != "" && $('#addressdetail').val() != ""){
+                            addAddress();
+                        }
+                    }
+                });
+                return false;
+            }
+        });
+
+        $(".clickbutton").on("touchend",function(e){//选择框弹出时点击页面其他地方，触发这个事件
+            console.log("aaa");
+            location.reload();
+            return false;
+        });
+
+    });
+
+    if ($('.circle_menu_div').length > 0) {
+        var circle_menu_div_width = -$('.circle_menu_div').width() * 5 / 8 + 200;
+        $('.circle_menu_div').css({ 'bottom': circle_menu_div_width + 'px', 'height': $('.circle_menu_div').width() + 'px' });
+    }
+
+    function  getAllAddr(){
+        var xval=getBusyOverlay('viewport',{color:'white', opacity:0.75, text:'加载中', style:'text-shadow: 0 0 3px black;font-weight:bold;font-size:16px;color:white'},{color:'#59bf6b', size:70, type:'o'});
+        //网络请求//userInfo.openId,
+        mui.ajax(baseURL+"/personal/getPersonalAddress.webapp", {
+            data:{
+                openId: userInfo.openId
+            },
+            dataType: 'json', //服务器返回json格式数据
+            type: 'post', //HTTP请求类型
+            timeout: 10000, //超时时间设置为10秒；
+            crossDomain:true,
+            async:false,
+            beforeSend:function(){
+                if(xval) {
+                    xval.settext("加载中，请稍后......");
+                }
+            },
+            success: function(data) {
+                xval.remove();
+                console.log(data);
+                for (var i=0;i<data.addressInfo.length;i++) {
+                    var li = "<li id='li" + i + "'>" +
+                            "<h1 id='h" + i + "' class='mui-icon mui-icon-lbs'>" + data.addressInfo[i].addressInfo + "</h1>" +
+                            "<h1 id='addrId" + i + "' hidden>" + data.addressInfo[i].id + "</h1>" +
+                            "<p>" +
+                            "<a href='javascript:;' class='mui-icon mui-icon-Trash myclick' param='delete' data-id='1' onclick='deleteLocal(" + i + ")'>删除</a>" +
+                            "<a href='javascript:;' class='mui-icon mui-icon-edit myclick' param='edit' data-id='1' onclick='editLocal(" + i + ")'>编辑</a>" +
+                            "</p>" +
+                            "</li>"
+                    $("#localUL").append(li);
+                }
+
+            },
+            error: function(e) {
+                console.log("fail");
+                //失败回调
+                mui.toast(e);
+            }
+
+        });
+
+    }
+    function addAddress(){
+        //网络请求//userInfo.openId,
+        mui.ajax(baseURL+"/personal/addAddress.webapp", {
+            data:{
+                openId: userInfo.openId,
+                address: $('#demo1').val() + " " + $('#addressdetail').val()
+            },
+            dataType: 'json', //服务器返回json格式数据
+            type: 'post', //HTTP请求类型
+            timeout: 10000, //超时时间设置为10秒；
+            crossDomain:true,
+            success: function() {
+                window.location.reload();//页面刷新
+            },
+            error: function(e) {
+                //失败回调
+                mui.toast(e);
+            }
+
+        });
+    }
+
+
+
+    //修改地址
+    function editLocal(i){
+        $('body').popup({
+            id:'pop-1',
+            formId:'form-1',
+            cancelOnly:true,
+            closeOnOk:false,
+            ok:'完成',
+            title:'修改地址',
+            onOk:function(){
+                console.log($('#demo1').val() + " " + $('#addressdetail').val());
+                //$("#h"+i).html($("#demo1").val());
+                if($('#demo1').val() != "" && $('#addressdetail').val() != ""){
+                    //网络请求//userInfo.openId,
+                    mui.ajax(baseURL+"/personal/updatePersonalAddress.webapp", {
+                        data:{
+                            openId: userInfo.openId,
+                            address: $('#demo1').val() + " " + $('#addressdetail').val(),
+                            id: $('#addrId'+i)[0].innerHTML
+                        },
+                        dataType: 'json', //服务器返回json格式数据
+                        type: 'post', //HTTP请求类型
+                        timeout: 10000, //超时时间设置为10秒；
+                        crossDomain:true,
+                        success: function() {
+                            window.location.reload();
+                        },
+                        error: function(e) {
+                            console.log("fail");
+                            //失败回调
+                            mui.toast(e);
+                        }
+                    });
+                }
+
+            }
+        });
+        return false;
+    }
+
+    //删除地址
+    function deleteLocal(i){
+        if (confirm("是否删除")){
+            console.log($('#addrId'+i)[0].innerHTML);
+            //访问后台，橘势不妙，大橘为重，橘里橘气，
+            //网络请求//userInfo.openId,
+            mui.ajax(baseURL+"/personal/deletePersonalAddress.webapp", {
+                data:{
+                    openId: userInfo.openId,
+                    id: $('#addrId'+i)[0].innerHTML
+                },
+                dataType: 'json', //服务器返回json格式数据
+                type: 'post', //HTTP请求类型
+                timeout: 10000, //超时时间设置为10秒；
+                crossDomain:true,
+                success: function() {
+                },
+                error: function(e) {
+                    //失败回调
+                    mui.toast(e);
+                }
+            });
+            $("#li"+i).remove();
+        }
+    }
+    //底部菜单 加号弹出菜单层
+//    $(function () {
+//        $('.plus_icon').on('click', function () {
+//            if ($(this).hasClass('rote_roll')) {
+//                $('#menu').attr('style', 'transition: transform .3s; -webkit-transition: -webkit-transform .3s; -webkit-transition: transform .3s; transform-origin: 50% 50% 0px; -webkit-transform-origin: 50% 50% 0px; transform: translate3d(0px, 0px, 0px) rotate(-180deg); -webkit-transform: translate3d(0px, 0px, 0px) rotate(-180deg); touch-action: none; -webkit-user-select: none;');
+//                $(this).removeClass("rote_roll");
+//                window.setTimeout(function () {
+//                    $('.circle_menu_div').hide();
+//                }, 500);
+//            } else {
+//                $('.circle_menu_div').show();
+//                $(this).addClass("rote_roll");
+//                window.setTimeout(function () {
+//                    $('#menu').attr('style', 'transition: transform .3s; -webkit-transition: -webkit-transform .3s; -webkit-transition: transform .3s; transform-origin: 50% 50% 0px; -webkit-transform-origin: 50% 50% 0px; transform: translate3d(0px, 0px, 0px) rotate(0deg); -webkit-transform: translate3d(0px, 0px, 0px) rotate(0deg); touch-action: none; -webkit-user-select: none;');
+//                }, 100);
+//            }
+//        });
+//    });
+</script>
+<script>
+    var area1 = new LArea();
+    area1.init({
+        'trigger': '#demo1', //触发选择控件的文本框，同时选择完毕后name属性输出到该位置
+        'valueTo': '#value1', //选择完毕后id属性输出到该位置
+        'keys': {
+            id: 'id',
+            name: 'name'
+        }, //绑定数据源相关字段 id对应valueTo的value属性输出 name对应trigger的value属性输出
+        'type': 1, //数据源类型
+        'data': LAreaData //数据源
+    });
+    area1.value=[1,13,3];//控制初始位置，注意：该方法并不会影响到input的value
+    var area2 = new LArea();
+    area2.init({
+        'trigger': '#demo2',
+        'valueTo': '#value2',
+        'keys': {
+            id: 'value',
+            name: 'text'
+        },
+        'type': 2,
+        'data': [provs_data, citys_data, dists_data]
+    });
+</script>
+</body>
+</html>

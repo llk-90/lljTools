@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>电子围栏</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <!--mui.css文件引入-->
+    <link rel="stylesheet" href="../../css/mui.min.css">
+
+    <!--地图自带css、js-->
+    <link rel="stylesheet" type="text/css" href="../../css/app/zhangzongbao/fence/iBaby.fence_update.css">
+    <script src="../../js/app/common/cvi_busy_lib.js"></script>
+    <script src="../../js/app/zhangzongbao/fency/mui.min.js"></script>
+    <script src="../../js/app/zhangzongbao/fency/iBaby2.jquery-2.1.0.min.js"></script>
+    <script type="text/javascript" src="../../js/app/zhangzongbao/fency/iBady.Common.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.3&key=58bcf024f9b7930fc2a43b3554b1672b"></script>
+    <script type="text/javascript" src="../../js/app/zhangzongbao/fency/iBaby.fence_update.js"></script>
+    <script type="text/javascript" src="../../js/app/common/Common.js"></script>
+    <style type="text/css">
+        body, html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+
+        #allmap {
+            width: 100%;
+            height: 100%;
+        }
+
+
+    </style>
+</head>
+<body class="body" onload="getUrlParame();">
+<!--<div class="item">-->
+<!--<label style="font-size: 15px">名称:</label>-->
+<!--<input type="text" class="in-put" id="name" placeholder="输入名称" style="border:0px;font-size:12px;"/>-->
+<!--</div>-->
+
+
+<div id="allmap">
+    <!--名称 半径-->
+    <form style="border:1px solid #e1e1e0;-webkit-border-radius: 2px;-moz-border-radius: 2px;border-radius: 2px;width:94%;margin-top: -5px;position: relative;top:4%;left:3%;z-index: 999;background-color:white;">
+        <div class="mui-input-row" style="border:0px solid red;height:56px;">
+            <label class="lable" style="width:56px;height:56px;padding:0;"><img src="../../img/zhangzongbao/lable.png" alt="标签"></label>
+            <input id="name" class="in-put" type="text" placeholder="输入名称" style="border:0px solid green;height:40px;width:80%;margin-left:0;position:relative;top:10px;color:#dee2ea;font-size:16px;">
+        </div>
+        <hr style="margin:0;padding:0;width:90%;margin-left: 5%;height:1px;border: 0;background-color:#e1e1e0;">
+        <div class="mui-input-row" style="border:0px solid red;height:56px;">
+            <label class="lable" style="width:56px;height:56px;padding:0;"><img src="../../img/zhangzongbao/range.png" alt="标签"></label>
+            <input type="number" id="radius" class="in-put" placeholder="输入半径(米)" style="border:0px solid green;height:40px;width:80%;margin-left:0;position:relative;top:8px;color:#dee2ea;font-size:16px;">
+        </div>
+    </form>
+</div>
+<!--搜索-->
+<form style="border:1px solid #e1e1e0;-webkit-border-radius: 2px;-moz-border-radius: 2px;border-radius: 2px;width:94%;position: absolute;bottom:1px;left:3%;z-index: 999;background-color:white;">
+    <div class="mui-input" style="border:0px solid red;height:56px;">
+        <input id="map-input" type="text" placeholder="输入搜索关键字" style="border:0px solid green;height:40px;width:80%;position:relative;top:8px;left:0;color:#dee2ea;font-size:16px;">
+        <label class="lable" onclick='searchClick()' style="width:70px;height:40px;padding:0;position:absolute;top:8px;right:0;border-left:1px solid #ebeaea;"><img src="../../img/zhangzongbao/search.png" alt="标签" style="margin-left:20px;margin-top:5px;width:30px;height:30px;"></label>
+    </div>
+</form>
+<!--报警-->
+<div class="fath">
+    <div class="son">
+        <input id="a1" name="checkbox1" value="0" type="checkbox" onclick="TargetClick(0)" style=";">
+        <label style="">进入</label>
+    </div>
+    <div class="son" style="margin-left:20px;">
+        <input id="a2" name="checkbox1" value="0" type="checkbox"  onclick="TargetClick(1)">
+        <label style="">离开</label>
+    </div>
+    <div class="son" style="width:27%;float: right;">
+        <img src="../../img/zhangzongbao/warning.png" alt="">
+        <label style="width:60px;height:19px;right:7px;top:6px;font-size:14px;">警报设置</label>
+    </div>
+</div>
+<!--确认取消-->
+<div style=" border:0px solid red; position: fixed;display : inline-flex;justify-content:space-between;width: 94%;height:70px;top:150px;left:3%;z-index: 999;background-color: rgba(0,0,0,0)">
+    <input type="button" style="background-color: #59c671;height: 60px;width:49%;border-width: 0px;border-color: rgba(0,0,0,0);border-radius: 2px;color: white;font-size:18px" value="确认" onclick="saveOrUpdateWeilanInfo()">
+    <input type="button" style="background-color:#cacacd;height: 60px;width:49%;border-width: 0px;border-color: rgba(0,0,0,0);border-radius: 2px;color: white;font-size:18px" value="取消" onclick="back()">
+</div>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+ <script src="../InstantMessaging/js/Login.js" ></script>
+<script src="../iBaby/js/iBaby.location/mui.min.js"></script>
+<link rel="stylesheet" href="../iBaby/css/mui.min.css">
+
+<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+ 
+<!-- 可选的Bootstrap主题文件（一般不使用） -->
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"></script>
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<meta charset="UTF-8">
+<title>登陆</title>
+</head>
+<body>
+<div  class="mui-row" style="width:100%;position:fixed;top:0px;height:20%;background-color:#FFFFCC">
+</div>
+
+<form class="mui-input-group" style="width:100%;position:fixed;top:20% ; ">
+    <div class="mui-input-row">
+        <label>账号</label>
+    <input type="text" class="mui-input-clear" placeholder="请输入账号"  id="Login_UserNum">
+    </div>
+    <div class="mui-input-row">
+        <label>密码</label>
+        <input type="password" class="mui-input-password" placeholder="请输入密码" id="Login_Password">
+    </div>
+       <div class="mui-input-row">
+        <label style="text-align:center;color:#CCCCCC;width:100%"onclick="registered()">尚未注册,前去注册</label>
+         
+    </div>
+    <div class="mui-button-row">
+        <button type="button" class="mui-btn mui-btn-primary" onclick="Logining()" >确认</button>
+        <button type="button" class="mui-btn mui-btn-danger" >取消</button>
+    </div>
+</form>
+
+
+ <!--拟态框  -->
+ <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align:center ;background-color:#F2F2F2">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel"  >注册账号</h4>
+            </div>
+            <!--主题  -->
+            <div class="modal-body">
+           
+           <form>
+  <div class="form-group">
+    <label for="exampleInputEmail1"  >用户名</label>
+    <input type="email" class="form-control" id="UserName" placeholder="用户名">
+  </div>
+    <div class="form-group">
+    <label for="exampleInputEmail1"  >账号</label>
+    <input type="email" class="form-control" id="UserNum" placeholder="账号">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1"  >密码</label>
+    <input type="password" class="form-control" id="UserPassWord" placeholder="密码">
+  </div>
+  
+  
+  <div class="form-group">
+    <label for="exampleInputFile"   >选择头像文件</label>
+    <input type="file" id="exampleInputFile" id=UserImg>
+    <p class="help-block">Example block-level help text here.</p>
+  </div>
+  
+</form>
+           
+            
+            </div>
+            <div class="modal-footer">
+      
+             <button class="btn btn-primary btn-lg btn-block" type="submit"data-dismiss="modal"  onclick="GoRegistered()">注册</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+</body>
+</html>

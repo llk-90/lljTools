@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <title>个人中心</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <script src="../../js/config.js" type="text/javascript" charset="utf-8"></script>
+        <!--标准mui.css-->
+        <link rel="stylesheet" href="../../css/mui.min.css">
+        <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+        <!--自定义css -->
+        <link rel="stylesheet" href="../../css/personal_center.css" />
+        <style>
+            .round {
+                height: 85%;
+                width: 240px;
+                border: 6px solid rgba(255, 255, 255, 0.3);
+                border-radius: 50%;
+                margin-left: auto;
+                margin-right: auto;
+                padding: 5%;
+                text-align: center;
+            }
+            
+            .circle {
+                height: 100%;
+                width: 100%;
+                border: 6px solid rgba(255, 255, 255, 0.3);
+                border-radius: 50%;
+                padding: 5%;
+            }
+            
+            .user-pic-bg {
+                height: 40%;
+                background-image: url(../../images/personal_center/baby-one.jpg);
+                background-repeat: no-repeat;
+                background-size: 100% 100%;
+            }
+            
+            .user-pic-bg>p:before {
+                content: url(../../css/svg/feather.svg);
+            }
+            
+            .user-pic-bg>p {
+                text-align: center;
+                color: white;
+                font-size: 12px;
+            }
+            
+            .user-head-pic-bdr {
+                height: 100%;
+                width: 100%;
+                border-radius: 50%;
+                background-color: rgba(255, 255, 255, 0.3);
+            }
+            
+            .user-head-pic {
+                height: 100%;
+                width: 100%;
+                border-radius: 50%;
+                /*background-image: url(../../images/personal_center/cute-baby.jpg);*/
+                background-repeat: no-repeat;
+                background-size: 100% 100%;
+            }
+            .user-name{
+            	position: relative;
+                text-align: center;
+                line-height: 30px;
+                color: white;
+                font-size: 20px;
+                font-weight: 700;
+            }
+            
+            .boy {
+                position: relative;
+                text-align: center;
+                line-height: 30px;
+                color: white;
+                font-size: 20px;
+                font-weight: 700;
+            }
+            .girl {
+                position: relative;
+                text-align: center;
+                line-height: 30px;
+                color: white;
+                font-size: 20px;
+                font-weight: 700;
+            }
+            
+            .boy:after {
+                content: url(../../css/svg/boy.svg);
+                line-height: 30px;
+                margin-left: 4px;
+            }
+            
+            .girl:after {
+                content: url(../../css/svg/girl.svg);
+                line-height: 30px;
+                margin-left: 4px;
+            }
+            
+            .three-btn-container {
+                height: 50px;
+                background-color: rgb(251, 251, 251);
+                box-shadow: 0 1px rgba(0, 0, 0, 0.1);
+                padding: 12px 0px;
+            }
+            
+            .three-btn-item {
+                float: left;
+                height: 100%;
+            }
+            
+            .three-btn {
+                width: 33%;
+                text-align: center;
+            }
+            
+            .three-btn-split {
+                width: 0.3%;
+                background-color: rgb(231, 231, 231);
+            }
+            
+            .mui-navigate-right {
+                padding-left: 40px !important;
+            }
+            
+            .mui-navigate-right span {
+                margin-left: 25px;
+                display: block;
+                line-height: 23px;
+            }
+            
+            .mui-navigate-right span,
+            .mui-navigate-right div,
+            .mui-navigate-right img {
+                float: left;
+            }
+            .d-message-number {
+					
+				width: 21px;
+				height: 21px;
+				border-radius: 33px;
+				background-color: red;
+			}
+            .in-message {
+				color: #FFF;
+				font-size: 12px;
+				padding-left: 38%;				
+			}
+			
+			.navigateight:after{
+			    display: none;
+			    content: '\e583';
+			}		
+        </style>
+    </head>
+    <body>
+        <div class="mui-content" style="height: 100%;">
+            <div class="user-pic-bg">
+                <div id="idOutBdr" class="round">
+                    <div class="circle">
+                        <div class="user-head-pic-bdr">
+                            <div class="user-head-pic">
+                            </div>
+                        </div>
+                    </div>
+                        <span id="username" class="user-name"></span>
+                </div>
+                <p>一圈一点，胜似万语千言。一圈一点，胜似万语千言。</p>
+                
+            </div>
+            <div class="three-btn-container">
+                <div class="three-btn-item three-btn" data-href="../update_password.html">修改密码</div>
+                <div class="three-btn-item three-btn-split"></div>
+                <div class="three-btn-item three-btn" data-href="updateStuInfo/updateStuInfo.html">信息修改</div>
+                <div class="three-btn-item three-btn-split"></div>
+                <div class="three-btn-item three-btn" data-href="../../binding/bind.html">设备绑定</div>
+            </div>
+            <br />
+            <ul class="mui-table-view">
+                <li class="mui-table-view-cell">
+                    <a class="mui-navigate-right aaa" open-type="common" skip-href="../../leave/leave_notice.html">
+                        <div class="icon-notice"></div>
+                        <span>请假信息通知</span>
+                    </a>
+                </li>
+                <li class="mui-table-view-cell">
+                    <a class="mui-navigate-right" open-type="common" id="contact">
+                        <div class="icon-custom"></div>
+                        <span>联系客服</span>
+                    </a>
+                </li>
+               <!-- <li class="mui-table-view-cell">               
+                    <a class="mui-navigate-right aaa  " open-type="common" skip-href="../../message/messageContent.html">
+                        <div class="icon-msg"></div>
+                        <span>留言</span>                      
+                    </a>               
+                    <a style="float: right;">
+                     <div class="d-message-number" >
+						<span class="in-message" id="infoct" ></span>
+					 </div>
+					</a>
+                </li>-->
+                 <li class="mui-table-view-cell">
+                    <a  class="mui-navigate-right aaa" open-type="common" skip-href="../../message/messageContent.html">
+                        <div class="icon-msg"></div>
+                        <span>留言</span>
+                        <span style="float:right;margin-right: 18px;margin-top: 2px;text-align: center;display:none;"  class="d-message-number" id="yincang">
+                      		<font style="color: #fff;" id="infoct"></font>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+            <br />
+        </div>
+        <script src="../../js/mui.min.js"></script>
+        <script src="../../js/loginValidate.js" type="text/javascript" charset="utf-8"></script>
+        <script type="text/javascript">
+         mui.init({
+			swipeBack: true //启用右滑关闭功能
+		});
+        onresize = function() {
+            resize();
+        }
+        function resize() {
+            var idOutBdr = document.getElementById('idOutBdr');
+            idOutBdr.style.width = idOutBdr.offsetHeight + 'px';
+        }
+        resize();
+        //获取openId
+         function GetQueryString(name) {
+				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+				var r = window.location.search.substr(1).match(reg);
+				if(r != null) return unescape(r[2]);
+				return null;
+		}
+		var openid = GetQueryString('openid');
+		
+        var mask = mui.createMask();
+        var userId = '';
+        var yincang = document.getElementById("yincang")
+        mui.ready(function(){
+        	mask.show();
+        	mui.ajax("/wxUser/Info.webapp", {
+			data: {
+				uw_open_id:openid
+			},
+			dataType: 'json', 
+			type: 'post', 
+			timeout: 10000,
+			success: function(data){
+				mask.close();
+				userId = data.user_id;
+				document.getElementById("contact").href="tel:"+data.ad_phone;
+				if(data.s_name != undefined && data.s_name != ''){
+					document.getElementById("username").innerHTML = data.s_name;
+				}
+					document.querySelector(".user-head-pic").style.backgroundImage = 'URL('+ data.head_photo +')';
+				
+				if(data.s_sex == "男"){
+					document.getElementById("username").className="boy";
+				}else if(data.s_sex == "女"){
+					document.getElementById("username").className="girl";
+				}
+				if(data.infoant.ant == "0"){
+						yincang.style.display = 'none';
+					}else{
+						yincang.style.display = 'block';
+						document.getElementById("infoct").innerHTML=data.infoant.ant;	
+					}
+			},
+			error: function(xhr, type, errorThrown) {
+				mui.toast("网络异常");
+			}
+		});
+        })
+    	
+        
+        mui(".three-btn-container").on("tap", ".three-btn", function() {
+            var id = this.getAttribute("data-href")+"?user_id="+userId;
+        	window.location.assign(encodeURI(id));	
+       		location.href=id;
+        });
+        
+        //主列表点击事件
+        mui('.mui-content').on('tap', '.aaa', function() {
+            var id = this.getAttribute('skip-href')+"?user_id="+userId;
+            window.location.assign(encodeURI(id));	
+       		location.href=id;
+        });
+    </script>
+    </body>
+</html>

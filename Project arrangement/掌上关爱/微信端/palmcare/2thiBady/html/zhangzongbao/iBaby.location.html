@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta http-equiv="cache-control" content="private">
+    <meta http-equiv="expires" content="0">
+    <title>定位轨迹</title>
+    <link rel="stylesheet" href="../../css/mui.min.css">
+    <link href="../../css/mui.picker.css" rel="stylesheet" />
+    <link href="../../css/mui.poppicker.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../../css/mui.dtpicker.css">
+    <link rel="stylesheet" href="../../css/app/common/SuspendedBall.css">
+    <link rel="stylesheet" href="../../css/app/zhangzongbao/iBaby.location.css">
+    <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>
+    <script src="../../js/iBaby2.jquery-2.1.0.min.js"></script>
+    <!--<script src="../../js/mui.min.js"></script>-->
+    <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>
+    <script src="../../js/app/common/cvi_busy_lib.js"></script>
+    <script src="../../js/mui.js"></script>
+    <script src="../../js/mui.picker.js"></script>
+    <script src="../../js/mui.poppicker.js"></script>
+    <script src="../../js/mui.dtpicker.js"></script>
+    <script src="../../js/app/common/PublicJs.js"></script>
+    <script src="../../js/app/common/SuspendedBall.js"></script>
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.3&key=58bcf024f9b7930fc2a43b3554b1672b"></script>
+    <script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
+    <script src="../../js/app/common/Common.js"></script>
+    <!--<style type="text/css">-->
+        <!--.amap-container {-->
+            <!--cursor: url(http://api.map.baidu.com/images/openhand.cur), default;-->
+        <!--}-->
+
+        <!--.amap-drag {-->
+            <!--cursor: url(http://api.map.baidu.com/images/closedhand.cur), default;-->
+        <!--}-->
+    <!--</style>-->
+</head>
+<style type="text/css">
+    .amap-container {
+        cursor: url(http://api.map.baidu.com/images/openhand.cur), default;
+    }
+
+    .amap-drag {
+        cursor: url(http://api.map.baidu.com/images/closedhand.cur), default;
+    }
+</style>
+<body onload="positionInfo()" style="height:46rem">
+<div class="button-group">
+    <input id="setCenter" type="button" class="button" value="改变地图中心点及缩放级别"/>
+</div>
+<div id="map_canvas" style="width: 100%; z-index: 1; height: 100%; position: absolute;"
+     class="amap-container" >
+</div>
+<div>
+    <div class="time" style=";z-index:999">
+        <ul id="timeList" class="mui-table-view" style="z-index: 999;opacity: 1">
+            <li class="mui-table-view-cell mui-media" style="display: flex;justify-content: space-around;align-items: center;opacity: 1" onclick="timeList()">
+                <img id="touxiang" class="mui-media-object mui-pull-left" src="../../img/zhangzongbao/user.jpg" style="...">
+                <div class="mui-media-body" style="width: 80%;">
+                    <span id="userName"></span>
+                    <p class='mui-ellipsis'>最多查看最近7天的轨迹记录</p>
+                </div>
+                <div>
+                    <img class="mui-media-object mui-pull-left" src="../../img/zhangzongbao/more_unfold.png" style="width: 60%;height: auto;margin-left: 60%">
+                </div>
+            </li>
+        </ul>
+    </div>
+    <!--<input  class="mui-action-menu" name="play" id="play" type="button" readonly="true"-->
+    <!--value="播放轨迹"-->
+    <!--style="font-size:18px;-webkit-appearance: none; display: block; -webkit-box-flex: 1; text-align: center; line-height: 44px; padding-left: 10px; border: 0px; background-color: white; color: #96d1ba; z-index: 999">-->
+    <!--<input name="reset" id="reset" type="button" readonly="true"-->
+    <!--value="停止播放"-->
+    <!--style="font-size:18px;-webkit-appearance: none; display: block; -webkit-box-flex: 1; text-align: center; line-height: 44px; padding-left: 10px; border: 0px; background-color: white; color: #96d1ba;z-index: 999">-->
+    <div id = "start" style="position: absolute;top: 40%;width: 100%;padding-left:40%;height: 20%;z-index: 999;visibility: hidden;padding-top: 5%">
+        <img src="../../img/zhangzongbao/开始.png" style="width: 30%">
+    </div>
+    <div id = "pause" style="position: absolute;top: 40%;width: 100%;padding-left:40%;height: 20%;z-index: 999;visibility: hidden;padding-top: 5%">
+        <img src="../../img/zhangzongbao/暂停.png" style="width: 30%">
+
+    </div>
+
+</div >
+<div class="mui-scroll-wrapper" style="width: 90%;margin-left: 5%; margin-bottom:-10%; display: flex;justify-content: space-around;align-items: center;height:4rem;position: absolute;top: 60%;background-color: white;z-index: 999">
+    <div id="demo1" style="width: 10%;">
+        <button type="button" id="play"  class="mui-btn mui-btn-link" style="width: 100%;padding-left:10%;">开始</button>
+    </div>
+    <div id="demo3" style="width: 10%;">
+        <button type="button" id="reset"  class="mui-btn mui-btn-link" style="width: 100%;padding-left:10%;">停止</button>
+    </div>
+</div>
+<!--<input type="button" class="button" value="开始动画" id="start" style="z-index: 999"/>-->
+<!--<input type="button" class="button" value="暂停动画" id="pause" style="z-index: 999"/>-->
+<!--<input type="button" class="button" value="继续动画" id="resume" style="z-index: 999"/>-->
+<!--<input type="button" class="button" value="停止动画" id="stop" style="z-index: 999"/>-->
+<div  id="tsk" style=" z-index: 9999;text-align: center;color: white;font-size:1.5em;background-color:#00AFF0;display: none; position:fixed;margin:auto;left:0; right:0; top:0; bottom:0;width:95%; height:63px;border-radius: 7px;line-height: 63px;"></div>
+<input id="speed" type="hidden" >
+<input id="updateTime" type="hidden" >
+<input id="isGps" type="hidden" >
+</body>
+
+<script type="text/javascript" defer=true>
+
+
+
+    var lineAry = [];//初始化轨迹数组
+    var posAry = [];//初始化定位数组
+    var marker;
+    var polyline;
+    var passedPolyline;
+    var infoWindow;
+    var icon = "http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png";
+    //var icon = "images/iBaby.location/redPoint.png";
+    // =================test===============================
+    var map; //百度地图对象
+    var car; //图标
+    var timer; //定时器
+    var index = 0; //记录播放到第几个point
+    var playBtn, pauseBtn, resetBtn,amapInfoDiv; //几个控制按钮
+    var chooseddates;
+    var choosedday;
+    var choosedata;
+    var timelistflag = true;
+    var time = 7;
+    var start = document.getElementById('play');
+    var reset = document.getElementById('reset');
+    var length;
+    var mask = mui.createMask();
+    var remeber
+function timeList(){
+    if(timelistflag){
+        for(var i=0;i<time;i++){
+            var dd = new Date();
+            dd.setDate(dd.getDate()-i);//获取7天前的日期
+            var weekday=new Array(7)
+            weekday[0]="天"
+            weekday[1]="一"
+            weekday[2]="二"
+            weekday[3]="三"
+            weekday[4]="四"
+            weekday[5]="五"
+            weekday[6]="六"
+            var month = dd.getMonth()+1;
+            var li = "<li id='timeChild"+i+"' class='mui-table-view-cell mui-media' style='display: flex;flex-direction: column;justify-content: space-around;align-items: center;height: 4rem;margin-top: 2%;text-align: center' onclick='comfireClick("+i+")'>"+
+                    "<div class='mui-media-body' style='width: 80%;height:100%;padding-top: 2.5%'>"+
+                    "<p class='mui-ellipsis' style='font-size: 100%'>"+month+'月'+dd.getDate()+"日"+",星期"+weekday[dd.getDay()]+"</p>"+
+                    "</div>"+
+                    "</li>"
+            $("#timeList").append(li);
+            (month<10) ? month='0'+month : month=month;
+            var d = dd.getDate();
+            (d<10) ? d='0'+d : d=d;
+            $("#timeChild"+i).data("startTime",dd.getFullYear()+"-"+month+"-"+d+" "+"00:00")
+            $("#timeChild"+i).data("endTime",dd.getFullYear()+"-"+month+"-"+d+" "+"23:59")
+            timelistflag = false;
+        }
+    }
+    else{
+        for(var i=0;i<time;i++){
+            $("#timeChild"+i).remove();
+            timelistflag = true;
+        }
+    }
+}
+    //进度条定时器
+//    var timer1
+//    function simulateLoading(container, progress,type) {
+//        if(type){
+//            mui(container).progressbar().hide();
+//        }
+//        else {
+//            if (typeof container === 'number') {
+//                progress = container;
+//                container = 'body';
+//            }
+//            timer1 = setTimeout(function () {
+//                progress += (20 / (length+1))
+//                remeber = progress;
+//                mui(container).progressbar().setProgress(progress);
+//                if (progress < 100) {
+//                        simulateLoading(container, progress, false);
+//                } else {
+//                    mui(container).progressbar().hide();
+//                }
+//            }, 200);
+//        }
+//    }
+    //初始化定位信息
+    function positionInfo() {
+
+        var userName = document.getElementById("userName");
+        var touxiang = document.getElementById("touxiang");
+
+        var openid = GetQueryString('openid');
+                mui.ajax(baseURL+"/addchildInfo/babyInfo.webapp", {
+            data:{
+                openid : openid
+            },
+            dataType: 'json', //服务器返回json格式数据
+            type: 'post', //HTTP请求类型
+            timeout: 10000, //超时时间设置为10秒；
+            async:false,
+            success: function(data) {
+                touxiang.src = data.babyInfo.ibaby_s_img;
+                userName.innerText = data.babyInfo.ibaby_s_name;
+            },
+            error: function(xhr, type, errorThrown) {
+                mui.toast("服务器正在维护，请稍后重试！")
+            }
+
+        });
+
+        //var xval=getBusyOverlay('viewport',{color:'white', opacity:0.75, text:'加载中', style:'text-shadow: 0 0 3px black;font-weight:bold;font-size:16px;color:white'},{color:'#59bf6b', size:70, type:'o'});
+        var d = {
+            openid: GetQueryString('openid'),
+            stuId: GetQueryString('stuid'),
+            stat: "none"
+        };
+        var i =1;
+                setTimeout(function () {
+                    mui.ajax(baseURL+"/terminalStatusApp/terminalStatus.webapp", {
+                        data: d,
+                        dataType: 'json', //服务器返回json格式数据
+                        type: 'post', //HTTP请求类型
+                        timeout: 10000, //超时时间设置为10秒；
+                        async:false,
+//                        beforeSend:function(){
+//                            if(xval) {
+//                                xval.settext("加载中，请稍后......");
+//                            }
+//                        },
+                        success: function (data) {
+                           // xval.remove();
+                            console.log(data)
+                            var statCode = data.statCode;
+                            var speed = data.speed;
+                            var updateTime = data.updateTime;
+                            var isGps = data.isGps;
+
+                            document.getElementById("speed").value = speed;
+                            document.getElementById("updateTime").value = updateTime;
+                            document.getElementById("isGps").value = isGps;
+                            if (statCode == '200') {
+                                posAry.push([data.lng, data.lat]);
+                                initChooseModel();
+                                trackInfo(true);
+                            } else {
+                                mui.toast("请求数据失败");
+                            }
+                        },
+                        error: function (xhr, type, errorThrown) {
+                            mui.toast("请求数据失败");
+                        }
+                    });
+                }, 5000);
+    }
+    //请求轨迹
+    function trackInfo(isfirst) {
+        //var xval=getBusyOverlay('viewport',{color:'white', opacity:0.75, text:'加载中', style:'text-shadow: 0 0 3px black;font-weight:bold;font-size:16px;color:white'},{color:'#59bf6b', size:70, type:'o'});
+        var stuId = '6709';
+        var d = {
+            openid: GetQueryString('openid'),
+            stuId: GetQueryString('stuid'),
+            startTime: choosedata.startTime,
+            endTime: choosedata.endTime
+        };
+        console.log("startTime"+choosedata.startTime)
+        console.log("endTime"+choosedata.endTime)
+        setTimeout(function() {
+            mui.ajax(baseURL+"/historyTrackApp/detailTrack.webapp", {
+                data: d,
+                dataType: 'json', //服务器返回json格式数据
+                type: 'post', //HTTP请求类型
+                timeout: 10000, //超时时间设置为10秒；
+                async:false,
+               /*  beforeSend:function(){
+                    if(xval) {
+                        xval.settext("加载中，请稍后......");
+                    }
+                }, */
+                success: function(data) {
+                    //xval.remove();
+                    console.log(data)
+                    var statCode = data.statCode;
+                    var totalSize = data.totalSize;
+
+                    if ( statCode == '200' ) {
+
+                        lineAry.splice(0,lineAry.length);
+                        mui.each(data.trackList, function(i, item) {
+                            lineAry.push([item.lng,item.lat]);
+                        });
+                        init();
+                        drawGuiji(isfirst,data.trackList);//绘制轨迹
+                    }else{
+                        mui.toast("请求数据失败");
+                    }
+                },
+                error: function(e) {
+                    mui.toast("请求数据失败");
+
+                }
+            });
+        }, 100);
+    }
+    //地图展示
+    function init() {
+        playBtn = document.getElementById("play");
+        resetBtn = document.getElementById("reset");
+
+        var speedVal = document.getElementById("speed").value;
+        var updateTimeVal = document.getElementById("updateTime").value;
+        var isGpsVal;
+        if (document.getElementById("isGps").value == 1) {
+            isGpsVal = "GPS卫星定位";
+        } else if(document.getElementById("isGps").value == 0){
+            isGpsVal = "基站定位";
+        } else {
+            isGpsVal = "wifi定位";
+        }
+
+        map = new AMap.Map('map_canvas', {
+            zoom: 17,
+            center: posAry[0],
+//            center: [116.397428, 39.90923],
+        });
+
+        //添加地图控件
+        AMap.plugin(['AMap.ToolBar'],function(){
+            map.addControl(new AMap.ToolBar());
+        })
+        openInfo(speedVal,updateTimeVal,isGpsVal);
+    }
+
+//选择时间
+    function comfireClick(i){
+        //console.log($("#timeChild"+i).data("startTime"));
+        choosedata.startTime = $("#timeChild"+i).data("startTime");
+        choosedata.endTime = $("#timeChild"+i).data("endTime");
+        for(var i=0;i<time;i++){
+            $("#timeChild"+i).remove();
+        }
+        timelistflag = true;
+        //console.log("choosedata.startTime1:"+choosedata.startTime+","+"choosedata.endTime1:"+choosedata.endTime)
+        trackInfo(true);
+        var container = mui("#demo2 p");
+        if (container.progressbar({
+                    progress: 0
+                }).show()) {
+            simulateLoading(container,0,true);
+        }
+        $("#start").css("visibility","hidden")
+        $("#pause").css("visibility","hidden")
+    }
+    // 初始化时间
+    function initChooseModel() {
+        var date = new Date();
+        choosedata = new Object();
+        var cusdate = new Date();
+        choosedata.year = date.getFullYear();
+        choosedata.month = date.getMonth()+1;
+        choosedata.day = date.getDate();
+        choosedata.startTime="00:00";
+        choosedata.endTime="23:59";
+        var subdate = new Date();
+        var y = subdate.getFullYear();
+        var m = subdate.getMonth()+1;
+        (m<10) ? m='0'+m : m=m;
+        var d = subdate.getDate();
+        (d<10) ? d='0'+d : d=d;
+        choosedata.startTime=y+"-"+m+"-"+d+" 00:00";
+        choosedata.endTime=y+"-"+m+"-"+d+" 23:59";
+    }
+
+    function drawGuiji(isfirst) {
+        if (lineAry.length==0) {
+            mui.toast("该时间段没有查询到轨迹信息");
+        }
+        if(isfirst==false){map.clearMap();}
+        marker = new AMap.Marker({
+            map: map,
+            position:lineAry[0],
+            icon: "../../img/zhangzongbao/圆点中.png",
+            offset: new AMap.Pixel(-26, -13),
+            autoRotation: true
+        });
+        // 绘制轨迹
+        var polyline = new AMap.Polyline({
+            map: map,
+            path: lineAry,
+            strokeColor: "#00A",  //线颜色
+            // strokeOpacity: 1,     //线透明度
+            strokeWeight: 3,      //线宽
+            // strokeStyle: "solid"  //线样式
+        });
+        var passedPolyline = new AMap.Polyline({
+            map: map,
+            // path: lineArr,
+            strokeColor: "#F00",  //线颜色
+            // strokeOpacity: 1,     //线透明度
+            strokeWeight: 3,      //线宽
+            // strokeStyle: "solid"  //线样式
+        });
+        marker.on('moving',function(e){
+            passedPolyline.setPath(e.passedPath);
+        })
+        map.setFitView();
+        console.log("lineAry.length:"+lineAry.length)
+        var barFlag = true
+        var movieFlag = 0
+        AMap.event.addDomListener(start, 'click', function() {
+            length = lineAry.length;
+            console.log("length:"+length)
+            if (lineAry.length > 0){
+               if(barFlag) {
+                   $("#pause").css("visibility","hidden")
+                   $("#start").css("visibility","visible")
+                   setTimeout(function () {
+                    $("#start").css("visibility","hidden")
+                    mask.close();
+                }, 500);
+                   //轨迹播放结束时重置进度条
+//                   timer2 = setTimeout(function(){
+//                       timeCount++;
+//                       window.clearInterval(timer1);
+//                       $("#play").html("开始");
+//                       marker.stopMove();
+//                       barFlag = true
+//                   },1000*(lineAry.length+3))
+                   //轨迹播放
+                   marker.moveAlong(lineAry, 500);
+                   //进度条播放
+                   //var container = mui("#demo2 p");
+//                   if (container.progressbar({
+//                               progress: 0
+//                           }).show()) {
+//                       simulateLoading(container, 0, false);
+//                   }
+                   $("#play").html("暂停");
+                   barFlag = false
+               }
+                else{
+                   if(movieFlag==0){
+                       mask.show()
+                       $("#start").css("visibility","hidden")
+                       $("#pause").css("visibility","visible")
+                       $("#play").html("继续");
+                       marker.pauseMove();
+                       movieFlag=1
+                       //window.clearInterval(timer2);
+                   }
+                   else if(movieFlag==1){
+                       setTimeout(function(){
+                           $("#pause").css("visibility","hidden")
+                           mask.close()
+                       },500)
+                       marker.resumeMove();
+                       $("#play").html("暂停");
+                       //恢复计时
+//                       time2 = setTimeout(function(){
+//                           timeCount++;
+//                           window.clearTimeout(timer1);
+//                           $("#play").html("开始");
+//                           marker.stopMove();
+//                           barFlag = true
+//                       },1000*(lineAry.length-timeCount))
+                     //  var container = mui("#demo2 p");
+//                       if (container.progressbar({
+//                             progress: 0
+//                           }).show()) {
+//                       simulateLoading(container,remeber,false);
+//                  }
+                       movieFlag=0
+                   }
+               }
+                }
+        }, false);
+        AMap.event.addDomListener(reset,'click', function() {
+//            window.clearInterval(timer1);
+//            window.clearInterval(timer2);
+            $("#play").html("开始");
+            marker.stopMove();
+            barFlag = true
+            timeCount=0
+        }, false);
+        playBtn.disabled = false;
+    }
+    //显示窗口信息
+    function openInfo(speed,time,model) {
+        //构建信息窗体中显示的内容
+        var info = [];
+        info.push("<div><div><img style=\"float:left;\" src=\" http://webapi.amap.com/images/autonavi.png \"/></div> ");
+        info.push("<div style=\"padding:0px 0px 0px 4px;font-size: 12px;\"><b>速度:</b>"+speed +" km/h");
+        info.push("<b>时间:</b>"+time);
+        info.push("<b>定位:</b>"+model+"</div>");
+        infoWindow = new AMap.InfoWindow({
+            content: info.join("<br/>"),  //使用默认信息窗体框样式，显示信息内容
+            offset: new AMap.Pixel(20, 10)
+        });
+        infoWindow.open(map, posAry[0]);
+        console.log(posAry[0]+"C");
+    }
+</script>
+</html>

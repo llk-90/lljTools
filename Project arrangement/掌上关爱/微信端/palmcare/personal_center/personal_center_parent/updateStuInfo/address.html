@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>地址</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <script src="../../../js/config.js" type="text/javascript" charset="utf-8"></script>
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../../../css/mui.min.css">
+		<link rel="stylesheet" href="../../../css/common.css" />
+		<link rel="stylesheet" href="//cdn.bootcss.com/weui/0.4.3/style/weui.min.css">
+        <link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/0.8.0/css/jquery-weui.min.css">
+		<style>
+			html,
+            body {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+            }
+			body{
+            	background-color: #FFFFFF;
+            }
+            .mui-input-row input {
+                height: 50px;
+                float:left;
+        		background:none;
+            }
+            .mui-input-row {
+                height: 50px !important;
+            }
+            .mui-content-padded {
+                margin:2%;
+            }
+            .btn {
+                width: 96%;
+                height: 50px;
+                background-color: #197FEE;
+                color: #FFFFFF;
+                font-size: larger;
+                margin-left: 2%;
+                margin-top: 5%;
+            }
+		</style>
+	</head>
+
+	<body style="padding-top: 10%;"> 
+		<div class="mui-content-padded">
+            <div class="mui-input-row" >
+                <input id="address" type="text"/>
+            </div>
+        </div>
+		<button id="btnSave" class="btn" >保存</button>
+		
+		<script src="../../../js/mui.min.js"></script>
+		<script src="../../../js/loginValidate.js" type="text/javascript" charset="utf-8"></script>
+		<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+    	<script src="//cdn.bootcss.com/jquery-weui/0.8.0/js/jquery-weui.min.js"></script>
+		<script>
+			mui.init({
+				swipeBack: true //启用右滑关闭功能
+			});
+			var mask = mui.createMask();
+			function getvalue(param) {
+				var str = decodeURI(window.location.search);
+				if(str.indexOf(param) != -1) {
+					var pos_start = str.indexOf(param) + param.length + 1;
+					var pos_end = str.indexOf("&", pos_start);
+					if(pos_end == -1) {
+						return str.substring(pos_start);
+					} else {
+						$.alert("没有此值~~");
+					}
+				}
+			}
+			document.getElementById("address").value = getvalue('address');
+			var new_address = document.getElementById("address");
+
+			function localcheck() {
+				if(new_address.value == "") {
+					mui.toast('请填写地址！');
+					return false;
+				} else if(new_address.value.length > 50) {
+					mui.toast('请填写30字以内的地址！');
+					return false;
+				}
+				return true;
+			}
+			
+			document.getElementById("btnSave").addEventListener('tap', function() {
+				if(localcheck()) {
+					mask.show();
+					mui.ajax("/messageedit/updateStuInfo.webapp", {
+						data: {
+							address: new_address.value
+						},
+						dataType: 'json', 
+						type: 'post', 
+						timeout: 10000, 
+						success: function(data) {
+							mask.close();
+							if(data.msg == "success") {
+								$.alert("修改成功",function(){
+									window.history.back();
+								});
+							} else {
+								$.alert("修改失败！");
+							}
+						},
+						error: function(xhr, type, errorThrown) {
+							$.alert("网络异常");
+						}
+					});
+				}
+			});
+		</script>
+	</body>
+
+</html>

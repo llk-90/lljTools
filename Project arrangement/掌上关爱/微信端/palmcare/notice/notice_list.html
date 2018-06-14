@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>班级通知</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <script src="../js/config.js" type="text/javascript" charset="utf-8"></script>
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<!--App自定义的css-->
+		<link rel="stylesheet" type="text/css" href="../css/app.css" />
+		<style>
+			.mid {
+				margin: 0px 0px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+				height: 16px;
+				background-color: #eaeaea !important;
+			}
+			/*.mui-bar-nav h3 {
+				line-height: 44px;
+				margin: 0;
+			}
+			
+			.mui-bar-nav h6 {
+				line-height: 44px;
+				margin: 0;
+			}*/
+			
+			.head h3 {
+				line-height: 44px;
+				margin: 0;
+			}
+			
+			.head h6 {
+				line-height: 44px;
+				margin: 0;
+			}
+			
+			.head {
+				height: 44px;
+				margin: 0px 15px 0px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--<div class="mui-bar mui-bar-nav">
+				<div class="mui-pull-left">
+					<h3>高三三班</h3>
+				</div>
+				<div class="mui-pull-right">
+					<h6>xx市第三中学教务处</h6>
+				</div>
+			</div>-->
+		<div class="mui-content mui-fullscreen" style="background-color: #FFFFFF;">
+			<div class="head">
+				<div class="mui-pull-left">
+					<h3 id="className"></h3>
+				</div>
+				<div class="mui-pull-right">
+					<h6 id="school"></h6>
+				</div>
+			</div>
+			<div class="mid">
+			</div>
+			<div class="mui-scroll">
+				<div class="insert-pointer">
+
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/loginValidate.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/template.js" type="text/javascript" charset="utf-8"></script>
+	<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+	<script src="../js/zepto.min.js" type="text/javascript" charset="utf-8"></script>
+	<script id="data-temp" type="text/html">
+		<ul class="mui-table-view">
+			<li class="mui-table-view-cell mui-media">
+				<div class="mui-media-body">
+					<p class="mui-pull-left" style="font-size:larger;color: #7896dc;font-weight:bold;">
+					   {{n_title}}
+					</p>
+					<!--<font color="#7896dc" size="">{{n_title}}</font>-->
+					<p class="mui-pull-right jubao" style="font-size:medium;color: #FF0000;font-weight:bold;">我要举报</p>
+				</div>
+				<div class="mui-media-body">
+					<img class="mui-media-large mui-pull-left mui-col-xs-4 mui-col-sm-4 showLarge" src="{{n_pic_url}}">
+
+					<div class="mui-media-body mui-pull-right mui-col-xs-8 mui-col-sm-8 mui-text-right">
+						<p>{{n_content}}</p>
+					</div>
+				</div>
+				<div style="margin: 0px 10px 0px;">
+					<p class="mui-pull-left" style="margin-left: -15px;">
+						{{if n_type == 1}} 【老师通知】 {{else if n_type== 2}} 【学校通知】 {{/if}}
+					</p>
+					<p class="mui-pull-right" style="margin-right: -13px;">{{create_time}}</p>
+				</div>
+			</li>
+		</ul>
+	</script>
+	<script type="text/javascript">
+			var timestamp = '';
+			var nonceStr = '';
+			var signature = '';
+			var appid = '';
+			var table = $(".insert-pointer");
+			function getConfig() {
+				var url = location.href.split('#')[0];
+				var d = {
+					url: url
+				};
+				setTimeout(function() {
+					mui.ajax("/getConfig/getConfig.webapp", {
+						data: d,
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						timeout: 10000, //超时时间设置为10秒；
+						success: function(data) {
+							appid = data.appid;
+							timestamp = data.timestamp;
+							nonceStr = data.nonceStr;
+							signature = data.signature;
+							dossa();
+						},
+						error: function(xhr, type, errorThrown) {
+						}
+					});
+				}, 100);
+			}
+		function dossa() {
+			wx.config({
+				debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+				appId: appid, // 必填，公众号的唯一标识
+				timestamp: timestamp, // 必填，生成签名的时间戳
+				nonceStr: nonceStr, // 必填，生成签名的随机串
+				signature: signature, // 必填，签名，见附录1
+				jsApiList: [
+						'previewImage',
+					] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+			});
+			wx.ready(function() {
+				mui(".mui-scroll").on("tap", ".showLarge", function(e) {
+					var url = 'http://www.guanai100.cn'+this.getAttribute("src");
+					var arr = [url];
+				    wx.previewImage({
+				        current: url, // 当前显示图片的http链接
+				        urls: arr // 需要预览的图片http链接列表
+				    });
+				});
+				
+				mui(".mui-scroll").on("tap", ".jubao", function(e) {
+					var result = confirm("举报？");
+                    if(result) {
+                        $.getJSON("/appuser/updateReportCount.webapp", {
+//                          userId: lm_send_user_id
+                        }, function(data) {
+                            if (data&&data.success) {
+                                alert("举报成功");
+                            }else{
+                                alert("操作失败");
+                            }
+                        });
+                    }
+				});
+			});
+			wx.error(function(res) {
+			});
+		}
+	</script>
+	<script>
+		mui.init(list());
+		
+		function GetQueryString(name) {
+			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+			var r = window.location.search.substr(1).match(reg);
+			if(r != null) return unescape(r[2]);
+			return null;
+		}
+
+		function list() {
+			var table = document.body.querySelector('.insert-pointer');
+			var openid = GetQueryString('openid');
+			var d = {
+				openid: openid
+			};
+			setTimeout(function() {
+				mui.ajax("/noticeApp/list.webapp", {
+					data: d,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						var school = data.school;
+						var className = data.className;
+						document.getElementById("school").innerText = school + "教务系统";
+						document.getElementById("className").innerText = className;
+						mui.each(data.list, function(i, item) {
+							var html = template("data-temp", item);
+							var li = document.createElement('div');
+							/*li.className = 'sso';*/
+							li.setAttribute("data-id", item.l_id);
+							li.innerHTML = html;
+							table.insertBefore(li, table.firstChild);
+						});
+						getConfig();
+					},
+					error: function(xhr, type, errorThrown) {}
+				});
+			}, 100);
+		}
+//		var timeOutEvent = 0;
+//      $(function() {
+//          table.on("touchstart", ".mui-table-view", function(e) {
+//              timeOutEvent = setTimeout(function() {
+//                  timeOutEvent = 0;
+//                  var result = confirm("举报？");
+//                  if(result) {
+//                      $.getJSON("/child/appuser/updateReportCount.webapp", {
+////                          userId: lm_send_user_id
+//                      }, function(data) {
+//                          if (data&&data.success) {
+//                              alert("举报成功");
+//                          }else{
+//                              alert("操作失败");
+//                          }
+//                      });
+//                  }
+//              }, 500);
+//          });
+//          table.on("touchmove", ".mui-table-view", function() {
+//              clearTimeout(timeOutEvent);
+//              timeOutEvent = 0;
+//          });
+//          table.on("touchend", ".mui-table-view", function() {
+//              clearTimeout(timeOutEvent);
+//              if(timeOutEvent != 0) {}
+//              return false;
+//          });
+//      });
+	</script>
+	
+
+</html>

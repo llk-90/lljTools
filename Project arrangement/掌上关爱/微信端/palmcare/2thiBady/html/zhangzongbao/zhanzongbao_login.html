@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>绑定用户</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script src="../../../js/config.js" type="text/javascript" charset="utf-8"></script>
+		<!--标准mui.css-->
+		<link href="../../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../../css/common.css" type="text/css" charset="utf-8" />
+		<style>
+			html,
+			body {
+				margin: 0;
+				padding: 0;
+				height: 100%;
+			}
+			
+			body {
+				background-color: #FFFFFF;
+			}
+			
+			.mui-input-row input {
+				height: 50px;
+				float: left;
+				background: none;
+				text-indent: 32px;
+			}
+			
+			.mui-input-row {
+				height: 50px !important;
+			}
+			
+			.mui-content-padded {
+				margin: 0px 25px;
+				padding-bottom: 20px;
+			}
+			
+			.btn {
+				width: 90%;
+				height: 60px;
+				border: 2;
+				background-color: #197FEE;
+				color: #FFFFFF;
+				font-size: larger;
+				border-radius: 5px;
+				margin-left: 5%;
+				margin-top: 10%;
+			}
+			.mui-btn {
+                padding: 10px;
+                height: 50px;
+                border: 0;
+                background-color: #FF999A;
+                color: #FFFFFF;
+                margin-top: -5px;
+            }
+		</style>
+	</head>
+
+	<body style="padding-top: 15%;">
+		<div style="margin-top: 10%;">
+			<div class="mui-content-padded">
+				<div style="height: 30px;">
+					<span id="s_info"></span>
+				</div>
+				
+			</div>
+			<div class="mui-content-padded">
+				<div class="mui-input-row" style=" background:url(../../../css/svg/username.svg) no-repeat 10px center !important;">
+					<input id="phone" type="text" style="border-radius: 5px 5px 5px 5px;" maxlength="11" placeholder="请输入手机号" value="">
+				</div>
+			</div>
+			<div class="mui-content-padded" style="float: left;width:90%">
+				<div class="mui-input-row" style=" background:url(../../../css/svg/verificationCode.svg) no-repeat 10px center !important; width: 60%;float: left;">
+					<input id="code" type="text" style="border-radius: 5px 5px 5px 5px;" placeholder="请输入手机验证码" value="">
+				</div>
+				<div class="mui-button-row"style="float: left;width:40%">
+                        <button id="get_code" style="align:left ;" type="button" class="mui-btn " onclick="sendMessage(60);">获取验证码</button>
+                </div>
+			</div>
+			       
+			<div class="mui-content-padded">
+				<div class="mui-input-row" style="background:url(../../../css/svg/password.svg) no-repeat 10px center !important;">
+					<input id="pass" type="password" class="text" style="border-radius: 5px 5px 5px 5px; " placeholder='请输入密码' value=""/>
+				</div>
+			</div>
+			
+			<div class="mui-content-padded" style="float: left;width:90%">
+				<div class="mui-input-row" style=" background:url(../../../css/svg/verificationCode.svg) no-repeat 10px center !important; width: 60%;float: left;">
+					<input id="imgcode" type="text" style="border-radius: 5px 5px 5px 5px;" placeholder="请输入右侧验证码" value="">
+				</div>
+				<div class="mui-button-row"style="float: left;width:40%">
+                    <input type="button" style="height: 40px; width: 104px; margin-bottom: 0px; border-radius: 5px; border-size: 0px;background-color:gray;color:white;letter-spacing:5px;" id="codeImg" value="点击更换" onclick="changeCode(4)"/>
+                </div>
+			</div>
+
+		</div>
+		<div class="mui-content-padded"   style="float:right;padding-bottom:0px;">
+			<a class="mui-navigate" href="javascript:confirm();"  open-type="common" id="contact" style="text-decoration:underline;">
+                <span>联系客服</span>
+            </a>
+		</div>
+		
+		<button id='login' class="btn">绑&emsp;定</button>
+
+		<script src="../../../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../js/app.js"></script>
+		<script src="../../../js/common.js"></script>
+        <script src="../../../js/md5.js"></script>
+        <script src="../../../js/sha1.js"></script>
+		<!-- <script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script> -->
+	   <script src="../../js/iBaby2.jquery-2.1.0.min.js"></script>
+		<script src="../../../js/jquery.base64.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			//http://aidi.tunnel.qydev.com/WxTest/getOpenid.do?redUrl=http%3A%2F%2Faidi.tunnel.qydev.com%2Fpalmcare%2Flogin.html
+			var mask = mui.createMask();
+			function GetQueryString(name) {
+				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+				var r = window.location.search.substr(1).match(reg);
+				if(r != null) return unescape(r[2]);
+				return null;
+			}
+			mui.ready(function() {
+				var openid = GetQueryString('openid');
+				mask.show();
+				 mui.ajax("/WxTest/bindingCheck.webapp", {
+					data: {
+						OPENID: openid
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						mask.close();
+						if(data.result == 'error') {
+							document.getElementById('login').disabled = true;
+							if(GetQueryString("target")=="HJY"){
+								document.getElementById('hjy_a').style.display = "none";
+								document.getElementById('hjy_a2').style.display = "";
+								document.getElementById('login').disabled = true;
+								//alert('绑定和教育账号成功！');
+								mui.toast('绑定和教育账号成功！');
+							}else{
+								//window.location.href= "Palm_treasure.html?openid=" + openid;
+								//alert('已绑定用户！');
+								initInfo();
+							}
+						}
+					},
+					error: function() {
+						//mui.toast("网络异常");
+					}
+				});
+			})
+			var s_info = document.getElementById("s_info");
+			document.getElementById('phone').addEventListener('input', function() {
+				//如果不为空，清除
+				if(s_info.innerHTML!=""){
+					s_info.innerHTML="";
+				}
+				if(this.value.length==11){
+					
+					//mask.show();
+					mui.ajax("/WxTest/bindingGetStudent.webapp", {
+						data: {
+							PHONE: this.value
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						timeout: 10000, //超时时间设置为10秒；
+						success: function(data) {
+							mask.close();
+							if(data.result == 'success') {
+								 if(data.userType !="2"){
+									s_info.innerHTML='学生姓名：'+data.sName+' 班级名称:'+data.zName;
+								}
+								 //alert(data.zName+";"+data.sName)
+							} else if(data.result == 'error') {
+								//alert('用户不存在！');
+								mui.toast('用户不存在！');
+							}
+						},
+						error: function() {
+							mui.toast("网络异常");
+						}
+					});
+				}
+				
+			});
+			$.base64.utf8encode = true;
+			document.getElementById('login').addEventListener('tap', function() {
+				var phone = document.getElementById('phone').value;
+				var pass = document.getElementById('pass').value;
+				var code = document.getElementById('code').value;
+				var imgcode = document.getElementById('imgcode').value;
+				var realimgcode = document.getElementById('codeImg').value;
+				
+				if(phone == "") {
+					//alert('请输入手机号！');
+					mui.toast('请输入手机号！');
+				}else if(code == "") {
+					//alert('请输入手机验证码！');
+					mui.toast('请输入手机验证码！');
+				} else if(pass == "") {
+					//alert('请输入密码！');
+					mui.toast('请输入密码！');
+				}else if(imgcode == "") {
+					//alert('请输入图片验证码！');
+					mui.toast('请输入图片验证码！');
+				}else if(imgcode!=realimgcode) {
+					//alert("图片验证码错误！");
+					mui.toast("图片验证码错误！");
+					document.getElementById('login').disabled = false;
+					changeCode();
+				}
+				else {
+					var openid = GetQueryString('openid');
+					document.getElementById('login').disabled = true;
+					var newPwdValue = $.base64.btoa(pass);
+					newPwdValue += "hkY5sn";
+					newPwdValue = $.base64.btoa(newPwdValue);
+					var oldPwd1 = hex_sha1(getPwd(8));
+					openid = openid+ "hkY5sn" + newPwdValue;
+					mask.show();
+					mui.ajax("/WxTest/binding.webapp", {
+						data: {
+							PHONE: phone,
+							PASSWORD: oldPwd1,
+							OPENID: openid,
+							CODE:code,
+							IMGCODE:imgcode
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						timeout: 10000, //超时时间设置为10秒；
+						success: function(data) {
+							mask.close();
+							if(data.result == 'success') {
+								if(data.u_type == '2') {
+									//alert('绑定教师成功！');
+									mui.toast('绑定教师成功！');
+								} else if(data.u_type !='2') {
+									setTimeout(
+											mui.toast("绑定家长成功！"),5000);
+									initInfo();
+								}
+							} else if(data.result == 'error1') {
+								//alert('手机号或密码错误！');
+								mui.toast('手机号或密码错误！');
+								document.getElementById('login').disabled = false;
+							} else if(data.result == 'error2') {
+								//alert('该微信号已绑定其他用户！');
+								mui.toast('该微信号已绑定其他用户！');
+								document.getElementById('login').disabled = false;
+							} else if(data.result == 'error3') {
+								//alert("该教师已被其他微信号绑定！");
+								mui.toast("该教师已被其他微信号绑定！");
+								document.getElementById('login').disabled = false;
+							}else if(data.result == 'error4') {
+								//alert("手机验证码错误！");
+								mui.toast("手机验证码错误！");
+								document.getElementById('login').disabled = false;
+							}
+							else if(data.result == 'error5') {
+								//alert("图片验证码错误！");
+								mui.toast("图片验证码错误！");
+								document.getElementById('login').disabled = false;
+							}
+						},
+						error: function() {
+							mui.toast("网络异常");
+						}
+					});
+
+				}
+			})
+			/*****************************点击获取验证码************************************/
+			var phoneNum = document.getElementById("phone");
+			//var p1 = /^(13[0-9]|15[0-9]|18[0-9])\d{8}$/;
+			var p1 = /^(13[0-9]|14[0-9]|15[0-9]|18[0-9])\d{8}$/;
+            var issend = true;
+            var verifyCode = "";
+            //↓↓↓↓修改 4.17，使刷新不会中断倒计时↓↓↓↓
+            var maxtime;
+        	if(window.name==''){
+        		maxtime = 2*60;
+        	}else{
+        		maxtime = window.name;
+        		sendMessage(maxtime);
+        	}
+        	//↑↑↑↑修改 4.17，使刷新不会中断倒计时↑↑↑↑
+			function sendMessage(t) {
+				var openId = GetQueryString('openid');
+                if (issend) {
+                    if (phoneNum.value != "") {
+                        if (!p1.test(phoneNum.value)) {
+                            phoneNum.value = '';
+                            plus.nativeUI.toast('请输入正确的手机号码');
+                            phoneNum.focus();
+                            return;
+                        } else {
+                            issend = false;
+                            mui.ajax('/WxTest/regsendsms.webapp', {
+                                data: {
+                                    PHONE: phoneNum.value,
+                                    openId:openId
+                                },
+                                dataType: 'json',
+                                type: 'post',
+                                timeout: 10000,
+                                success: function(data) {
+                                    if (data.result == 'notexist') {
+                                        //alert("用户不存在!");
+                                        mui.toast("用户不存在!");
+                                        issend = true;
+                                        return;
+                                    }
+                                    if (data.result == 'success') {
+                                        //alert("验证码发送成功!");
+                                        mui.toast("验证码发送成功!");
+                                        //verifyCode = data.verifyCode;
+                                        for (var i = 1; i <= t; i++) {
+                                        	window.setTimeout("update(" + i + "," + t + ")", i * 1000);
+                                        }
+                                    } else {
+										if(data.result == '验证码已超过当日次数！'){
+                                    		//alert("验证码已超过当日次数！");
+                                    		mui.toast("验证码已超过当日次数！");
+                                    	}else{
+                                    		//alert("验证码发送失败!");
+                                    		mui.toast("验证码发送失败!");
+                                    	}
+                                    }
+                                },
+                                error: function(xhr, type, errorThrown) {
+                                    mui.toast('网络异常，稍后再试!');
+                                }
+                            });
+                        }
+                    } else {
+                       // alert('手机号码不能为空!');
+                        mui.toast('手机号码不能为空!');
+                        return;
+                    }
+                }
+            }
+			/*************************图片验证码************************/
+			$(document).ready(function() {
+				changeCode();
+			});
+
+			function changeCode() {
+				$("#codeImg").attr("value", generateMixed(4));
+			}
+			
+			function genTimestamp() {
+				var time = new Date();
+				return time.getTime();
+			}
+			function generateMixed(n) {
+				var chars = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+				var res = "";
+				for(var i = 0; i < n ; i ++) {
+					var id = Math.ceil(Math.random()*61);
+					res +=chars[id];
+				}
+				return res;
+			}
+            /*************************重新发送************************/
+            var getCode = document.getElementById("get_code");
+
+            function update(num, t) {
+                if (num == t) {
+                    getCode.innerHTML = '重新发送';
+                    issend = true;
+                } else {
+                    var time = t - num;
+                    getCode.innerHTML = time + '秒后重发';
+                }
+            }
+            function getPwd(len) {
+		　　len = len || 32;
+		　　var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';
+		　　var maxPos = $chars.length;
+		　　var pwd = '';
+		　　for (i = 0; i < len; i++) {
+		　　　　pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+		　　}
+		　　return pwd;
+		}
+            
+             //发起网络请求
+            function initInfo() {
+               var openId  =  GetQueryString('openid');
+      		//var xval=getBusyOverlay('viewport',{color:'white', opacity:0.75, text:'加载中', style:'text-shadow: 0 0 3px black;font-weight:bold;font-size:16px;color:white'},{color:'#59bf6b', size:70, type:'o'});
+         	mui.ajax("/addchildInfo/babyInfo.webapp", {
+             data:{
+                 openid : openId
+             },
+             dataType: 'json', //服务器返回json格式数据
+             type: 'post', //HTTP请求类型
+             timeout: 10000, //超时时间设置为10秒；
+             async:false,
+         /*     beforeSend:function(){
+            if(xval) {
+                     xval.settext("加载中，请稍后......");
+                 } 
+             }, */ 
+             success: function(data) {
+                 //xval.remove();
+                 console.log(data)
+                 if(data.result == "success"){
+                     //configPage(data.babyInfo);
+                	 window.location.href= "Palm_treasure.html?openid=" + openId
+                 } else if(data.result == "empty"){
+                    window.location.href= "iBaby.bind.html?openid=" + openId;
+                 }/*  else {
+                     //mui.toast(data.result.replace(/注册/,"激活"))
+                 } */
+             },
+             error: function(xhr, type, errorThrown) {
+                 mui.toast("服务器正在维护，请稍后重试！")
+             }
+
+         });
+   }
+            
+        // 联系客服;
+        function confirm(){
+              mui.alert('86-400-000-1111', '客服电话', function() {
+              });
+        };
+        //点击联系客服弹出框上的“否”按钮'
+        function cancle(){
+        };
+		</script>
+	</body>
+
+</html>

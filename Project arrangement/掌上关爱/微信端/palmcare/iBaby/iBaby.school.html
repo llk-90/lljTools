@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta http-equiv="cache-control" content="private">
+    <meta http-equiv="expires" content="0">
+    <title>校园管理</title>
+    <link rel="stylesheet" href="../iBaby/css/iBabyindex.css">
+    <script src="js/iBaby.location/mui.min.js"></script>
+    <link rel="stylesheet" href="css/mui.min.css">
+    <link rel="stylesheet" href="css/mui.css">
+    <script src="js/iBady.Common.js"></script>
+    <script src="js/iBaby.location/mui.dtpicker.js"></script>
+    <link rel="stylesheet" href="css/mui.dtpicker.css">
+
+    <script src="js/iBaby.location/mui.poppicker.js"></script>
+    <link rel="stylesheet" href="css/mui.poppicker.css">
+    <script src="js/iBaby.location/mui.picker.js"></script>
+    <link rel="stylesheet" href="css/mui.picker.css">
+    <style type="text/css">
+        #bangding{
+            color:white;
+            font-size:15px;
+            float: right;
+            color: yellow;
+        }
+        #usename{
+            color:white;
+            font-size:22px;
+            margin-right:30px;
+        }
+        #img_haoma {
+            padding-right: 10px;
+        }
+
+
+
+    </style>
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="js/iBaby.school.js"></script>
+
+
+</head>
+
+
+<body id="ibaby_id_1" onload="initSchool()">
+<section  id="ibaby_id_2" class="sys-cont moni-box">
+    <section style="height:44px; background-color:#96d1ba; display:-webkit-box; -webkit-box-align:center; -webkit-box-pack:center; color:#ffffff; font-size:16px; font-weight:bold;">
+        校园管理
+    </section>
+    <div style="vertical-align: middle;height: 30px;line-height: 30px"><b style="margin-left: 10px;color: gray">上课时间段</b></div>
+    <!------------------------------第一层------------------------------------------------>
+    <div id="ibaby_id_16" class="m-box ">
+        <div id="jianhu">
+            <div class="box-ct">
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;">
+                    <label style="display : inline-flex;align-items:center;font-size: 15px">
+                        上课时间段禁用</label>
+                    <label  style="font-size:10px;color: #999; ">
+                        <img name="0" id="swith-0" src="../iBaby/images/iBaby.common/Switch-off.png"
+                             style="margin-bottom:-8px;" onclick="btnClick('vaild',0)" ondragend="btnClick('vaild',0)"></label>
+                </p>
+
+
+                <!-- -----------------------------上课时间段禁用 ----------------------------------------  -->
+
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;" onclick="showTimeConfig(0)">
+                    <label style="display : inline-flex;align-items:center;font-size: 15px">
+                        星期一</label>
+                    <label  style="font-size:10px;color: #999; ">
+                    <img  src="../iBaby/images/iBaby.common/right-arr.png"
+                         style="margin-bottom: -3px"></label>
+                </p>
+
+                <!-- -----------------------------星期一----------------------------------------  -->
+
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;"onclick="showTimeConfig(1)" >
+                    <label style="display : inline-flex;align-items:center;font-size: 15px">
+                        星期二</label>
+                    <label  style="font-size:10px;color: #999; ">
+                    <img  src="../iBaby/images/iBaby.common/right-arr.png"
+                         style="margin-bottom: -3px"></label>
+                </p>
+
+                <!-- -----------------------------星期二----------------------------------------  -->
+
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;" onclick="showTimeConfig(2)">
+                    <label style="display : inline-flex;align-items:center;font-size: 15px">
+                        星期三</label>
+                    <label  style="font-size:10px;color: #999; ">
+                    <img  src="../iBaby/images/iBaby.common/right-arr.png"
+                         style="margin-bottom: -3px"></label>
+                </p>
+
+                <!-- -----------------------------星期三----------------------------------------  -->
+
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;" onclick="showTimeConfig(3)">
+                    <label style="display : inline-flex;align-items:center;font-size: 15px">
+                        星期四</label>
+                    <label  style="font-size:10px;color: #999; ">
+                    <img  src="../iBaby/images/iBaby.common/right-arr.png"
+                         style="margin-bottom: -3px"></label>
+                </p>
+
+                <!-- -----------------------------星期四----------------------------------------  -->
+
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;" onclick="showTimeConfig(4)">
+                    <label style="display : inline-flex;align-items:center;font-size: 15px">
+                        星期五</label>
+                    <label  style="font-size:10px;color: #999; ">
+                    <img  src="../iBaby/images/iBaby.common/right-arr.png"
+                         style="margin-bottom: -3px"></label>
+                </p>
+
+                <!-- -----------------------------星期五----------------------------------------  -->
+
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;" onclick="showTimeConfig(5)">
+                    <label style="display : inline-flex;align-items:center;font-size: 15px">
+                        星期六</label>
+                    <label  style="font-size:10px;color: #999; ">
+                    <img  src="../iBaby/images/iBaby.common/right-arr.png"
+                         style="margin-bottom: -3px"></label>
+                </p>
+
+                <!-- -----------------------------星期六----------------------------------------  -->
+
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;" onclick="showTimeConfig(6)">
+                    <label style="display : inline-flex;align-items:center;font-size: 15px">
+                        星期日</label>
+                    <label  style="font-size:10px;color: #999; ">
+                    <img  src="../iBaby/images/iBaby.common/right-arr.png"
+                         style="margin-bottom: -3px"></label>
+                </p>
+
+                <!-- -----------------------------星期日----------------------------------------  -->
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div style="vertical-align: middle;height: 30px;line-height: 30px"><b style="margin-left: 10px;color: gray">上学和放学路上重点监护时间段</b></div>
+    <!------------------------------第二层------------------------------------------------>
+    <div id="ibaby_id_16" class="m-box ">
+        <div id="jianhu">
+            <div class="box-ct">
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;" onclick="showTimePickWithKind('0')">
+                    <label style="display:inline-flex;align-items:center;font-size: 15px">
+                        离家、到校的在路上时间1</label>
+                    <label  style="font-size:10px;color: #999;height: 30px;line-height: 30px">
+                        <a id="levbac-0" style="color: black" >00:00-00:00</a>
+                        <img  src="../iBaby/images/iBaby.common/right-arr.png"
+                             style="margin-bottom: -3px"></label>
+                </p>
+
+                <!-- -----------------------------离家、到校的在路上时间1 ----------------------------------------  -->
+
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;" onclick="showTimePickWithKind('1')">
+                    <label style="display:inline-flex;align-items:center;font-size: 15px">
+                        离校、到家的在路上时间1</label>
+                    <label  style="font-size:10px;color: #999;height: 30px;line-height: 30px">
+                        <a id="levbac-1" style="color: black" >00:00-00:00</a>
+                        <img  src="../iBaby/images/iBaby.common/right-arr.png"
+                              style="margin-bottom: -3px"></label>
+                </p>
+
+                <!-- -----------------------------离校、到家的在路上时间1 ----------------------------------------  -->
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;" onclick="showTimePickWithKind('2')">
+                    <label style="display:inline-flex;align-items:center;font-size: 15px">
+                        离家、到校的在路上时间2</label>
+                    <label  style="font-size:10px;color: #999;height: 30px;line-height: 30px">
+                        <a id="levbac-2" style="color: black" >00:00-00:00</a>
+                        <img  src="../iBaby/images/iBaby.common/right-arr.png"
+                              style="margin-bottom: -3px"></label>
+                </p>
+
+                <!-- ----------------------------- 离家、到校的在路上时间2 ----------------------------------------  -->
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;" onclick="showTimePickWithKind('3')">
+                    <label style="display:inline-flex;align-items:center;font-size: 15px">
+                        离校、到家的在路上时间2</label>
+                    <label  style="font-size:10px;color: #999;height: 30px;line-height: 30px">
+                        <a id="levbac-3" style="color: black" >00:00-00:00</a>
+                        <img  src="../iBaby/images/iBaby.common/right-arr.png"
+                              style="margin-bottom: -3px"></label>
+                </p>
+
+                <!-- -----------------------------离校、到家的在路上时间2 ----------------------------------------  -->
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;" onclick="showTimePickWithKind('4')">
+                    <label style="display:inline-flex;align-items:center;font-size: 15px">
+                        离家、到校的在路上时间3</label>
+                    <label  style="font-size:10px;color: #999;height: 30px;line-height: 30px">
+                        <a id="levbac-4" style="color: black" >00:00-00:00</a>
+                        <img  src="../iBaby/images/iBaby.common/right-arr.png"
+                              style="margin-bottom: -3px"></label>
+                </p>
+
+                <!-- -----------------------------离家、到校的在路上时间3 ----------------------------------------  -->
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;" onclick="showTimePickWithKind('5')">
+                    <label style="display:inline-flex;align-items:center;font-size: 15px">
+                        离校、到家的在路上时间3</label>
+                    <label  style="font-size:10px;color: #999;height: 30px;line-height: 30px">
+                        <a id="levbac-5" style="color: black" >00:00-00:00</a>
+                        <img  src="../iBaby/images/iBaby.common/right-arr.png"
+                              style="margin-bottom: -3px"></label>
+                </p>
+
+                <!-- -----------------------------离校、到家的在路上时间3 ----------------------------------------  -->
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <div style="vertical-align: middle;height: 30px;line-height: 30px"><b style="margin-left: 10px;color: gray">其他设置</b></div>
+    <!------------------------------第四层------------------------------------------------>
+    <div id="ibaby_id_16" class="m-box ">
+        <div id="jianhu">
+            <div class="box-ct">
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;">
+                    <label style="display:inline-flex;align-items:center;font-size: 15px">
+                        到校通知</label>
+                    <label style="font-size-adjust: inherit">监护人号码1</label>
+                    <input id="arr1" name="checkbox1" value="0" type="checkbox" onclick="btnClick('arr1',0)">
+                    <label>监护人号码2</label>
+                    <input id="arr2" name="checkbox1" value="0" type="checkbox" onclick="btnClick('arr2',0)">
+                </p>
+
+                <!-- -----------------------------夜间时间 ----------------------------------------  -->
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;">
+                    <label style="display:inline-flex;align-items:center;font-size: 15px">
+                        离校通知</label>
+                    <label>监护人号码1</label>
+                    <input id="lev1" name="checkbox2" value="0" type="checkbox" onclick="btnClick('lev1',0)" checked>
+                    <label>监护人号码2</label>
+                    <input id="lev2" name="checkbox2" value="0" type="checkbox" onclick="btnClick('lev2',0)" checked>
+                </p>
+
+                <!-- -----------------------------夜间时间 ----------------------------------------  -->
+            </div>
+        </div>
+    </div>
+   
+</section>
+<div class="order-bot1" id="saves"
+		style="padding-bottom: 10px; display: -webkit-box;">
+		<a href="javascript:void(0)" onclick="updateToSever()" id="savephone"
+			class="gre-col"
+			style="width: 100%; text-align: center; display: -webkit-box;
+			 padding-right: 0px; -webkit-box-align: center; -webkit-box-pack: center;
+			  line-height: 40px; height: 40px; margin-top: 0px; margin-bottom: 10px; 
+			  font-size: 20px; background-color: #96d1ba; -webkit-border-radius: 4px; 
+			  color: #FFF;">确定保存</a>
+	</div>
+
+<div style=" z-index: 9999; font: 'Hiragino Kaku Gothic ProN';text-align: center;color: white;font-size:1.5em;background-color:#00AFF0;display: none; position:fixed;margin:auto;left:0; right:0; top:0; bottom:0;width:95%; height:63px;border-radius: 7px;line-height: 63px;" id="tsk"></div>
+<!--显示修改密码-->
+<div style="font: 'Hiragino Kaku Gothic ProN';color: white;background-color:whitesmoke;display: none; position:fixed;margin:auto;margin-left: 100%;left:0; right:0; top:0; bottom:0;width:100%; height:100%;overflow:auto;" id="changepsw">
+    <!--<section  id="ibaby_id_2" class="sys-cont moni-box">-->
+        <section style="color: white;text-align: center;font-size: 15px;" id="ibaby_id_3" class="per-info">
+            校园管理
+        </section>
+    <div style="vertical-align: middle;height: 30px;line-height: 30px"><b style="margin-left: 10px;color: gray">上课时间段</b></div>
+    <ul class="mui-table-view">
+        <li class="mui-table-view-cell" onclick="showTimeChoose(0,0)">
+
+            <div style="color: black;font-size: 15px;" class="mui-navigate-right" >
+                <a style="color: black">第一节课</a>
+                <a id="div-class-0" style="margin-left: 50%;color: black">00:00-00:00</a>
+            </div>
+
+        </li>
+        <li class="mui-table-view-cell" onclick="showTimeChoose(0,1)">
+            <div style="color: black;font-size: 15px;" class="mui-navigate-right" >
+                <a style="color: black">第二节课</a>
+                <a id="div-class-1" style="margin-left: 50%;color: black">00:00-00:00</a>
+            </div>
+        </li>
+        <li class="mui-table-view-cell" onclick="showTimeChoose(0,2)">
+            <div style="color: black;font-size: 15px;" class="mui-navigate-right" >
+                <a style="color: black">第三节课</a>
+                <a id="div-class-2" style="margin-left: 50%;color: black">00:00-00:00</a>
+            </div>
+        </li>
+        <li class="mui-table-view-cell" onclick="showTimeChoose(0,3)">
+            <div style="color: black;font-size: 15px;" class="mui-navigate-right" >
+                <a style="color: black">第四节课</a>
+                <a id="div-class-3" style="margin-left: 50%;color: black">00:00-00:00</a>
+            </div>
+        </li>
+        <li class="mui-table-view-cell" onclick="showTimeChoose(0,4)">
+            <div style="color: black;font-size: 15px;" class="mui-navigate-right" >
+                <a style="color: black">第五节课</a>
+                <a id="div-class-4" style="margin-left: 50%;color: black">00:00-00:00</a>
+            </div>
+        </li>
+        <li class="mui-table-view-cell" onclick="showTimeChoose(0,5)">
+            <div style="color: black;font-size: 15px;" class="mui-navigate-right" >
+                <a style="color: black">第六节课</a>
+                <a id="div-class-5" style="margin-left: 50%;color: black">00:00-00:00</a>
+            </div>
+        </li>
+        <li class="mui-table-view-cell" onclick="showTimeChoose(0,6)">
+            <div style="color: black;font-size: 15px;" class="mui-navigate-right" >
+                <a style="color: black">第七节课</a>
+                <a id="div-class-6" style="margin-left: 50%;color: black">00:00-00:00</a>
+            </div>
+        </li>
+        <li class="mui-table-view-cell" onclick="showTimeChoose(0,7)">
+            <div style="color: black;font-size: 15px;" class="mui-navigate-right" >
+                <a style="color: black">第八节课</a>
+                <a id="div-class-7" style="margin-left: 50%;color: black">00:00-00:00</a>
+            </div>
+        </li>
+    </ul>
+    <div style="vertical-align: middle;height: 30px;line-height: 30px"><b style="margin-left: 10px;color: gray">把上面的时间复制到:</b></div>
+    <div style="width: 100%">
+        <button id="div-copy-0" onclick="copyDay(6,'div-copy-0')" type="button"style="background-color: #96d1ba;border-color: rgba(0,0,0,0);width: 40px;height: 40px;border-radius: 20px" class="mui-btn mui-btn-primary">日</button>
+        <button id="div-copy-1" onclick="copyDay(0,'div-copy-1')" type="button"style="background-color: #96d1ba;border-color: rgba(0,0,0,0);width: 40px;height: 40px;border-radius: 20px" class="mui-btn mui-btn-primary">一</button>
+        <button id="div-copy-2" onclick="copyDay(1,'div-copy-2')" type="button"style="background-color: #96d1ba;border-color: rgba(0,0,0,0);width: 40px;height: 40px;border-radius: 20px" class="mui-btn mui-btn-primary">二</button>
+        <button id="div-copy-3" onclick="copyDay(2,'div-copy-3')" type="button"style="background-color: #96d1ba;border-color: rgba(0,0,0,0);width: 40px;height: 40px;border-radius: 20px" class="mui-btn mui-btn-primary">三</button>
+        <button id="div-copy-4" onclick="copyDay(3,'div-copy-4')" type="button"style="background-color: #96d1ba;border-color: rgba(0,0,0,0);width: 40px;height: 40px;border-radius: 20px" class="mui-btn mui-btn-primary">四</button>
+        <button id="div-copy-5" onclick="copyDay(4,'div-copy-5')" type="button"style="background-color: #96d1ba;border-color: rgba(0,0,0,0);width: 40px;height: 40px;border-radius: 20px" class="mui-btn mui-btn-primary">五</button>
+        <button id="div-copy-6" onclick="copyDay(5,'div-copy-6')" type="button"style="background-color: #96d1ba;border-color: rgba(0,0,0,0);width: 40px;height: 40px;border-radius: 20px" class="mui-btn mui-btn-primary">六</button>
+
+    </div>
+    <input style="margin-top: 20px;margin-left: 5%;background-color:#96d1ba ;border-color: rgba(0,0,0,0);width: 90%;height: 30px;border-radius: 15px;color: white" type="button" onclick="classSave()" value="保存">
+
+
+</div>
+
+
+
+<!--时间选择器-->
+<div style="color: white;font-size:1.5em;text-align: center;background-color:#96d1ba;display: none; position:fixed;margin:auto;left:0; right:0; top:0; bottom:0;width:0%; height:0%;border-radius: 7px;line-height: 63px;" id="time-choose">
+    <div style="margin-top: 5px">
+        <span onclick="timeChooseClick('hourup')" class="mui-icon mui-icon-arrowup"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <span onclick="timeChooseClick('minup')" class="mui-icon mui-icon-arrowup"></span>
+   </div>
+    <!--<div style="margin-top: 5px">-->
+        <label id="time-hour">00</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <label>:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <label id="time-min" >00</label>
+    <!--</div>-->
+    <div style="margin-top: 5px">
+        <span onclick="timeChooseClick('hourdown')" class="mui-icon mui-icon-arrowdown"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <span onclick="timeChooseClick('mindown')" class="mui-icon mui-icon-arrowdown"></span>
+    </div>
+    <div style="margin-top: 5px">
+
+            <button id="div-btn-start" style="width: 30%;border-color: #11BBB9;background-color: #11BBB9;color: white" type="button" class="mui-btn mui-btn-outlined" onclick="timeChooseClick('starttime')">开始时间</button>
+            <button id="div-btn-end" style="width: 30%;border-color: #11BBB9;background-color: inherit;color: black" type="button" class="mui-btn mui-btn-outlined" onclick="timeChooseClick('endtime')">结束时间</button>
+    </div>
+    <div>
+        <button style="width: 60%;border-color: #11BBB9;background-color: #11BBB9;color: white" type="button" class="mui-btn mui-btn-outlined" onclick="timeChooseClick('save')">确定保存</button>
+    </div>
+</div>
+</body>
+</html>
+
+

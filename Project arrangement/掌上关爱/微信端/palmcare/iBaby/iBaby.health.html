@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta http-equiv="cache-control" content="private">
+    <meta http-equiv="expires" content="0">
+    <title>安全健康</title>
+    <link rel="stylesheet" href="../iBaby/css/iBabyindex.css">
+    <script src="js/iBaby.location/mui.min.js"></script>
+    <script src="js/iBady.Common.js"></script>
+    <script src="js/iBaby.location/mui.poppicker.js"></script>
+    <link rel="stylesheet" href="css/mui.poppicker.css">
+    <script src="js/iBaby.location/mui.picker.js"></script>
+    <link rel="stylesheet" href="css/mui.picker.css">
+    <link rel="stylesheet" href="css/mui.css">
+    <style type="text/css">
+        #bangding{
+            color:white;
+            font-size:15px;
+            float: right;
+            color: yellow;
+        }
+        #usename{
+            color:white;
+            font-size:22px;
+            margin-right:30px;
+        }
+        #img_haoma {
+            padding-right: 10px;
+        }
+
+
+    </style>
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="js/iBaby.health.js"></script>
+
+
+</head>
+
+
+<body id="ibaby_id_1" onload="initResule()">
+<section  id="ibaby_id_2" class="sys-cont moni-box">
+    <section style="height:44px; background-color:#96d1ba; display:-webkit-box; -webkit-box-align:center; -webkit-box-pack:center; color:#ffffff; font-size:16px; font-weight:bold;">
+        安全健康
+
+    </section>
+    <div style="vertical-align: middle;height: 30px;line-height: 30px"><b style="margin-left: 10px;color: gray">安全管理</b></div>
+    <!------------------------------第三层------------------------------------------------>
+    <div id="ibaby_id_16" class="m-box ">
+        <div id="jianhu">
+            <div class="box-ct">
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;">
+                    <label style="display : inline-flex;align-items:center;font-size: 14px">
+                        自动拒陌生人来电</label>
+                    <label  style="font-size:15px;color: #999; ">
+                        <img name="0" id="swith-0" src="../iBaby/images/iBaby.common/Switch-off.png"
+                             style="margin-bottom:-8px;" onclick="switchClick('0')" ondragend="switchClick('0')"></label>
+                </p>
+
+
+                <!-- -----------------------------自动拒绝陌生人来电 ----------------------------------------  -->
+
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;">
+                    <label style="display : inline-flex;align-items:center;font-size: 14px;">
+                        自动过滤陌生人短信</label>
+                    <label  style="font-size:15px;color: #999; ">
+                        <img onclick="switchClick('1')" ondragend="switchClick('1')" name="0" id="swith-1" src="../iBaby/images/iBaby.common/Switch-off.png"
+                             style="margin-bottom:-8px;"></label>
+                </p>
+
+                <!-- -----------------------------自动过滤陌生人短信----------------------------------------  -->
+
+
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;">
+                    <label style="display : inline-flex;align-items:center;font-size: 14px;">
+                        不允许直接输入号码拨打电话</label>
+                    <label  style="font-size:15px;color: #999; ">
+                        <img onclick="switchClick('2')" ondragend="switchClick('2')" name="0" id="swith-2" src="../iBaby/images/iBaby.common/Switch-off.png"
+                             style="margin-bottom:-8px;"></label>
+                </p>
+
+
+                <!-- ----------------------------不允许直接输入号码拨打电话----------------------------------------  -->
+
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;">
+                    <label style="display : inline-flex;align-items:center;font-size: 14px">
+                        换新手机卡，自动通知监护人</label>
+                    <label style="font-size:15px;color: #999; ">
+                        <img onclick="switchClick('3')" ondragend="switchClick('3')" name="0" id="swith-3" src="../iBaby/images/iBaby.common/Switch-off.png"
+                             style="margin-bottom:-8px;"></label>
+                </p>
+                <!-- -----------------------------换新手机卡，自动通知监护人----------------------------------------  -->
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;">
+                    <label style="display : inline-flex;align-items:center;font-size: 14px">
+                        允许用监护人手机监听</label>
+                    <label  style="font-size:15px;color: #999; ">
+                        <img onclick="switchClick('4')" ondragend="switchClick('4')" name="0" id="swith-4" src="../iBaby/images/iBaby.common/Switch-off.png"
+                             style="margin-bottom:-8px;"></label>
+                </p>
+
+                <!-- -----------------------------允许用监护人手机监听----------------------------------------  -->
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;">
+                    <label style="display : inline-flex;align-items:center;font-size: 14px">
+                        监护人来电无人接听，转为监听</label>
+                    <label  style="font-size:15px;color: #999; ">
+                        <img onclick="switchClick('5')" ondragend="switchClick('5')" name="0" id="swith-5" src="../iBaby/images/iBaby.common/Switch-off.png"
+                             style="margin-bottom:-8px;"></label>
+                </p>
+
+                <!-- -----------------------------监护人来电无人接听，转为监听----------------------------------------  -->
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;">
+                    <label style="display : inline-flex;align-items:center;font-size: 14px">
+                        电量不足，短信通知监护人及时充电</label>
+                    <label  style="font-size:15px;color: #999; ">
+                        <img onclick="switchClick('6')" ondragend="switchClick('6')" name="0" id="swith-6" src="../iBaby/images/iBaby.common/Switch-off.png"
+                             style="margin-bottom:-8px;"></label>
+                </p>
+
+                <!-- -----------------------------电量不足，短信通知监护人及时充电----------------------------------------  -->
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;">
+                    <label style="display : inline-flex;align-items:center;font-size: 14px">
+                        不允许直接按关机键关闭手机</label>
+                    <label  style="font-size:15px;color: #999; ">
+                        <img onclick="switchClick('7')" ondragend="switchClick('7')" name="0" id="swith-7" src="../iBaby/images/iBaby.common/Switch-off.png"
+                             style="margin-bottom:-8px;"></label>
+                </p>
+
+                <!-- -----------------------------不允许直接按关机键关闭手机----------------------------------------  -->
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <div style="vertical-align: middle;height: 30px;line-height: 30px"><b style="margin-left: 10px;color: gray">健康管理</b></div>
+    <!------------------------------第三层------------------------------------------------>
+    <div id="ibaby_id_16" class="m-box ">
+        <div id="jianhu">
+            <div class="box-ct">
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;">
+                    <label style="display:inline-flex;align-items:center;font-size: 14px">
+                        接听电话默认免提</label>
+                    <label  style="font-size:15px;color: #999; ">
+                        <img onclick="switchClick('8')" ondragend="switchClick('8')" name="0"  id="swith-8" src="../iBaby/images/iBaby.common/Switch-off.png"
+                             style="margin-bottom:-8px;"></label>
+                </p>
+
+
+                <!-- -----------------------------远程休眠 ----------------------------------------  -->
+
+                <p id="denglu"
+                   style="
+width:100%;
+flex-direction: row;
+align-items:center;
+display : inline-flex;
+justify-content:space-between;">
+                    <label style="display : inline-flex;align-items:center;font-size: 14px">
+                        控制通话时间</label>
+                    <label onclick="showPickview()" id="control-time" style="font-size:15px;color: #999; ">无限制
+                        </label>
+                </p>
+
+                <!-- -----------------------------恢复出厂设置----------------------------------------  -->
+
+
+            </div>
+        </div>
+    </div>
+    
+</section>
+<div class="order-bot1" id="saves"
+		style="padding-bottom: 10px; display: -webkit-box;">
+		<a href="javascript:void(0)" onclick="updateToSever()" id="savephone"
+			class="gre-col"
+			style="width: 100%; text-align: center; display: -webkit-box;
+			 padding-right: 0px; -webkit-box-align: center; -webkit-box-pack: center;
+			  line-height: 40px; height: 40px; margin-top: 0px; margin-bottom: 10px; 
+			  font-size: 20px; background-color: #96d1ba; -webkit-border-radius: 4px; 
+			  color: #FFF;">确定保存</a>
+	</div>
+
+<div style="font: 'Hiragino Kaku Gothic ProN';text-align: center;color: white;font-size:1.5em;background-color:#00AFF0;display: none; position:fixed;margin:auto;left:0; right:0; top:0; bottom:0;width:95%; height:63px;border-radius: 7px;line-height: 63px;" id="tsk"></div>
+</body>
+</html>
+
+

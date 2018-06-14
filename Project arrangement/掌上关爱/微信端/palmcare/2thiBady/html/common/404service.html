@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>页面维护中</title>
+</head>
+<script>
+    var timeStr = 5;
+    var backHistory = function(){
+        setTimeout(function(){
+            if (timeStr==0){
+                window.history.go(-1);
+            }
+            else {
+                timeStr-=1;
+                document.getElementById("timeLable").innerText = timeStr+"秒后返回";
+                backHistory();
+            }
+        },1000)
+    }
+
+</script>
+<body onload="backHistory()" style="background-color: #666666">
+<div style="text-align: center;width: 100%;margin-top: 20%">
+    <img src="../../img/common/404.png">
+</div>
+<div style="text-align: center;width: 100%;margin-top: 5%">
+    <label style="color: whitesmoke;font-weight: 100;font-size: 3em;text-shadow: whitesmoke">服务器开了个小差</label></br></br></br>
+    <label id="timeLable" style="color: black;font-weight: 100;font-size: 2.5em;margin-top: 30px;">5秒后返回</label>
+</div>
+</body>
+</html>

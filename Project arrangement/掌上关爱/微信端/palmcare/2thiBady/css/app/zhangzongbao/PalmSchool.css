@@ -1,0 +1,483 @@
+.inClass{
+    width:96%;
+    margin-left: 2%;
+    height: 46px;
+    background-color: white;
+    margin-top: 2%;
+}
+#custody{
+    width:96%;
+    margin-left: 2%;
+    height: 46px;
+    background-color: white;
+    margin-top: 2%;
+}
+#otherInstall{
+    width:96%;
+    margin-left: 2%;
+    height: 46px;
+    background-color: white;
+    margin-top: 2%;
+}
+#school{
+    margin:0;
+    width:96%;
+    margin-left: 2%;
+    padding:0;
+    margin-top: 3px;
+    height:auto;
+}
+#install{
+    margin:0;
+    width:96%;
+    margin-left: 2%;
+    padding:0;
+    margin-top: 3px;
+    height:auto;
+}
+#custodyImg1{
+    width: 41px;
+    height: 41px;
+    float: left;
+    margin-top:2px;
+    margin-left:5%;
+}
+#installImg{
+    width: 30px;
+    height: 30px;
+    float: left;
+    margin-top:8px;
+    margin-left:5%;
+}
+#custodyImg2{
+    width: 23px;
+    height: 23px;
+    float: right;
+    margin-top:12px;
+    margin-right:5%;
+}
+.inClass img{
+    width: 38px;
+    height: 38px;
+    float: left;
+    margin-top:4px;
+    margin-left:5%;
+}
+#otherInstall span{
+    display:block;
+    height: 46px;
+    width: 140px;
+    line-height:46px;
+    border:0px solid red;
+    float: left;
+    margin-left:8%;
+    color:#b5b8c9;
+    font-size:16px;
+}
+#custody span{
+    display:block;
+    height: 46px;
+    width: 140px;
+    line-height:46px;
+    border:0px solid red;
+    float: left;
+    margin-left:8%;
+    color:#b5b8c9;
+    font-size:16px;
+}
+.inClass span{
+    display:block;
+    height: 46px;
+    width: 140px;
+    line-height:46px;
+    border:0px solid red;
+    float: left;
+    margin-left:8%;
+    color:#b5b8c9;
+    font-size:16px;
+}
+#inClass-sz{
+    height:122px;
+    width:96%;
+    margin-left:2%;
+    border: 0px solid red;
+    margin-top: 3px;
+    background-color:white;
+}
+#timeInstall{
+    height:512px;
+    width:96%;
+    margin:0;
+    padding: 0;
+    margin-left:2%;
+    border: 0px solid red;
+    margin-top: 3px;
+    background-color:#eaeefa;
+}
+#timeInstall span{
+    color:#b5b8c9;
+}
+#school span{
+    color:#b5b8c9;
+}
+.keshi{
+    height: 64px;
+    list-style-type:none;
+    text-align: center;
+    border:0px solid blue;
+    margin-top:1px;
+    background-color: white;
+}
+.schoolli{
+    height: 64px;
+    list-style-type:none;
+    text-align: center;
+    border:0px solid blue;
+    margin-top:1px;
+    background-color: white;
+}
+.install-school{
+    height: 64px;
+    list-style-type:none;
+    text-align: center;
+    border:0px solid blue;
+    margin-top:1px;
+    background-color: white;
+}
+.install-school span{
+    color:#b5b8c9 ;
+}
+.gogo-1{
+    display: block;
+    height: 64px;
+    line-height:64px;
+    width:19%;
+    border: 0px solid red;
+    font-size:14px;
+    margin-left:5px;
+    float: left;
+}
+.school-notice{
+    display: block;
+    height: 64px;
+    line-height:64px;
+    width:19%;
+    border: 0px solid red;
+    font-size:14px;
+    margin-left:5px;
+    float: left;
+}
+.keshi-1{
+    display: block;
+    height: 64px;
+    line-height:64px;
+    width:19%;
+    border: 0px solid red;
+    font-size:14px;
+    margin-left:5px;
+    float: left;
+}
+.gogo-2{
+    display: block;
+    height: 64px;
+    line-height:64px;
+    width:17%;
+    border: 0px solid red;
+    font-size:14px;
+    float: left;
+}
+.guardian1{
+    height: 64px;
+    float: left;
+    width:35%;
+    border:0px solid red;
+    margin-left: 5px;
+}
+.phone1{
+    display:block;
+    height: 64px;
+    line-height: 64px;
+    font-size:14px;
+    float: left;
+    margin-left:9%;
+}
+.keshi-2{
+    display: block;
+    height: 64px;
+    line-height:64px;
+    width:17%;
+    border: 0px solid red;
+    font-size:14px;
+    float: left;
+}
+.gogo-3{
+    display: block;
+    height: 64px;
+    line-height:64px;
+    width:17%;
+    border: 0px solid red;
+    font-size:14px;
+    float: left;
+}
+.keshi-3{
+    display: block;
+    height: 64px;
+    line-height:64px;
+    width:17%;
+    border: 0px solid red;
+    font-size:14px;
+    float: left;
+}
+.gogo-4{
+    display: block;
+    height: 64px;
+    line-height:64px;
+    width:17%;
+    border: 0px solid red;
+    font-size:14px;
+    float: right;
+    margin-right: 5px;
+}
+.keshi-4{
+    display: block;
+    height: 64px;
+    line-height:64px;
+    width:17%;
+    border: 0px solid red;
+    float: right;
+    margin-right: 5px;
+}
+.gogo-5{
+    display: block;
+    height: 64px;
+    line-height:64px;
+    width:17%;
+    border: 0px solid red;
+    font-size:14px;
+    float: right;
+}
+.keshi-5{
+    display: block;
+    height: 64px;
+    line-height:64px;
+    width:17%;
+    border: 0px solid red;
+    font-size:14px;
+    float: right;
+}
+#choose{
+    width:110px;
+    height:40px;
+    float: left;
+    border:0px solid blue;
+    margin-left:5px;
+}
+#week{
+    display:block;
+    float: left;
+    width:55px;
+    height:40px;
+    line-height:40px;
+    color:#b5b8c9;
+    font-size:14px;
+    border: 0px solid red;
+}
+#choose img{
+    float: left;
+    width: 18px;
+    height: 11px;
+    border: 0px solid blue;
+    margin-top: 14px;
+}
+#sswitch{
+    float: right;
+    width: 140px;
+    height: 40px;
+    border:0px solid red;
+    margin-right:5px;
+}
+#sswitch span{
+    display:block;
+    width:50px;
+    height:40px;
+    line-height: 40px;
+    float: right;
+    border:0px solid green;
+    color:#b5b8c9;
+    font-size:14px;
+}
+#date{
+    width: 100%;
+    height:28px;
+    border:0px solid green;
+    margin-top: 26px;
+}
+#dateImg{
+    border:0px solid red;
+    width: 25px;
+    height: 25px;
+    float: left;
+    margin-top: 1px;
+}
+#dateSpan1{
+    display:block;
+    height: 28px;
+    width: 110px;
+    line-height:28px;
+    border:0px solid red;
+    float: left;
+    margin-left:13%;
+    color:#b5b8c9;
+    font-size:16px;
+}
+#right{
+    width:14px;
+    height:20px;
+    margin-top:3px;
+    float: right;
+    margin-right:2px;
+    border:0px solid red;
+}
+#dateSpan2{
+    display:block;
+    height: 28px;
+    width: 50px;
+    line-height:28px;
+    border:0px solid red;
+    float: right;
+    color:#b5b8c9;
+    font-size:14px;
+    margin-right:12%;
+}
+#weekes{
+    width:130px;
+    margin:0;
+    padding: 0;
+    position:absolute;
+    background-color: white;
+    margin-top:38px;
+    box-shadow: 0 0 10px #f5f5f5;
+    border:1px solid #f5f5f5;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.weekesDay{
+    list-style-type:none;
+    height:30px;
+    text-align: center;
+    border:0px solid blue;
+}
+.weekesDay span{
+    height: 30px;
+    line-height:30px;
+    font-size:14px;
+    color: #b5b8c9;
+}
+.timeButton{
+    border:none;
+    height:64px;
+    font-size: 14px;
+    color:#b5b8c9;
+}
+.goTime{
+    border:none;
+    height:64px;
+    font-size: 14px;
+    color:#b5b8c9;
+}
+.backTime{
+    border:none;
+    height:64px;
+    font-size: 14px;
+    color:#b5b8c9;
+}
+.timeButton2{
+    border:none;
+    height:64px;
+    font-size: 14px;
+    color:#b5b8c9;
+}
+.mui-popover-arrow{
+    display: none;
+}
+#article{
+    border-bottom:1px solid #eaeefa;
+    display:block;
+    height:70px;
+    width:86%;
+    margin-left:7%;
+    line-height:70px;
+    font-size:16px;
+    color:#b5b8c9;
+}
+#pic{
+    width:86%;
+    margin:0;
+    padding: 0;
+    margin-left:7%;
+    height:60px;
+}
+.xqi{
+    list-style:none;
+    display:block;
+    width: 15%;
+    height: 40px;
+    float:left;
+    margin-right:2%;
+    border: 0px solid red;
+}
+#pic img{
+    width:90%;
+    height: 40px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

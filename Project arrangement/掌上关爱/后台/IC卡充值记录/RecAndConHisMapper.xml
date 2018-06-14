@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="recAndConHisMapper">
+
+   <select id="recAndConlistPage" parameterType="Page" resultType="pd">
+	  select 
+			xft_xyinf.AccountNo,
+			xft_xyinf.CustomerNo,
+			xft_xyinf.CustomerName,
+			xft_xyinf.CardID,
+			xft_xyinf.JE,
+			xft_xyinf.LeftJE,
+			xft_xyinf.LSH,
+			xft_xyinf.DevNo,
+			xft_xyinf.ItemNo,
+			xft_xyinf.GrpName,
+			date_format(xft_xyinf.PayTime,'%Y-%m-%d %h:%i:%s')  as PayTime 
+		from xft_xyinf 
+		 where 1 = 1
+		 
+		 <if test="pd.IcNo !=null and pd.IcNo !='' ">
+		  and xft_xyinf.CardID = #{pd.IcNo} 
+		 </if>
+		 <if test="pd.stuName != null and pd.stuName != '' ">
+		  and xft_xyinf.CustomerName = #{pd.stuName}
+		 </if>
+	UNION all
+		select 
+			xft_xyoper.AccountNo,
+			xft_xyoper.CustomerNo,
+			xft_xyoper.CustomerName,
+			xft_xyoper.CardID,
+			xft_xyoper.JE,
+			xft_xyoper.LeftJE,
+			xft_xyoper.LSH,
+			xft_xyoper.DevNo,
+			xft_xyoper.ItemNo, 
+			case xft_xyoper.ItemNo when '11' then '现金充值' when '31' then '终端充值'
+			end as GrpName,
+			date_format(xft_xyoper.PayTime,'%Y-%m-%d %h:%i:%s')  as PayTime 
+		from xft_xyoper 
+		where 1 = 1
+		 <if test="pd.IcNo !=null and pd.IcNo !='' ">
+		 and  xft_xyoper.CardID = #{pd.IcNo}
+		 </if>
+		 <if test="pd.stuName != null and pd.stuName != '' ">
+		 and xft_xyoper.CustomerName = #{pd.stuName}
+		 </if>
+		and xft_xyoper.ItemNo in(11,31)
+		ORDER BY PayTime desc
+	</select>
+</mapper>

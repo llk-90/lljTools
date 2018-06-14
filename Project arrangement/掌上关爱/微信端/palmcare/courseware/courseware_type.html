@@ -1,0 +1,66 @@
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <title>教子良方</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <script src="../js/config.js" type="text/javascript" charset="utf-8"></script>
+        <!--标准mui.css-->
+        <link rel="stylesheet" href="../css/mui.min.css">
+        <!--App自定义的css-->
+        <style type="text/css">
+            p {
+                margin-top: 30px;
+            }
+            
+            p img {
+                max-width: 100%;
+                height: auto;
+            }
+        </style>
+
+    </head>
+
+    <body>
+        <div class="mui-content">
+            <div class="mui-content-padded">
+                <p>
+                    <a href="picture.html"><img src="../images/c_image/KJType1.jpg" /></a>
+                </p>
+
+                <p>
+                    <a href="video.html"><img src="../images/c_image/KJType2.jpg" /></a>
+                </p>
+
+                <p>
+                    <a href="text.html"><img src="../images/c_image/KJType3.jpg" /></a>
+                </p>
+            </div>
+        </div>
+    </body>
+    <script src="../js/mui.min.js"></script>
+    <script src="../js/loginValidate.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+        function getParams() {
+            var result = {};
+            var str = decodeURI(window.location.search);
+            //          alert(str);
+            //          var strs = str.substring(1, str.length).split("&");
+            var strs = str.split("?");
+            if(strs && strs.length > 1) {
+                strs = strs[1].split("&");
+                for(i in strs) {
+                    var v = strs[i];
+                    var vs = v.split("=");
+                    result[vs[0]] = vs[1] || '';
+                    //                  console.log(i+":"+strs[i]);
+                }
+            }
+            return result;
+        }
+        //      alert(getParams().openid);
+    </script>
+
+</html>

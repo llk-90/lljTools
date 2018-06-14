@@ -1,0 +1,32 @@
+#body{
+background-color: white;
+color:gray;
+text-align: center;
+}
+#header{
+color:white;
+background-color: #96d1ba;
+text-align: center;
+padding-bottom: 2%;
+padding-top: 2%;
+}
+
+.span{
+  margin-left: 5%;
+}
+
+.record{
+margin-bottom: 100px;
+}
+
+#back{
+ display: block;
+ margin-left: 80%;
+ font-size: larger;
+}
+
+#table{
+margin:0 auto;
+ font-size: 15px; 
+ margin-top: 10px;
+}

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta http-equiv="cache-control" content="private">
+    <meta http-equiv="expires" content="0">
+    <title>系统设置</title>
+    <link rel="stylesheet" href="../../css/mui.min.css">
+    <link href="../../css/app/zhangzongbao/iBabyindex.css" rel="stylesheet" />
+    <link href="../../css/mui.picker.css" rel="stylesheet" />
+    <link href="../../css/mui.poppicker.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../../css/mui.dtpicker.css">
+    <link rel="stylesheet" href="../../css/app/common/SuspendedBall.css">
+    <link rel="stylesheet" href="../../css/app/common/on-off.css">
+    <script src="../../js/app/common/cvi_busy_lib.js"></script>
+    <script src="../../js/iBaby2.jquery-2.1.0.min.js"></script>
+    <script src="../../js/mui.min.js"></script>
+    <script src="../../js/mui.picker.js"></script>
+    <script src="../../js/mui.poppicker.js"></script>
+    <script src="../../js/app/zhangzongbao/iBaby.sysset.js"></script>
+    <script src="../../js/mui.dtpicker.js"></script>
+    <script src="../../js/app/common/PublicJs.js"></script>
+    <script src="../../js/app/common/SuspendedBall.js"></script>
+    <script src="../../js/app/common/Common.js"></script>
+
+</head>
+
+<body>
+<div class="top">
+    <lable>开关机设置</lable>
+</div>
+
+<div id="ibaby_id_16" class="m-box">
+ <div c class="m-box-child">
+            <div  style="width:100%;flex-direction: row;align-items:center;display : inline-flex;justify-content:space-between;">
+                <label style="display : inline-flex;align-items:center;font-size: 15px" >
+                    开机时间</label>
+                <label id="start-timeA" style="margin-left: 30%;font-size: 120%" onclick="showDateChoose(0)">00:00</label>
+                    <div id="start-time1" name="0" class="mui-switch mui-switch-blue mui-switch-mini mui-active" onclick="switchClick('0')">
+                        <div class="mui-switch-handle"></div>
+                    </div>
+            </div>
+</div>
+
+    <div class="m-box-child">
+        <div  style="width:100%;flex-direction: row;align-items:center;display : inline-flex;justify-content:space-between;">
+            <label style="display : inline-flex;align-items:center;font-size: 15px" >
+                关机时间</label>
+            <label id="end-timeA" style="margin-left: 30%;font-size: 120%" onclick="showDateChoose(1)">00:00</label>
+            <div id="end-time1"  name="0" class="mui-switch mui-switch-blue mui-switch-mini mui-active" onclick="switchClick('1')">
+                <div class="mui-switch-handle"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="m-box-child">
+        <div  style="width:100%;flex-direction: row;align-items:center;display : inline-flex;justify-content:space-between;">
+            <label style="display : inline-flex;align-items:center;font-size: 15px" >
+                开机时间</label>
+            <label id="start-timeB" style="margin-left: 30%;font-size: 120%" onclick="showDateChoose(2)">00:00</label>
+            <div id="start-time2" name="0" class="mui-switch mui-switch-blue mui-switch-mini mui-active" onclick="switchClick('2')">
+                <div class="mui-switch-handle"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="m-box-child">
+        <div  style="width:100%;flex-direction: row;align-items:center;display : inline-flex;justify-content:space-between;">
+            <label style="display : inline-flex;align-items:center;font-size: 15px" >
+                开机时间</label>
+            <label id="end-timeB" style="margin-left: 30%;font-size: 120%" onclick="showDateChoose(3)">00:00</label>
+            <div id="end-time2" name="0" class="mui-switch mui-switch-blue mui-switch-mini mui-active" onclick="switchClick('3')">
+                <div class="mui-switch-handle"></div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+<div class="top">
+    <lable>GPS省电管理</lable>
+</div>
+<div  class="m-box " style="margin-top: 1%;height:12rem;display: flex;flex-direction:column;justify-content: space-around">
+    <div class="m-box-child" style="height: 30%;display: flex;justify-content: space-around">
+    <div class="m-box-child-child" style="flex-direction: column;padding: 0px">
+        <label style="font-size: 80%">夜间时间</label>
+    </div>
+        <div class="m-box-child-child" style="align-items: center;width: 17%">
+            <label style="font-size: 70%">正常</label>
+            <input id="night-0" type="radio" name="dinner" value="normal" onclick="radioBoxClick('night',0)">
+        </div>
+        <div class="m-box-child-child" style="align-items: center;">
+            <label style="font-size: 70%">省电模式</label>
+            <input id="night-1" type="radio" name="dinner" value="saving" onclick="radioBoxClick('night',1)">
+        </div>
+        <div class="m-box-child-child" style="align-items: center;">
+            <label style="font-size: 70%">关闭GPS</label>
+            <input id="night-2" type="radio" name="dinner" value="close" onclick="radioBoxClick('night',2)">
+        </div>
+    </div>
+
+    <div class="m-box-child" style="height: 30%;display: flex;justify-content: space-around">
+        <div class="m-box-child-child" style="flex-direction: column;padding: 0px">
+            <label style="font-size: 70%">工作时间</label>
+        </div>
+        <div class="m-box-child-child" style="align-items: center;width: 17%">
+            <label style="font-size: 70%">正常</label>
+            <input id="class-0" type="radio" name="work" value="normal" onclick="radioBoxClick('class',0)">
+        </div>
+        <div class="m-box-child-child" style="align-items: center;">
+            <label style="font-size: 70%">省电模式</label>
+            <input id="class-1" type="radio" name="work" value="saving" onclick="radioBoxClick('class',1)">
+        </div>
+        <div class="m-box-child-child" style="align-items: center;">
+            <label style="font-size: 70%">关闭GPS</label>
+            <input id="class-2" type="radio" name="work" value="close" onclick="radioBoxClick('class',2)">
+        </div>
+
+    </div>
+
+    <div class="m-box-child" style="height: 30%;display: flex;justify-content: space-around">
+        <div class="m-box-child-child" style="flex-direction: column;padding: 0px">
+            <label style="font-size: 70%">其他时间</label>
+        </div>
+        <div class="m-box-child-child" style="align-items: center;width: 17%">
+            <label style="font-size: 70%">正常</label>
+            <input id="other-0" type="radio" name="other" value="normal" onclick="radioBoxClick('other',0)">
+        </div>
+        <div class="m-box-child-child" style="align-items: center;">
+            <label style="font-size: 70%">省电模式</label>
+            <input id="other-1" type="radio" name="other" value="saving" onclick="radioBoxClick('other',0)">
+        </div>
+        <div class="m-box-child-child" style="align-items: center;">
+            <label style="font-size: 70%">关闭GPS</label>
+            <input id="other-2" type="radio" name="other" value="close" onclick="radioBoxClick('other',0)">
+        </div>
+</div>
+
+</div>
+
+<button type="button" class="mui-btn mui-btn-block" style="width: 90%;background-color:#52be66;color: white;left: 5%;margin-top: 10%" onclick="updateToSever()">确认保存</button>
+</body>
+
+
+<script>
+    $(function () {
+        SuspendedBall.Add();//添加悬浮球
+        // SuspendedBall.BoxHtml("<ul class=\"SMenu\">" + $("#MenuInfo").html() + "</ul>");//添加菜单框的内容当然，具体的样式和里面的内容需要自己去写
+        SuspendedBall.Move();//这个就是让悬浮球动起来的方法。为啥单独写个不写到add方法里面呢？因为你可以在页面中直接写入悬浮球的两个div。这个方法里面可以添加一个参数，这个参数是个function。当鼠标抬起的时候会调用到这个方法。
+    });
+    </script>
+</html>
+
+

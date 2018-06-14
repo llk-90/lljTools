@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="FirmMapper">
+
+<!--  查询所有-->
+	<select id="findlistPage" parameterType="Page" resultType="pd"
+		useCache="false">
+		SELECT
+		marketingId,
+		firmName,
+		area,
+		descript,
+		pictureURL,
+		school,
+		price
+		from
+		hjy_firmoverview
+	</select>
+	
+	<!-- 根据ID查 -->
+	<select id="findFirmOverviewById" parameterType="pd" resultType="pd">
+	    SELECT 
+		  *
+	    from 
+	    	hjy_firmoverview
+	    where 
+	      marketingId=#{marketingId} 	
+	</select>
+	
+	<!--添加  -->
+	<insert id="addFirmOverview" parameterType="pd">
+	 insert into 
+	    hjy_firmoverview
+	    (
+	    marketingId,
+	    firmName,
+	    area,
+	    school,
+	    pictureURL,
+	    descript,
+	    price
+	    )
+	  values(
+	    #{marketingId},
+	    #{firmName},
+	    #{area},
+	    #{school},
+	    #{pictureURL},
+	    #{descript},
+	    #{price}
+	  )  
+	</insert>
+	
+   <!--删除  -->
+	<delete id="deleteFirmOverviewById" parameterType="pd">
+	  delete 
+	     from 
+	       hjy_firmoverview 
+	     where 
+	      marketingId=#{marketingId}
+	</delete>
+	
+	<!--修改-->
+	<update id="updateFirmOverviewById" parameterType="pd">
+	  update 
+	    hjy_firmoverview
+	  set
+	    firmName=#{firmName},
+	    area=#{area},
+	    school=#{school},
+	    <if test="pictureURL != null">
+	    pictureURL=#{pictureURL},
+	    </if>
+	    descript=#{descript},
+	    price=#{price}
+	  where
+	    marketingId=#{marketingId}
+	</update>
+	
+	<!--查询区域  -->
+		<select id="findArea" resultType="pd">
+	    SELECT 
+		CityName
+	    from 
+	    	qry_city_info
+	</select>
+</mapper>

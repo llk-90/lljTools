@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <title>班级通讯</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+        <script src="../js/config.js" type="text/javascript" charset="utf-8"></script>
+        <link href="../css/mui.min.css" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="../css/video_picture.css" />
+        <link rel="stylesheet" type="text/css" href="../css/icon/dropdown/iconfont.css" />
+         <script src="../js/template.js" type="text/javascript" charset="utf-8"></script>
+        <style type="text/css">
+            html,
+            body,
+            .mui-content {
+                height: 100%!important;
+                background-color: white;
+            }
+            
+            .mui-table-view-cell:before,
+            .mui-table-view-cell:after {
+                height: 0;
+            }
+           .bill{
+             border:0px solid #ccc;
+             text-align:center; 
+             margin:0 auto; 
+             padding-top:25px; 
+           	}
+        </style>
+        <script id="data-temp" type="text/html">
+        	<ul class="mui-table-view">
+                <li class="mui-table-view-cell self-mui-table-view-cell hang" data-id="{{phone}}">
+                    <div class="mui-pull-left mui-col-xs-4 mui-col-sm-4" style="background-color: blue;">
+                    	<div class="bill">
+						<font style="color: #FFFFFF;font-family : 微软雅黑,宋体;font-size : 1em;">{{s_name}}</font>
+						</div>
+                    </div>
+                    <div class="mui-pull-left mui-col-xs-8 mui-col-sm-8">
+                        <p class="mui-ellipsis">家长：{{pname}}</p>
+                        <p class="mui-ellipsis">电话：<a href="tel:{{phone}}">{{phone}}</a>  <a href="{{messageUrl}}">留言</a></p>
+                        <p class="mui-ellipsis" style="margin-top: 7px;">住址：{{s_addr}}</p>
+                    </div>
+                </li>
+            </ul>
+            
+       </script>
+    </head>
+
+    <body>
+        <div class="mui-content">
+           <div class="insert-pointer">
+           	
+            </div>       	
+        </div>
+        <script src="../js/mui.min.js"></script>
+        <script type="text/javascript">
+            mui.init()
+        </script>
+        <script type="text/javascript">
+		mui.init({
+			swipeBack: false //启用右滑关闭功能
+		});
+		var table = document.body.querySelector('.insert-pointer');
+		mui.ajax("/teacher/contacts.webapp", {
+			dataType: 'json', //服务器返回json格式数据
+			type: 'post', //HTTP请求类型
+			timeout: 10000, //超时时间设置为10秒；
+			success: function(data) {
+				mui.each(data, function(i, item) {
+					var jisShuJu = {
+						s_name: item.s_name,
+						pname: item.pname,
+						phone: item.phone,
+						s_addr: item.s_addr,
+						messageUrl: item.messageUrl
+					}
+					var html = template("data-temp", jisShuJu);
+					var li = document.createElement('ul');
+					li.className = 'mui-table-view';
+					li.innerHTML = html;
+					table.insertBefore(li, table.firstChild);
+				});
+			},
+			error: function(xhr, type, errorThrown) {
+				mui.toast(type + errorThrown);
+			}
+		});
+	</script>
+    </body>
+
+</html>

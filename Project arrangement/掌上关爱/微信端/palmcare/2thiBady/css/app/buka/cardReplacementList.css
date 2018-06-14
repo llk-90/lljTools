@@ -1,0 +1,56 @@
+.top{
+    width: 90%;
+    height:3.5rem;
+    margin-left: 5%;
+    margin-top: 5%;
+    display: flex;
+    justify-content: space-around;
+    background-color:white ;
+
+}
+
+.cardBox{
+    width: 100%;
+    height:100%;
+}
+
+
+.card{
+    width: 90%;
+    height:100%;
+    margin-left: 5%;
+    margin-top: 2%;
+    padding:0px;
+    border: 1px solid red;
+}
+
+.icon{
+    width: 10%;
+    height: 90%;
+    margin-top: 1%;
+    margin-left: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.text{
+    width: 55%;
+    height: 90%;
+    margin-top: 1%;
+    margin-left: 5%;
+    padding-top: 0.8rem;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.replace{
+    width: 15%;
+    height: 90%;
+    margin-top: 1%;
+    margin-left: 5%;
+    padding-top: 1%;
+}
+.mui-iframe-wrapper{
+    margin-top: -80px;
+}

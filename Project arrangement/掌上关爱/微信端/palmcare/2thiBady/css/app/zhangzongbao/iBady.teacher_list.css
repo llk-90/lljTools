@@ -1,0 +1,12 @@
+.child{
+    display: flex;
+    flex-direction:row;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 1%;
+    border-top: 2px solid #f1f1f1;
+}
+.mui-block {
+    display: block!important;
+    background-color: #f1f1f1;
+}

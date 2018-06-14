@@ -1,0 +1,14 @@
+.question{
+    margin-top: 10px;
+    color: gray;
+}
+.question a{
+    text-decoration:none;
+    color: gray;
+}
+.question:before{
+    color:gray;
+}
+.title{
+    color: gray;
+}

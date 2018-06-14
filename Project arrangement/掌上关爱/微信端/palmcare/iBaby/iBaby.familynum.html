@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta name="apple-mobile-web-app-status-bar-style"
+	content="black-translucent">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
+<title>号码管理</title>
+	<script src="../js/mui.min.js"></script>
+<!--  <script src="js/iBaby.familynum/iBaby.BangDing.js"></script>-->
+<script src="js/iBady.Common.js"></script>
+<script src="../iBaby/js/iBaby2.jquery-2.1.0.min.js"></script>
+<link rel="stylesheet" href="../iBaby/css/iBaby.familynum.css">
+<style type="">
+img {
+	max-width: 25px;
+	height: 24px;
+}
+input::-webkit-input-placeholder{font-size:15px;}
+</style>
+<script  type="text/javascript">
+ var i = 0; 
+ var j = 1;
+ var familynum = [];
+ var tempArr =["","",""]
+ // 点击增加亲情号事件
+/* $(function(){
+	$("#addform").click(function(){	
+   			       		
+   	    var show_count = 10; 
+        //要显示的条数
+        var a = $(".0").length;
+        
+	  	if(a < show_count)
+	        {
+				var htmlContent1 ="<img  src='../iBaby/images/iBaby.familynum/qinzi.png' style=''/></img>";
+				var htmlContent2 ="<input type='text'placeholder='输入称呼'style='margin-left:50px;width:90px;'id=nam" + a +"></input>";
+				var htmlContent3 ="<input type='text'placeholder='输入亲人号码'style='width:100px;'id=tel" + a +"></input>";
+				var htmlCheck = "<p style='float:right;color:#6d6d6d' onclick=javascript:shanchu('div" + a +"')>删除</p>";
+	            var table = document.body.querySelector('#box-ct');
+	            var html = htmlContent1 + htmlContent2 + htmlContent3 + htmlCheck;
+	            //拼接代码
+	            var div = document.createElement('div');
+	            //创建 一个新的div
+	            div.innerHTML = html;
+	            div.setAttribute("style", "align-items:center;display : inline-flex;width:100%;");
+	            div.setAttribute("id", "div"+a);
+	            div.setAttribute("class", 0);
+           	    //将数组Item 的值赋给id
+                //table.insertBefore(div, table.firstChild);
+                table.appendChild(div);
+	            //将div插入'.box-ct'
+			    a++;
+			    familynum.push(['','','Add']);
+			}        
+	       else{
+				alert("最多只能添加十名亲人");			
+				}
+			     
+	})
+})   */       
+/* // 删除亲情号信息
+function shanchu(i){	
+			
+    var obj1 = document.getElementById(i);
+	obj1.parentNode.removeChild(obj1);
+	familynum.splice(i.substring(3,4),1);
+	
+}  	 */	
+
+function GetQueryString(name) {
+	
+	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+	var r = window.location.search.substr(1).match(reg);
+	if(r != null) return unescape(r[2]);
+	return null;
+}
+ 
+// 根据服务器数据初始化页面
+ function initnum(){
+	
+  	for(var a=0;a < 4;a++)
+        {	
+   		//拼接dom
+//	  		var htmlContent1 ="<img  src='../iBaby/images/iBaby.familynum/qinzi.png' style=''/></img>";
+            var htmlContent1 ="<label style='color:black;font-size:13px'>亲情号码" + (a+1) +"</label>";
+	  		var htmlContent2 ="<input type='text'placeholder='输入称呼'style='margin-left:50px;width:90px;'id=nam" + a +"></input>";
+	  		var htmlContent3 ="<input type='text'placeholder='输入亲情号码'style='width:100px;'id=tel" + a +"></input>";
+//	  		var htmlCheck = "<p style='float:right;color:#6d6d6d' onclick=javascript:shanchu('div" + a +"')>删除</p>";
+  				
+            var table = document.body.querySelector('#box-ct');
+            //var html = htmlContent1 + htmlContent2 + htmlContent3 + htmlCheck ;
+            var html = htmlContent1 + htmlContent2 + htmlContent3;
+            //拼接代码
+            var div = document.createElement('div');
+            //创建 一个新的div
+            div.innerHTML = html;
+            div.setAttribute("style", "align-items:center;display : inline-flex;width:100%;");
+            div.setAttribute("id", "div"+a);
+            div.setAttribute("class", 0);
+            //将数组Item 的值赋给id
+            table.appendChild(div);
+            //将div插入'.box-ct'
+            var ida = "nam" + a;
+	        var tela = "tel" + a;
+            if(a >= familynum.length) {
+            	familynum.push(tempArr);
+            }  
+            document.getElementById(ida).value = familynum[a][0];
+	        document.getElementById(tela).value = familynum[a][1];
+
+		}        	
+}
+// 从服务器上获取数据
+function  FamilyNum() {
+	
+	var openid = GetQueryString('openid');
+	var stuid = GetQueryString('stuid');
+	var d = {
+		openid: openid,
+		stuId: stuid
+	};
+	showLoadMask();
+	setTimeout(function() {
+		mui.ajax("/familyNumApp/familyNumInfo.webapp", {
+			data: d,
+			dataType: 'json', //服务器返回json格式数据
+			type: 'post', //HTTP请求类型
+			timeout: 10000, //超时时间设置为10秒；
+			success: function(data) {
+				var statCode = data.statCode;				
+		
+		        if ( statCode == '200' ) {
+					document.getElementById("sos1").value = data.sos1;
+					document.getElementById("sos2").value = data.sos2;
+					document.getElementById("sos3").value = data.sos3;
+					document.getElementById("sos4").value = data.sos4;
+					document.getElementById("guardian1").value = data.guardian1;
+					document.getElementById("guardian2").value = data.guardian2;
+		        	// 清空数组
+		         	familynum.splice(0,familynum.length);		        	
+					mui.each(data.telBookList, function(i, item) {
+						// 将 用户名 电话号  编号传到二维数组中
+				    	familynum[i] = [item.userName, item.telNumber,item.telId];
+				    	// 根据数据初始化页 面
+					});
+					initnum();
+					hiddenLoadMask();
+                }else{
+                	showToast("请求数据失败");
+                }
+			},
+			error: function(xhr, type, errorThrown) {
+				showToast("请求数据失败");
+			}
+		});
+	}, 100);
+}
+//  提交数据到数据库
+function  uploadConnect(){
+		
+/* 		var bk= true;
+		$('input').each(function(){
+			var value = $(this).val();
+			var clas = $(this).attr("class");
+			if(value=="" && clas!="in-put"){
+			    alert("家长亲情号或称呼不能为空");
+			    bk = false;
+			    return false;
+			}
+		});
+		if(!bk)return; */
+		
+		var openid = GetQueryString('openid');
+		var stuid = GetQueryString('stuid');
+		
+		var	sos1 = document.getElementById("sos1").value;  
+		var	sos2 = document.getElementById("sos2").value;  
+		var	sos3 = document.getElementById("sos3").value;  
+		var	sos4 = document.getElementById("sos4").value; 
+		
+		var	guardian1 =  document.getElementById("guardian1").value;  
+		var	guardian2 =	document.getElementById("guardian2").value;
+
+	  	$("input[id^='nam']").each(function(i){
+	  		familynum[i][0] = $(this).val();
+	  	});
+	  	$("input[id^='tel']").each(function(i){
+	  		familynum[i][1] = $(this).val();
+	  	}); 
+
+	  	var jsonObj = new Object();
+	  	var jsonArr = new Array();	
+	  	for(var i=0;i<familynum.length;i++) {
+	  		jsonObj = {};
+	  		jsonObj.UserName = familynum[i][0];
+		  	jsonObj.TelNumber = familynum[i][1];
+		  	jsonObj.TelId = familynum[i][2];
+		  	jsonArr.push(jsonObj);
+	  	}
+	  	
+		var d = {
+			openid: openid,
+			stuId: stuid,
+			sos1 :sos1,
+			sos2 :sos2,
+			sos3 :sos3,
+			sos4 :sos4,
+			guardian1:guardian1,
+			guardian2:guardian2,
+			familynum :jsonArr
+			
+		};
+ 		setTimeout(function(){
+			mui.ajax("/familyNumApp/sendFamilyNumInfo.webapp", {
+				data: d,
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				timeout: 10000, //超时时间设置为10秒；
+				success: function(data) {
+					var statCode = data.statCode;				
+			        if ( statCode == '200' ) {
+			        	showToast("更新数据成功");
+	                }else if(data.result != '200' ){
+	                	showToast("更新成功&同步失败");
+	                }
+			        else{
+	                	showToast("更新数据失败");
+	                }
+				},
+				error: function(xhr, type, errorThrown) {
+					showToast("更新数据失败");
+				}
+			});
+		},100);
+}
+
+</script>
+</head>
+<body onload="FamilyNum();">
+	<header class="head-tit">
+		<span>号码管理</span>
+	</header>
+	<!------------------------------主内容区------------------------------->
+	<section class="mg-cont moni-box" id="ibaby_tel1" style="color: white;">
+		<!--个人资料显示-->
+		<section class="per-info" id="ibaby_tel2"></section>
+		
+		    <div class="m-box urgency-box">
+        	<h3>监护人手机（亲情号码前两位一致）</h3>
+            <div class="box-ct">
+            	<p class="h-in-put">
+            	<i class="icon-tel"></i>
+            	<label>号码1：</label>
+            	<input class="in-put" type="number"  
+            	maxlength="19" id="guardian1" placeholder="监护人手机号码1">
+            	<span class="icon-remove hid-del-bt"></span></p>
+                <p class="h-in-put">
+                <i class="icon-tel"></i>
+                <label>号码2：</label>
+                <input class="in-put" type="number" 
+                maxlength="19" id="guardian2" placeholder="监护人手机号码2">
+                <span class="icon-remove hid-del-bt"></span></p>
+            </div>
+        </div>
+        
+        <div class="m-box urgency-box">
+        	<h3>紧急求助号码（sos键求助号码）</h3>
+            <div class="box-ct">
+            	<p class="h-in-put"><i class="icon-tel"></i><label>号码1：</label><input class="in-put" type="telephone"  maxlength="19" id="sos1" placeholder="点这里输入求助号码"><span class="icon-remove hid-del-bt"></span></p>
+                <p class="h-in-put"><i class="icon-tel"></i><label>号码2：</label><input class="in-put" type="telephone"  maxlength="19" id="sos2" placeholder="点这里输入求助号码"><span class="icon-remove hid-del-bt"></span></p>
+                <p class="h-in-put"><i class="icon-tel"></i><label>号码3：</label><input class="in-put" type="telephone"  maxlength="19" id="sos3" placeholder="点这里输入求助号码"><span class="icon-remove hid-del-bt"></span></p>
+                <p class="h-in-put"><i class="icon-tel"></i><label>号码4：</label><input class="in-put" type="telephone"  maxlength="19" id="sos4" placeholder="点这里输入求助号码"><span class="icon-remove hid-del-bt"></span></p>
+            </div>
+        </div>
+        <div class="m-box urgency-box"id="box-ct1">
+        <h3>亲情号码添加（设备按键号相同）</h3>
+        	<div  style="width:100%;">
+			<!--<button style="color:white;width:100px;border-radius:20px;background-color: #ef69ac;-->
+			<!--align-items:center;display:inline-flex;" id="addform">增加亲情号码</button>-->
+			</div>
+        <div class="box-ct"id="box-ct">
+			<!-- <div id = "0" class="0">
+				<form style="align-items:center;display : inline-flex;width:100%;">
+					<img src="../iBaby/images/iBaby.familynum/qinzi.png" style="">
+					<input type="text" placeholder="输入称呼" style="margin-left:50px;"id="familyname">
+					<input type="text" placeholder="输入亲人号码"id="familynum">
+				<p style="float:right;color:#6d6d6d "onclick="shanchu(0)">删除</p> -->
+		<!-- 		</form>	
+			</div>
+		-->
+		</div>
+        </div>
+        		
+	</section>
+	<div class="order-bot1" id="saves"
+		style="padding-bottom: 10px; display: -webkit-box;">
+		<a href="javascript:void(0)" onclick="uploadConnect()" id="savephone"
+			class="gre-col"
+			style="width: 100%; text-align: center; display: -webkit-box;
+			 padding-right: 0px; -webkit-box-align: center; -webkit-box-pack: center;
+			  line-height: 35px; height: 35px; margin-top: 10px; margin-bottom: 10px; 
+			  font-size: 20px; background-color: #96d1ba; -webkit-border-radius: 4px; 
+			  color: #FFF;">保存所有设置并发送到掌踪宝</a>
+	</div>
+<div style="font: 'Hiragino Kaku Gothic ProN';text-align: center;color: white;font-size:1.5em;background-color:#00AFF0;display: none; position:fixed;margin:auto;left:0; right:0; top:0; bottom:0;width:95%; height:63px;border-radius: 7px;line-height: 63px;" id="tsk"></div>	
+</body>
+
+</html>

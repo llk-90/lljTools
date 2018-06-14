@@ -1,0 +1,26 @@
+.buttonmodel{
+    width: 324px;
+    height: 53px;
+    border: 0px solid red;
+    padding: 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.buttonChild{
+    width: 53px;
+    margin: 0px;
+    padding: 0px;
+    border:0px solid red;
+    text-align: center;
+    padding-top:1%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+
+}
+.mui-table-view:after{ height:0}
+.mui-table-view:before{ height:0}

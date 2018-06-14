@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+        <title>上传头像</title>
+        <script src="../../../js/config.js" type="text/javascript" charset="utf-8"></script>
+        <link  rel="stylesheet" href="../../../css/mui.min.css" />
+        <link rel="stylesheet" href="../../../css/weui.css" />
+        <link rel="stylesheet" href="../../../css/common.css" />
+        <link rel="stylesheet" href="//cdn.bootcss.com/weui/0.4.3/style/weui.min.css">
+        <link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/0.8.0/css/jquery-weui.min.css">
+        <style>
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            
+            body,
+            .mui-content {
+                background-color: #FFFFFF !important;
+            }
+                                     
+            .mui-content-padded {
+                margin: 15px;
+            }
+            
+            .weui_uploader_input_wrp {
+                border: 2px dashed #E5E5E5;
+                width: 70px;
+                height: 70px;
+                float: right;
+                margin-right: 10px;
+                margin-top: 5px;
+            }
+            .mui-input-row label{
+            	width: 32%; 
+            	line-height: 60px;
+            	padding: 0;
+            	padding-top: 11px;
+            	padding-left: 10px;
+            }
+           .btn {
+                width: 96%;
+                height: 50px;
+                background-color: #197FEE;
+                color: #FFFFFF;
+                font-size: larger;
+                margin-left: 2%;
+                margin-top: 10%;
+            }
+            .head-pic{
+            	width: 70px; 
+            	height: 70px; 
+            	float: right; 
+            	margin-right: 10px; 
+            	margin-top: 5px;
+            	background-repeat: no-repeat;
+                background-size: 100% 100%;
+            }
+         
+        </style>
+    </head>
+
+    <body>
+        <div class="mui-content mui-content-padded">         
+            <form class="mui-input-group">
+            	<div class="mui-input-row"  style="height: 80px !important;">
+            		<label>我的头像：</label>
+                    <div id="pic" class="head-pic">                    
+                    </div>
+            	</div>
+            	<div class="mui-input-row"  style="height: 80px !important;">
+					<label>上传头像：</label>
+                    <div class="weui_uploader_input_wrp">
+                        <a id="chooseImage" class="weui_uploader_input"></a>
+                    </div>
+                </div>
+          </form>
+		  <button id="btnSave" class="btn" >保存</button>	
+        </div>
+        <script src="../../../js/mui.min.js"></script>
+        <script src="../../../js/loginValidate.js" type="text/javascript" charset="utf-8"></script>
+		<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+		<script src="../../../js/zepto.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+    	<script src="//cdn.bootcss.com/jquery-weui/0.8.0/js/jquery-weui.min.js"></script>
+		
+		<script type="text/javascript" charset="UTF-8">
+			mui.init(getConfig());
+			
+			function getvalue(param) {
+				var str = decodeURI(window.location.search);
+				if(str.indexOf(param) != -1) {
+					var pos_start = str.indexOf(param) + param.length + 1;
+					var pos_end = str.indexOf("&", pos_start);
+					if(pos_end == -1) {
+						return str.substring(pos_start);
+					} else {
+						$.alert("没有此值~~");
+					}
+				}
+			}
+			document.getElementById("pic").style.backgroundImage = 'URL(' + getvalue('photo')+ ')';
+			
+			var timestamp = '';
+			var nonceStr = '';
+			var signature = '';
+
+			function getConfig() {
+				var url = location.href.split('#')[0];
+				var d = {
+					url: url
+				};
+				setTimeout(function() {
+					mui.ajax("/getConfig/getConfig.webapp", {
+						data: d,
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						timeout: 10000, //超时时间设置为10秒；
+						success: function(data) {
+							timestamp = data.timestamp;
+							nonceStr = data.nonceStr;
+							signature = data.signature;
+							dossa();
+						},
+						error: function(xhr, type, errorThrown) {
+							mui.toast(type + errorThrown);
+						}
+					});
+				}, 100);
+			}
+		</script>
+		
+		<script type="text/javascript">
+			function dossa() {
+				wx.config({
+					debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+					appId: 'wx09b3926c38a66b9e', // 必填，公众号的唯一标识
+					timestamp: timestamp, // 必填，生成签名的时间戳
+					nonceStr: nonceStr, // 必填，生成签名的随机串
+					signature: signature, // 必填，签名，见附录1
+					jsApiList: [
+							'chooseImage',
+							'previewImage',
+							'uploadImage'
+						] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+				});
+				var btn = document.getElementById('chooseImage');
+				var sub = document.getElementById("btnSave");
+				wx.ready(function() {
+					var images = {
+						localId: [],
+						serverId: []
+					};
+					var serid;
+					btn.addEventListener("tap", function() {
+						wx.chooseImage({
+							count: 1, // 默认9
+							success: function(res) {
+								images.localId = res.localIds;
+								document.getElementById("pic").style.backgroundImage = 'URL(' + images.localId +')';
+							}
+						});
+					});
+					sub.addEventListener("tap", function() {
+						if(images.localId.length == 0) {
+							alert('请先选择图片！');
+							return;
+						}
+						length = images.localId.length;
+						images.serverId = [];
+						wx.uploadImage({
+							localId: images.localId[0],
+							success: function(res) {
+								serid = res.serverId
+								updateAvatar(serid);
+							},
+							fail: function(res) {
+								mui.toast(JSON.stringify(res));
+							}
+						});
+					});
+				});
+				wx.error(function(res) {
+					mui.toast(res.errMsg);
+				});
+			}
+			var mask = mui.createMask();
+			function updateAvatar(picid) {
+				var url = location.href.split('#')[0];   
+				mask.show();
+				mui.ajax("/messageedit/updateParentInfo.webapp", {
+					data: {
+						url:url,
+						picid: picid,
+						isImg:'yes'
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						mask.close();
+						if(data.msg == "success"){
+//							$.alert("头像修改成功！" ,function(){
+							alert("头像修改成功！");
+							WeixinJSBridge.call('closeWindow');
+//							});
+						} else {
+							alert("修改失败！");
+							}
+					},
+					error: function(xhr, type, errorThrown) {
+						$.alert("网络异常");
+					}
+				});
+			}
+		</script>
+    </body>
+
+</html>

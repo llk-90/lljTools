@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>业务开通</title>
+<!-- 20170904   01-->
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<script src="../iBaby/js/iBaby.location/mui.min.js"></script>
+<link rel="stylesheet" href="../iBaby/css/mui.min.css">
+ <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="../js/template.js" type="text/javascript" charset="utf-8"></script>
+ 
+<link rel="stylesheet" href="css/style.css">
+<script src="../HeJiaoYu/Js/pinying.js"></script>
+<style type="text/css">
+#main-section {
+	width: 100%;
+	margin-bottom: 0px;
+}
+
+.list-item {
+	border: solid 1px #F43C5B;
+	border-bottom-width: 0px;
+	height: 40px;
+}
+
+.item-li {
+	font-size: 0.8em;
+	margin-top: 4px;
+	height: 14px;
+	text-align: left;
+	width: 30%;
+	line-height: 14px;
+}
+
+.btn-li {
+	width: 90%;
+	margin-left: 5%;
+	margin-top: 10px;
+	text-align: center;
+	display: inline-flex;
+	justify-content: space-between;
+}
+
+.detail {
+	width: 60px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	-o-text-overflow: ellipsis;
+}
+.mui-navigate-right{
+	margin-left:7px;
+}
+html, body{ margin:0; height:100%; }
+</style>
+
+<script type="text/javascript">
+var citys={fs:"佛山",
+		qy:"清远",
+		jm:"江门",
+		sg:"韶关",
+		dg:"东莞",
+		yj:"阳江",
+		yf:"云浮",
+		zq:"肇庆"
+}
+var countdown=60;
+function showParName(){
+	var stuName = document.getElementById('student-name').value;
+	document.getElementById('parent-name').value = stuName + '家长';
+}
+
+//第一步
+//加载初始业务信息
+//根据子节点判断是否需要再加载
+$(document).ready(function() {
+  $("#User-Info").hide();
+ 
+  $("#Sevice-Select").hide();
+})
+function init(CityId) {
+	var cityId=CityId;
+ 
+	if($('#YewuContent').children().length){ 
+		$('#YewuContent').children().remove();
+		initYewu(cityId);
+	}else{
+		initYewu(cityId);
+	}
+}
+
+function initDetail(packageId) {
+	  $("#User-Info").show();
+	var detailName = document.getElementById(packageId).innerText;
+	document.getElementById("yewuInfo").innerText= detailName;
+	document.getElementById("selpackageId").value = packageId;
+	document.getElementById("TelphoneNum").disabled = false;
+	document.getElementById("student-name").disabled = false;
+	document.getElementById("parent-name").disabled = false;
+}
+//第二步
+//加载详细业务信息
+//function DetailedInfo(id){
+//	//getYewuName(id);
+//	RequestInfo(id);
+//}
+
+//第四步
+//验证验证码
+function sendCode(){
+	$("#lording").show();
+    var packId = window.packId ;
+	var CityID = window.cityId;
+	var StudentName=$("#student-name").val();
+	var code=  $("#code").val();
+	var phoneNum=  $("#PhoneNumn").val();
+	mui.ajax("/heEduSubscriptInfo/VerifyCode.webapp", {
+		data:{
+			cityId : CityID,
+			StudentName : StudentName,
+			packageId : packId,
+			code : code,
+			phoneNum : phoneNum
+		},
+		dataType: 'json', //服务器返回json格式数据
+		type: 'post', //HTTP请求类型
+	/* 	timeout: 10000, */ //超时时间设置为10秒；
+		success: function(data) {
+			$("#lording").hide();
+			if(data.Coderesult =="200"){
+				mui.toast("验证成功")
+				tiaozhuan();
+			}else {
+				var result=data.Coderesult;
+				mui.toast(result)
+			}
+		},
+		error: function(xhr, type, errorThrown) {
+			$("#lording").hide();
+			mui.toast("获取信息失败")
+		}
+	});
+}
+
+ function tiaozhuan(){
+	  window.location.href="../HeJiaoYu/kaitong.html";
+	 
+ }
+
+//请求后台验证码
+function sendSMS(){
+	settime();
+	$("#lording").show();
+	var packId = window.packId ;
+	var CityID = window.cityId;
+	var phoneNum = document.getElementById("PhoneNumn").value;
+	if( phoneNum ==''){
+		mui.toast('请输入手机号码!');
+		return false;
+	}
+	var StudentName=$("#student-name").val();
+	mui.ajax("/heEduSubscriptInfo/sendSMS.webapp", {
+		data:{
+			packageId : packId,
+			phoneNum : phoneNum,
+			cityId : CityID,
+			StudentName : StudentName
+		},
+		dataType: 'json', //服务器返回json格式数据
+		type: 'post', //HTTP请求类型
+		async: true,
+	/* 	timeout: 10000, */ //超时时间设置为10秒；
+		success: function(data) {
+			$("#lording").hide();
+			if(data.SMSresult =="200"){
+				mui.toast("验证码发送成功");
+			 
+			}else {
+			 
+				mui.toast(data.SMSresult);
+			/* 	window.location.href="http://wpa.qq.com/msgrd?v=3&uin=543813576&site=qq&menu=yes"; */
+				//countdown = 0;
+				//settime();
+			}
+		},
+		error: function(xhr, type, errorThrown) {
+			$("#lording").hide();
+			mui.toast("获取信息失败")
+		}
+ });
+}
+function settime() {
+   var btn = document.getElementById("getCode");
+	if(countdown == 0){
+		btn.removeAttribute("disabled");
+		btn.innerText="获取验证码";
+		countdown = 60;
+		return;
+	}else{
+		btn.setAttribute("disabled",true);
+		btn.innerText= countdown +"s后重发送";
+		countdown--;
+	}
+	setTimeout("settime()",1000);
+}
+//function getYewuName(Yewuid){
+//	mui.ajax("/heEduSubscriptInfo/YewuName.webapp", {
+//		data:{
+//			Yewuid : Yewuid
+//		},
+//		dataType: 'json', //服务器返回json格式数据
+//		type: 'post', //HTTP请求类型
+//		timeout: 10000, //超时时间设置为10秒；
+//			success: function(data) {
+//				if(data.result == "success"){
+//					document.getElementById("yewuInfo").innerText=data.YewuInfo;
+//		       	
+//	       		} else if(data.result == "empty") {
+//	       			mui.toast("没有符合的业务信息")
+//	       		} else {
+//	       			mui.toast("获取业务信息失败")
+//	       		}
+//			},
+//			error: function(xhr, type, errorThrown) {
+//				mui.toast("获取业务信息失败")
+//			}
+//		});
+//}
+
+
+//加载每个城市的初始业务信息
+//根据CityId 请求数据
+ function initYewu(cityId){
+   //抛出cityId
+	window.cityId=cityId;
+	document.getElementById("yewuInfo").innerText= "请选择需要开通的业务";
+	switch (cityId)
+    {
+        case 'fs': {document.getElementById("cityname").innerText=citys.fs;} break;
+        case 'qy': {document.getElementById("cityname").innerText=citys.qy;} break;
+        case 'jm': {document.getElementById("cityname").innerText=citys.jm;} break;
+        case 'sg': {document.getElementById("cityname").innerText=citys.sg;} break;
+        case 'dg': {document.getElementById("cityname").innerText=citys.dg;} break;
+        case 'yj': {document.getElementById("cityname").innerText=citys.yj;} break;
+        case 'yf': {document.getElementById("cityname").innerText=citys.yf;} break;
+		case 'zq': {document.getElementById("cityname").innerText=citys.zq;} break;
+    }
+	 mui.ajax("/heEduSubscriptInfo/InitInfo.webapp", {
+			data:{
+				CityId : cityId
+			},
+			dataType: 'json', //服务器返回json格式数据
+			type: 'post', //HTTP请求类型
+			timeout: 10000, //超时时间设置为10秒；
+			success: function(data) {
+				if(data.result == "success"){
+					 $("#Sevice-Select").show();
+		       		var table = document.body.querySelector('#YewuContent');
+		       		mui.each(data.initInfo, function(i,item) {
+		      			//取得营销ID ，定义为全局变量抛出
+		       			window.packId=  item.marketingId;
+						var html = template("data-temp",item);
+						var li = document.createElement('li');
+						li.innerHTML = html;
+						li.style.height = "40px";
+						table.insertBefore(li, table.secondChild); 
+		       		});
+	       		} else if(data.result == "empty") {
+	       			$("#User-Info").hide();
+	       		 $("#Sevice-Select").hide();
+	       			mui.toast("没有符合的业务信息")
+					document.getElementById("TelphoneNum").disabled = true;
+					document.getElementById("student-name").disabled = true;
+					document.getElementById("parent-name").disabled = true;
+	       		} else {
+	       			mui.toast("获取业务信息失败")
+					document.getElementById("TelphoneNum").disabled = true;
+					document.getElementById("student-name").disabled = true;
+					document.getElementById("parent-name").disabled = true;
+	       		}
+			},
+			error: function(xhr, type, errorThrown) {
+				mui.toast("获取业务信息失败")
+				document.getElementById("TelphoneNum").disabled = true;
+					document.getElementById("student-name").disabled = true;
+					document.getElementById("parent-name").disabled = true;
+			}
+		});
+ }
+ 
+//关闭详细业务页面
+function hiddenPanel() {
+    $("#detail-show").hide();
+} 
+
+//城市选择非空check
+function checkCity(){
+	if($('#YewuContent').children().length==0){ 
+		mui.toast("请核对您是否已选择所在的地区城市")
+	}
+}
+
+//非空checkInfo()判断方法
+function checkInfo(){
+	var TelphoneNum = document.getElementById("TelphoneNum").value;
+	var parentname = document.getElementById("parent-name").value;
+	var studentname = document.getElementById("student-name").value;
+	var selpackageId = document.getElementById("selpackageId").value;
+	if(TelphoneNum == null || TelphoneNum == ''){
+		alert("手机号码不能为空");
+		 
+		return false;
+	} 
+	if(parentname  == null ||parentname  == ''){
+		alert("家长姓名不能为空");
+		 
+		return false;
+
+	}  
+	if(studentname == null || studentname == ''){
+		alert("学生姓名不能为空");
+		 
+		return false;
+	} 
+	DetailedInfo(selpackageId);
+}
+
+//请求加载详细业务信息
+function DetailedInfo(id){
+	var Yewuid=id;
+	var CityID = window.cityId;
+	var StudentName=$("#student-name").val();
+	var phoneNum=  $("#TelphoneNum").val();
+	 
+	document.getElementById("PhoneNumn").value=phoneNum;
+	 $.ajax("/heEduSubscriptInfo/detailedInfo.webapp", {
+		data:{
+			Yewuid : Yewuid,
+			cityID :  CityID,
+			StudentName : StudentName,
+			phoneNum  : phoneNum
+		},
+		dataType: 'json', //服务器返回json格式数据
+		type: 'post', //HTTP请求类型
+		timeout: 3000, //超时时间设置为10秒
+		asyc:true,
+		success: function(data) {
+       		if(data.result == "success"){
+       			 
+				document.getElementById("Yewu_Describe").innerText=data.YewuInfo.Describe;
+   		        document.getElementById("yewuInfo").innerText=data.YewuInfo.YewuName; 
+       			document.getElementById("CityInfo").innerText=data.YewuInfo.CityInfo;
+       			$("#icon").attr("src",data.YewuInfo.Picture);
+       			openMode();
+			} else if(data.result == "empty"){
+				mui.toast("获取信息为空")
+			} else {
+				mui.toast("获取信息失败1")
+			}
+		},
+		error: function(xhr, type, errorThrown) {
+			mui.toast("获取信息失败,请检查您的信息是否填写正确")
+		} 
+	});
+}
+
+ 
+ function openMode(){
+	 $('#myModal').modal('show')
+ }
+ 
+ 
+ $(document).ready(function(){ 
+	 $("#lording").hide();
+	 }); 
+ 
+</script>
+<script id="data-temp" type="text/html">
+ 	<a href="#" id="{{marketingId}}"onclick="initDetail({{marketingId}})" style="font-size:1.3em" >{{firmName}}</a> 
+</script>
+</head>
+
+<body style="margin: 0px; background-color: #F2F2F2 ;height:100%;width:100%;"  >
+<div 
+style="position:absolute ;bottom:20%;left:32% ;z-index:2000;color:#999999;
+display:flex;
+flex-direction: column ;
+ align-items: center;
+"
+id="lording"
+>
+<div class='loader loader--audioWave'
+>
+</div>
+执行中，请稍等片刻
+  </div>
+
+	<section id="main-section" style="width: 100%; height:30%;">
+		<!-- <img style="width: 100%" src="../HeJiaoYu/img/hejiaoyu02.png"> -->
+		<div class="mui-slider" style="height:100%">
+			<div class="mui-slider-group"style="height:100%">
+				<div class="mui-slider-item"style="height:100%">
+					<a href="#"style="height:100%" ><img style="height:100%"  src="../HeJiaoYu/img/hejiaoyu02.jpg" /></a>
+				</div>
+			</div>
+		</div>
+	</section>
+	
+	<div  style="overflow-y:scroll; height:60%">
+	<div style="color:#CDCDCD; margin: 7px;">
+		<label class="item-li" >选择区域：</label>
+	</div>
+<div class="btn-group"  style="width:100%;">
+    <button type="button" class="btn btn-default dropdown-toggle " 
+    style="border:0px;width:100%;text-align:left;height:50px;letter-spacing:3px;
+    color:#66009D;font-weight:bold ;
+    "id="cityname"
+     data-toggle="dropdown">
+     请选择城市
+    </button>
+    <ul class="dropdown-menu" role="menu" style="width:100%;">
+     <li style="height:40px;line-height:40px">
+         <a href="#" onclick="init('fs')" style="font-size:1.3em">佛山</a>             
+      </li>
+        <li style="height:40px;line-height:40px">
+        	<a  onclick="init('qy')" style="font-size:1.3em">清远</a>       
+      </li>
+        <li style="height:40px;line-height:40px">
+      	<a  onclick="init('jm')"style="font-size:1.3em">江门</a>    
+      </li>
+      
+        <li style="height:40px;line-height:40px">
+        <a onclick="init('sg')"style="font-size:1.3em">韶关</a>      
+      </li>
+        <li style="height:40px;line-height:40px">
+         <a  onclick="init('dg')"style="font-size:1.3em">东莞</a>             
+      </li>
+      
+        <li style="height:40px;line-height:40px">
+       <a  onclick="init('yj')"style="font-size:1.3em">阳江</a>             
+      </li>
+      <li style="height:40px;line-height:40px">
+       		<a  onclick="init('yf')"style="font-size:1.3em">云浮</a>           
+      </li>
+	  <li style="height:40px;line-height:40px">
+       		<a  onclick="init('zq')"style="font-size:1.3em">肇庆</a>           
+      </li>
+   </ul>
+</div>
+<div id="Sevice-Select"> 
+	<div style="color:#CDCDCD; margin: 7px;">
+		<label class="item-li" >服务选项：</label>
+	</div>
+<div class="btn-group" style="width:100%;">
+    <button type="button" class="btn btn-default dropdown-toggle "  data-toggle="dropdown"
+    style="border:0px;width:100%;text-align:left;height:50px;letter-spacing:3px;
+    color:#008866;font-weight:bold;
+    "id=yewuInfo
+    onclick="checkCity()"
+    >
+ 请选择需要开通的业务         
+    </button>  
+    <ul class="dropdown-menu" role="menu" style="width:100%;" id="YewuContent">
+   </ul>
+</div>  
+</div>
+<div   id="User-Info">
+	<div style="color:#CDCDCD; margin: 7px;height:8px;">
+		<label class="item-li" >个人信息：</label>
+	</div>
+		<ul class="mui-table-view" 
+			style="width: 90%; margin-left: 5%; margin-top: 20px; background-color: transparent; border-color: transparent;">
+			<div style="display: inline-flex;justify-content: flex-start;width:100%;height:50px; margin-top:15px" >
+				<label class="item-li" style="width:25%;font-size:14px;height:50px;line-height：50px;vertical-align：middel;margin-top:15px">手机号码：</label>
+				<input type="tel" id="TelphoneNum" class="mui-input-clear" style="width:75%; height:50px; border:0px; border-width: 1px;border-bottom-width: 1px;font-size:14px;letter-spacing:3px;" placeholder="请输入手机号码"type="number" disabled=true>
+			</div>
+			<div style="display: inline-flex;justify-content: flex-start;width:100%;height:50px;margin-top:15px" >			
+				<label class="item-li" style="width:25%;font-size:14px;height:50px;line-height：50px;margin-top:15px">学生姓名：</label>
+				<input type="text" id="student-name" class="mui-input-clear" style="width:75%;height:50px;border:0px; border-width: 1px;border-bottom-width: 1px;font-size:14px;letter-spacing:3px;" placeholder="请输入学生姓名" onblur='showParName();' disabled=true>
+			</div>
+			<div style="display: inline-flex;justify-content: flex-start;width:100%;height:50px;margin-top:15px" >			
+				<label class="item-li" style="width:25%;font-size:14px;height:50px;line-height：50px;margin-top:15px">家长姓名：</label>
+				<input type="text" id="parent-name" class="mui-input-clear" style="width:75%;height:50px;border:0px; border-width: 1px;border-bottom-width: 1px;font-size:14px;letter-spacing:3px;" placeholder="请输入家长姓名" disabled=true>
+			</div>
+		</ul>   
+		</div>
+		</div>
+ <button type="button" class="btn btn-info"
+ style="height:10%;border-radius:0px;width:100%;background-color:#4C83F3;bottom:0px;position:absolute;"
+ onclick="checkInfo();" >下一步</button>
+	<!--详情展示-->
+
+<div class="modal fade" id="myModal" 
+  aria-hidden="false"
+  tabindex="-1" role="dialog"  
+  >
+<div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header" style="text-align:center;height:30%;">
+            <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+             开通业务
+          </div>
+          <div class="modal-header" >
+			<img  id="icon" src= ""    style="width:100%; height:200px;">
+		   </div>
+      <div class="container">
+       <span   style="font-size:18px; font-weight:bold;"> 业务介绍</span>
+      <p  style="color:	#606060" id="Yewu_Describe" >
+		信息加载失败，请您核实您的信息
+	  </p>
+      </div>
+      <div class="container">
+      
+      <div class="container" style="
+		width:100%;
+		align-items:center;
+		display : inline-flex;">
+      <div style="width:100%;margin-left:-14px;" class="btn-group">
+
+ <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+ style="background-color:#F0F0F0; color:#9D9D9D;margin-bottom:0px; width:70px;height:40px;" id="CityInfo">
+ </button>
+ <span class="caret"></span>
+ <ul class="dropdown-menu" role="menu" style="width:100%;">
+     <li>
+         <a href="#" onclick="init('fs')">佛山</a>             
+      </li>
+        <li>
+        	<a  onclick="init('qy')">清远</a>       
+      </li>
+        <li>
+      	<a  onclick="init('jm')">江门</a>    
+      </li>
+        <li>
+        <a onclick="init('sg')">韶关</a>      
+      </li>
+        <li>
+         <a  onclick="init('dg')">东莞</a>             
+      </li>
+        <li>
+       <a  onclick="init('yj')">阳江</a>             
+      </li>
+      <li>
+       		<a  onclick="init('yf')">云浮</a>           
+      </li>
+      <li>
+       		<a  onclick="init('zq')">肇庆</a>           
+      </li>
+   </ul>
+
+ </div>
+ <div style="width:160%;">
+	  <input  style="background-color:#F0F0F0; border:0px;height:40px;margin-left:10px;
+	 margin-right:20px;weight:130px;text-align: center;margin-bottom:0px;
+	 "placeholder="请输入手机号码" id="PhoneNumn" type="number">
+ </div>
+ </div>
+ 
+ <div class="container">
+   <div 
+ style="
+width:118%;
+margin-left:-28px;
+flex-direction: row;
+align-items:center;
+display : flex;
+justify-content:space-between;"
+class="mui-table-view-cell" 
+>
+ <input  style="background-color:#F0F0F0; border:0px;height:40px;
+ margin-right:10px;width:140px;text-align: center;margin-bottom:0px;
+ "placeholder="请输入验证码" type="number">
+
+ <button type="button" class="btn btn-primary" style=" color:white;
+ width:140px;height:40px;"id="getCode" onclick="sendSMS()">获取验证码</button>
+ </div>
+ </div>
+      </div>
+          </div>
+          <div class="modal-footer"style="text-align:center;height:30%;
+          color:white;font-size:17px;
+          background-color:	#004B97;
+          "onclick="sendCode()">
+           确认开通
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+</div>
+<input type="hidden" id="selpackageId" value="">
+
+
+ 
+</body>
+</html>

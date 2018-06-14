@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>请假处理</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <script src="../js/config.js" type="text/javascript" charset="utf-8"></script>
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<!--App自定义的css-->
+		<link rel="stylesheet" type="text/css" href="../css/app.css" />
+		<style>
+			.mid {
+				margin: 10px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			
+			.mui-bar-nav h3 {
+				line-height: 44px;
+				margin: 0;
+			}
+			
+			.mui-bar-nav h6 {
+				line-height: 44px;
+				margin: 0;
+			}
+			
+			.head h3 {
+				line-height: 44px;
+				margin: 0;
+			}
+			
+			.head h6 {
+				line-height: 44px;
+				margin: 0;
+			}
+			
+			.head {
+				height: 44px;
+				padding: 0px 15px 0px;
+				background-color: #FFFFFF;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--<div class="mui-bar mui-bar-nav">
+				<div class="mui-pull-left">
+					<h3>请假处理</h3>
+				</div>
+				<div class="mui-pull-right">
+					<h6>xx市第三中学教务处</h6>
+				</div>
+			</div>-->
+		<div class="mui-content" id="pullrefresh">
+			<div class="head">
+				<div class="mui-pull-left">
+					<h3>请假处理</h3>
+				</div>
+				<div class="mui-pull-right">
+					<h6 id="school"></h6>
+				</div>
+			</div>
+			<div class="mid">
+
+			</div>
+			<div class="mui-scroll">
+				<div class="insert-pointer" id="bod">
+
+				</div>
+			</div>
+		</div>
+
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/loginValidate.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/template.js" type="text/javascript" charset="utf-8"></script>
+	<script id="data-temp" type="text/html">
+		<ul class="mui-table-view mui-table-view-striped mui-table-view-condensed">
+			<li class="mui-table-view-cell">
+				<div class="mui-table">
+					<div class="mui-table-cell mui-col-xs-7">
+						<p class="mui-ellipsis" style="font-weight:bold;font-size: medium;color: #7896dc;">{{s_name}}同学请假申请</p>
+						{{if days == 1}}
+							<p class="mui-h6 mui-ellipsis">
+								{{if l_leave_type == 0}}
+									{{l_start_time}}全天请假
+								{{else if l_leave_type == 1}}
+									{{l_start_time}}上午请假
+								{{else if l_leave_type == -1}}
+									{{l_start_time}}下午请假
+								{{/if}}
+							</p>
+						{{else if days >1 }}
+							<p class="mui-h6 mui-ellipsis">{{l_start_time}}到{{l_end_time}}的{{days}}天请假</p>
+						{{/if}}
+						<p class="mui-ellipsis" style="font-weight:bold;font-size: medium;color: #7896dc;">
+							<a href="#" onclick="javascript:mui.alert('{{l_reason}}', '请假理由');">点击查看请假理由</a></p>
+					</div>
+					<div class="mui-table-cell mui-col-xs-5 mui-text-right">
+						{{if l_state == 0}}
+						<button class="mui-btn-link mui-h5 agree" notice_id="{{l_id}}" style="padding-top: 10px;"><font color="#000000">批准</font></button>
+						<button class="mui-btn-link mui-h5 regect" notice_id="{{l_id}}" style="padding-top: 10px;"><font color="#000000">否决</font></button> {{else if l_state == 1}}
+						<button class="mui-btn-link mui-h5" style="padding-top: 10px;"><font color="#000000 ">已批准</font></button> {{else if l_state == '-1'}}
+						<button class="mui-btn-link mui-h5" style="padding-top: 10px;"><font color="#000000">已否决</font></button> {{/if}}
+					</div>
+				</div>
+			</li>
+		</ul>
+	</script>
+	<script>
+		mui.init(
+			list()
+		)
+		function GetQueryString(name) {
+			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+			var r = window.location.search.substr(1).match(reg);
+			if(r != null) return unescape(r[2]);
+			return null;
+		}
+		var toastMsgSucc = "操作成功";
+		var toastMsgFail = "操作失败";
+
+		function getvalue(param) {
+			var str = decodeURI(window.location.search);
+			if(str.indexOf(param) != -1) {
+				var pos_start = str.indexOf(param) + param.length + 1;
+				var pos_end = str.indexOf("&", pos_start);
+				if(pos_end == -1) {
+					return str.substring(pos_start);
+				} else {
+					return null;
+				}
+			}
+		}
+		/*function getvalue(param)
+		{
+		     var reg = new RegExp("(^|&)"+ param +"=([^&]*)(&|$)");
+		     alert(window.location.search);
+		     var r = window.location.search.substr(1).match(reg);
+		     if(r!=null)return  unescape(r[2]); return null;
+		}*/
+
+		function list() {
+			var table = document.body.querySelector('.insert-pointer');
+			var user_id = getvalue('user_id');
+			var d = {};
+			if(user_id != null && user_id != '' && user_id != 'undefined'){
+				d = {};
+				d = {
+					user_id : user_id
+				}
+			}else{
+				d = {};
+				var openid = GetQueryString('openid');
+				d = {
+					openid: openid
+				};
+			}
+			/*setTimeout(function() {*/
+				mui.ajax("/leaveApp/list.webapp", {
+					data: d,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						var school = data.school;
+						document.getElementById("school").innerText = school + "教务处";
+						mui.each(data.list, function(i, item) {
+							var html = template("data-temp", item);
+							var li = document.createElement('div');
+							/*li.className = 'sso';*/
+							li.setAttribute("data-id", item.l_id);
+							li.innerHTML = html;
+							table.insertBefore(li, table.firstChild);
+						});
+					},
+					error: function(xhr, type, errorThrown) {
+					}
+				});
+			/*}, 100);*/
+		}
+		/*
+		 * 通过按钮操作
+		 */
+		mui(".mui-scroll").on("tap", ".agree", function(e) {
+			var id = this.getAttribute("notice_id");
+			var btnArr = ["取消", "批准"];
+			mui.prompt("", "这里可以输入您的留言", "请假审批", btnArr, function(e) {
+				if (e.index == 1) {
+					var replayContent = document.querySelector(".mui-popup-input input").value;
+					mui.ajax("/leaveApp/approval.webapp", {
+						data: {
+							id: id,
+							approval: '1',
+							replay:replayContent
+						},
+						dataType: 'json',
+						type: 'post',
+						timeout: 10000,
+						success: function(data) {
+							if(data.result == "succ") {
+								mui.toast(toastMsgSucc);
+							} else {
+								mui.toast(toastMsgFail);
+							}
+							document.getElementById('bod').innerHTML = '';
+							list();
+							/*contentWebview.reload();*/
+						},
+						error: function(xhr, type, errorThrown) {
+						}
+					});
+				} else {
+					return;
+				}
+			});
+		});
+		/*
+		 * 否决按钮操作
+		 */
+		mui(".mui-scroll").on("tap", ".regect", function(e) {
+		    var id = this.getAttribute("notice_id");
+			var btnArr = ["取消", "否决"];
+			mui.prompt("", "这里可以输入您的留言", "请假审批", btnArr, function(e) {
+				if (e.index == 1) {
+					var replayContent = document.querySelector(".mui-popup-input input").value;
+					mui.ajax("/leaveApp/approval.webapp", {
+						data: {
+							id: id,
+							approval: '-1',
+							replay:replayContent
+						},
+						dataType: 'json',
+						type: 'post',
+						timeout: 10000,
+						success: function(data) {
+							if(data.result == "succ") {
+								mui.toast(toastMsgSucc);
+							} else {
+								mui.toast(toastMsgFail);
+							}
+							document.getElementById('bod').innerHTML = '';
+							list();
+							/*location.reload();*/
+							/*contentWebview.reload();*/
+						},
+						error: function(xhr, type, errorThrown) {
+						}
+					});
+				} else {
+					return;
+				}
+			});
+		});
+	</script>
+
+</html>

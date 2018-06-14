@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>安全健康</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <!--mui.css文件引入-->
+    <link rel="stylesheet" href="../../css/mui.min.css">
+    <link rel="stylesheet" href="../../css/mui.css">
+    <link rel="stylesheet" href="../../css/mui.picker.css">
+    <link rel="stylesheet" href="../../css/mui.poppicker.css">
+    <!--自定义css文件-->
+    <link rel="stylesheet" href="../../css/app/zhangzongbao/PalmSecurity.css">
+    <script src="../../js/app/common/cvi_busy_lib.js"></script>
+</head>
+<body onload="initResule()" style="background-color:#eaeef9;">
+<div id="top">
+    <span>安全管理</span>
+</div>
+<ul id="top-content" style="margin-top:3px;">
+    <li class="func">
+        <span>自动拒绝陌生人来电</span>
+        <div id="swith-0" class="ppop mui-switch mui-switch-mini mui-active" name="0" onclick="switchClick('0')" ondragend="switchClick('0')">
+            <div  class="mui-switch-handle"></div>
+        </div>
+    </li>
+    <li class="func">
+        <span>自动过滤陌生人短信</span>
+        <div id="swith-1" class="ppop mui-switch mui-switch-mini" name="0" onclick="switchClick('1')" ondragend="switchClick('1')">
+            <div class="mui-switch-handle" ></div>
+        </div>
+    </li>
+    <li class="func">
+        <span>不允许直接输入号码拨打电话</span>
+        <div id="swith-2" class="ppop mui-switch mui-switch-mini" name="0" onclick="switchClick('2')" ondragend="switchClick('2')">
+            <div class="mui-switch-handle" ></div>
+        </div>
+    </li>
+    <li class="func">
+        <span>换新手机卡，自动通知监护人</span>
+        <div id="swith-3" class="ppop mui-switch mui-switch-mini" name="0" onclick="switchClick('3')" ondragend="switchClick('3')">
+            <div class="mui-switch-handle" ></div>
+        </div>
+    </li>
+    <li class="func">
+        <span>允许用监护人手机监听</span>
+        <div id="swith-4" class="ppop mui-switch mui-switch-mini" name="0" onclick="switchClick('4')" ondragend="switchClick('4')">
+            <div class="mui-switch-handle" ></div>
+        </div>
+    </li>
+    <li class="func">
+        <span>监护人来电无人监听，转为监听</span>
+        <div id="swith-5" class="ppop mui-switch mui-switch-mini" name="0" onclick="switchClick('5')" ondragend="switchClick('5')">
+            <div class="mui-switch-handle" ></div>
+        </div>
+    </li>
+    <li class="func">
+        <span>电量不足，短信通知监护人及时充电</span>
+        <div id="swith-6" class="ppop mui-switch mui-switch-mini" name="0" onclick="switchClick('6')" ondragend="switchClick('6')">
+            <div class="mui-switch-handle" ></div>
+        </div>
+    </li>
+    <li class="func">
+        <span>不允许直接按关机键关闭手机</span>
+        <div id="swith-7" class="ppop mui-switch mui-switch-mini" name="0" onclick="switchClick('7')" ondragend="switchClick('7')">
+            <div class="mui-switch-handle" ></div>
+        </div>
+    </li>
+</ul>
+
+<div id="bottem">
+    <span>健康管理</span>
+</div>
+<ul id="bottem-content">
+    <li class="bottem-content-func">
+        <span>接听电话默认免提</span>
+        <div id="swith-8" class="ppop mui-switch mui-switch-mini" name="0" onclick="switchClick('8')" ondragend="switchClick('8')">
+            <div class="mui-switch-handle" ></div>
+        </div>
+    </li>
+    <li class="bottem-content-func">
+        <span>控制通话时间</span>
+        <div class="ppop2">
+            <span id="control-time" onclick="showPickview()">无限制</span>
+        </div>
+    </li>
+</ul>
+
+<button type="button" class="mui-btn mui-btn-warning" onclick="updateToSever()" style="margin-top: 10px;margin-bottom:30px;width:96%;height:50px;margin-left:2%;background-color: #ffbc31;">
+    确认保存
+</button>
+</body>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/mui.picker.js"></script>
+<script src="../../js/mui.poppicker.js"></script>
+<script src="../../js/app/zhangzongbao/PalmSecurity.js"></script>
+<script src="../../js/app/zhangzongbao/fency/iBady.Common.js"></script>
+<script src="../../js/app/zhangzongbao/fency/iBaby2.jquery-2.1.0.min.js"></script>
+</html>

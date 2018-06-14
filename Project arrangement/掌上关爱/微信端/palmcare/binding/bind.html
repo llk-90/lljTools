@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>绑定设备</title>
+		<script src="../js/config.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/loginValidate.js" type="text/javascript" charset="utf-8"></script>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<script type="text/javascript" charset="UTF-8">
+			mui.init();
+		</script>
+		<style>
+			html,
+			body {
+				margin: 0;
+				padding: 0;
+			}
+			
+			body {
+				background-color: #FFFFFF !important;
+			}
+			
+			.mui-input-row input {
+				border-radius: 0;
+				height: 50px;
+				background-color: #ECECEC;
+			}
+			
+			.mui-input-row {
+				height: 50px !important;
+			}
+			
+			.mui-content-padded {
+				margin: 25px;
+			}
+			
+			.btn {
+				width: 100%;
+				height: 50px;
+				border: none;
+				background-color: #FF4F4F;
+				color: #FFFFFF;
+				font-size: larger;
+				border-radius: 0;
+			}
+			
+			.mui-popup-inner {
+				padding: 15px;
+				border-radius: 13px 13px 0 0;
+				background: rgba(255, 255, 255, .95);
+				background-color: #000000;
+			}
+			
+			.mui-toast-message {
+				background-color: #333333;
+				border-radius: 13px 13px 13px 13px;
+				background: rgba(1, 1, 1, .75);
+				font-weight: bolder;
+				font-size: 19px;
+				color: #FFFFFF;
+				width: 200px;
+				height: 80px;
+				padding: 30px;
+				margin-bottom: 58%;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div style="margin-top:25%;">
+			<!--	<div class="mui-content-padded">
+				<div class="mui-input-row">
+					<input id="phone" type="text" placeholder='用户名：' value="">
+				</div>
+			</div>-->
+			<div class="mui-content-padded">
+				<div class="mui-input-row">
+					<input id="uid" type="text" placeholder='设备编号：' value="">
+					<input id="uid_old" type="hidden">
+				</div>
+			</div>
+			<div class="mui-content-padded">
+				<div>
+					<button id="new_repair" onclick="Bind()" class="btn">确认绑定</button>
+				</div>
+			</div>
+		</div>
+		<script>
+			function isChineseChar(str) {
+				var reg = /[\u4E00-\u9FA5\uF900-\uFA2D]/;
+				return reg.test(str);
+			}
+
+			function GetQueryString(name) {
+				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+				var r = window.location.search.substr(1).match(reg);
+				if(r != null) return unescape(r[2]);
+				return null;
+			}
+			var mask = mui.createMask();
+			mui.ready(function() {
+				mask.show();
+				mui.ajax("/bindingUid/getUid.webapp", {
+					data: {},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						mask.close();
+						document.getElementById('uid').value = data.Uid;
+						document.getElementById('uid_old').value = data.Uid;
+					},
+					error: function() {
+
+					}
+				});
+			});
+
+			function Bind() {
+				var uid = document.getElementById('uid').value;
+				var uid_old = document.getElementById('uid_old').value;
+				if(isChineseChar(uid)) {
+					mui.toast("设备编号格式错误！", function() {});
+					return false;
+				}
+				mask.show();
+				mui.ajax("/bindingUid/checkUid.webapp", {
+					data: {
+						uid: uid,
+						uid_old: uid_old
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						if(data.result == 'success') {
+							mui.ajax("/bindingUid/updateUid.webapp", {
+								data: {
+									uid: uid
+								},
+								dataType: 'json', //服务器返回json格式数据
+								type: 'post', //HTTP请求类型
+								timeout: 10000, //超时时间设置为10秒；
+								success: function(data) {
+									mask.close();
+									if(data.result == 'success') {
+										alert('修改成功！');
+										WeixinJSBridge.call('closeWindow');
+									} else {
+										alert('修改失败！');
+									}
+								},
+								error: function() {
+
+								}
+							});
+						} else {
+							mask.close();
+							alert('设备编号已存在！');
+						}
+					},
+					error: function() {
+
+					}
+				});
+			}
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>校园管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="../../css/app/zhangzongbao/PalmSchool.css">
+    <link rel="stylesheet" href="../../css/mui.min.css">
+    <link rel="stylesheet" href="../../css/mui.picker.min.css">
+    <script src="../../js/app/common/cvi_busy_lib.js"></script>
+    <script src="../../js/iBaby2.jquery-2.1.0.min.js"></script>
+    <script src="../../js/app/common/Common.js"></script>
+</head>
+<body style="background-color:#eaeefa;">
+<div class="inClass">
+    <img src="../../img/zhangzongbao/inClass.png" alt="上课 ">
+    <span>上课时间段</span>
+</div>
+
+<!--弹窗-->
+<div id="impot" class="mui-popover " style="width:97%;padding:0;margin-left:auto;margin-right:auto;height:260px;background-color:white;">
+    <span id="article">星期一&nbsp;&nbsp;:&nbsp;&nbsp;监控时间同步</span>
+        <span style="display:block;width:86%;margin-left: 7%;height:40px;line-height:40px;color: #b5b8c9;font-size: 14px;border:
+        0px solid red;margin-top: 10px;">将时间设置同步至&nbsp;&nbsp;:</span>
+    <ul id="pic">
+        <!--<li class="xqi"><img class="weeks" src="../../img/zhangzongbao/1.png" alt=""></li>-->
+        <!--<li class="xqi"><img class="weeks" src="../../img/zhangzongbao/2.png" alt=""></li>-->
+        <!--<li class="xqi"><img class="weeks" src="../../img/zhangzongbao/3.png" alt=""></li>-->
+        <!--<li class="xqi"><img class="weeks" src="../../img/zhangzongbao/4.png" alt=""></li>-->
+        <!--<li class="xqi"><img class="weeks" src="../../img/zhangzongbao/5.png" alt=""></li>-->
+        <!--<li class="xqi" style="margin-right:0;"><img class="weeks" src="../../img/zhangzongbao/6.png" alt=""></li>-->
+    </ul>
+    <button type="button" class="mui-btn mui-btn-warning"  style="margin-top: 1px;width: 80%;height:40px;margin-left: 10%;background-color: #59c671;border:none;" onclick="confirm()">
+        确认同步
+    </button>
+</div>
+<!--监控时间设置-->
+<ul id="timeInstall">
+    <li class="keshi"><span class="keshi-1">课时一</span><span class="keshi-2">起始</span>
+        <span class="keshi-3"><button id="0" name="0"  class='timeButton'  data-options='{"type":"time"}' class="btn mui-btn mui-btn-block ">00:00</button></span>
+        <span class="keshi-4"><button id="a" name="1"  class='timeButton2' data-options='{"type":"time"}' class="btn mui-btn mui-btn-block ">00:00</button></span><span class="keshi-5">结束</span>
+    </li>
+    <li class="keshi"><span class="keshi-1">课时二</span><span class="keshi-2">起始</span>
+        <span class="keshi-3"><button id="1" name="0" class='timeButton'  data-options='{"type":"time"}' class="btn mui-btn mui-btn-block">00:00</button></span>
+        <span class="keshi-4"><button id="b" name="1" class='timeButton2'  data-options='{"type":"time"}' class="btn mui-btn mui-btn-block ">00:00</button></span><span class="keshi-5">结束</span>
+    </li>
+    <li class="keshi"><span class="keshi-1">课时三</span><span class="keshi-2">起始</span>
+        <span class="keshi-3"><button id="2" name="0" class='timeButton'  data-options='{"type":"time"}' class="btn mui-btn mui-btn-block">00:00</button></span>
+        <span class="keshi-4"><button id="c" name="1" class='timeButton2'  data-options='{"type":"time"}' class="btn mui-btn mui-btn-block ">00:00</button></span><span class="keshi-5">结束</span>
+    </li>
+    <li class="keshi"><span class="keshi-1">课时四</span><span class="keshi-2">起始</span>
+        <span class="keshi-3"><button id="3" name="0" class='timeButton'  data-options='{"type":"time"}' class="btn mui-btn mui-btn-block">00:00</button></span>
+        <span class="keshi-4"><button id="d" name="1" class='timeButton2'  data-options='{"type":"time"}' class="btn mui-btn mui-btn-block ">00:00</button></span><span class="keshi-5">结束</span>
+    </li>
+    <li class="keshi"><span class="keshi-1">课时五</span><span class="keshi-2">起始</span>
+        <span class="keshi-3"><button id="4" name="0" class='timeButton'  data-options='{"type":"time"}' class="btn mui-btn mui-btn-block">00:00</button></span>
+        <span class="keshi-4"><button id="e" name="1" class='timeButton2'  data-options='{"type":"time"}' class="btn mui-btn mui-btn-block ">00:00</button></span><span class="keshi-5">结束</span>
+    </li>
+    <li class="keshi"><span class="keshi-1">课时六</span><span class="keshi-2">起始</span>
+        <span class="keshi-3"><button id="5" name="0" class='timeButton'  data-options='{"type":"time"}' class="btn mui-btn mui-btn-block">00:00</button></span>
+        <span class="keshi-4"><button id="f" name="1" class='timeButton2'  data-options='{"type":"time"}' class="btn mui-btn mui-btn-block ">00:00</button></span><span class="keshi-5">结束</span>
+    </li>
+    <li class="keshi"><span class="keshi-1">课时七</span><span class="keshi-2">起始</span>
+        <span class="keshi-3"><button id="6" name="0" class='timeButton'  data-options='{"type":"time"}' class="btn mui-btn mui-btn-block">00:00</button></span>
+        <span class="keshi-4"><button id="g" name="1" class='timeButton2'  data-options='{"type":"time"}' class="btn mui-btn mui-btn-block ">00:00</button></span><span class="keshi-5">结束</span>
+    </li>
+    <li class="keshi"><span class="keshi-1">课时八</span><span class="keshi-2">起始</span>
+        <span class="keshi-3"><button id="7" name="0" class='timeButton'  data-options='{"type":"time"}' class="btn mui-btn mui-btn-block">00:00</button></span>
+        <span class="keshi-4"><button id="h" name="1" class='timeButton2'  data-options='{"type":"time"}' class="btn mui-btn mui-btn-block ">00:00</button></span><span class="keshi-5">结束</span>
+    </li>
+</ul>
+<button type="button" class="mui-btn mui-btn-warning"  style="margin-top: 10%;width: 80%;height:40px;margin-left: 10%;background-color: #59c671;border:none;" onclick="confirm1()" >
+    保存设置
+</button>
+</body>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/mui.picker.min.js"></script>
+<script>
+    var openid = GetQueryString('openid');
+    var stuid = GetQueryString('stuid');
+    var k1 = GetQueryString('k');
+    console.log(k);
+    var targ;
+    //页面星期 图片 文字 改变
+    var date = new Date();  //当前星期数
+    var article = document.getElementById('article');
+    if(k1==1){
+        article.innerText = '星期一';
+    }else if(k1==2){
+        article.innerText = '星期二';
+    }else if(k1==3){
+        article.innerText = '星期三';
+    }else if(k1==4){
+        article.innerText = '星期四';
+    }else if(k1==5){
+        article.innerText = '星期五';
+    }else if(k1==6){
+        article.innerText = '星期六';
+    }else{
+        article.innerText = '星期日';
+    }
+
+    //时间同步星期数展示
+    var pic = document.getElementById("pic");
+    for(var i=1;i<8;i++){
+        if(i==date.getDay()){
+            continue;
+        }
+        var li = document.createElement('li');
+        li.className='xqi';
+        if(i==7){
+            li.innerHTML='<img id="'+0+'" class="weeks" src="../../img/zhangzongbao/'+i+'.png" alt="">';
+        }
+        else {
+            li.innerHTML = '<img id="' + i + '" class="weeks" src="../../img/zhangzongbao/' + i + '.png" alt="">';
+        }
+        pic.appendChild(li);
+    }
+    //最后一个日子加style属性
+    var xqiList = document.getElementsByClassName('xqi');
+    xqiList[5].style.marginRight='0';
+
+    //时间同步设置点击变绿设置
+    var rem
+    var weekList = document.getElementsByClassName('weeks');
+    for(var i=0;i<weekList.length;i++){
+        weekList[i].onclick = function(e){
+            var index = e.target.id
+            //console.log(this.src.indexOf('-'));
+            if(this.src.indexOf('-')==-1){
+                //当对应的图片被点亮时 修改对应的日期时间
+                rem = schmode2[index]
+                schmode2[index] = schmode2[DateIndex];
+                var last = this.src.lastIndexOf('/');
+                var str = this.src.substring(0,last+1);
+                var newstr = str + this.src.substring(last+1,last+2)+'-1.png';
+                this.src = newstr;
+            }else{
+                //当对应的图片没点亮时 还原对应的日期时间
+                schmode2[index] = rem
+                var last = this.src.lastIndexOf('/');
+                var str = this.src.substring(0,last+1);
+                var newstr = str + this.src.substring(last+1,last+2)+'.png';
+                this.src = newstr;
+            }
+            console.log(schmode2)
+        }
+        //var num = weekList[i].src.lastIndexOf('/');
+        //console.log(weekList[i].src);
+        //console.log(weekList[i].src.substring(num+1,num+2));
+    }
+
+    function GetRequest() {
+        var url = location.search; //获取url中"?"符后的字串
+        var theRequest = new Object();
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            strs = str.split("&");
+            for(var i = 0; i < strs.length; i ++) {
+                theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]);
+            }
+        }
+        return theRequest;
+    }
+    var schmodel=new Object();
+    //课程时间集合
+    var schmode2
+    //时间model 确定保存时schmode2 = schmodeTest
+    var schmodeTest
+    var DateIndex
+    $(function(){
+        schmodel.classSch=getArray();
+        var childdata= GetRequest();
+        console.log(888);
+        console.log(k1);
+        DateIndex =k1-1;
+        schmode2 = ds(childdata.backurl);
+        schmodeTest = schmode2
+        var start = document.getElementsByClassName("timeButton")
+        var end = document.getElementsByClassName("timeButton2")
+        for (var i=0;i<start.length;i++){
+            console.log(schmode2[DateIndex][i].startTime);
+            start[i].innerHTML = schmode2[DateIndex][i].startTime;
+            //start[i].innerHTML = schmode2[DateIndex][i].startTime;
+            end[i].innerHTML=schmode2[DateIndex][i].endtime;
+        }
+    })
+    function ds(Ary){
+        if(Ary=="")return schmodel.classSch;
+        var strAry = Ary.split(",");
+        strAry = strAry.map(function(e){
+            if(e=="")return e + '00:00-00:00';
+            return e;
+        });
+
+        var tempary = [];//每节课数组
+        var index = 0;
+        for (var a = 0;a<strAry.length;a++)
+        {
+            var temppAry = strAry[a].split("-");
+            tempary[tempary.length] = temppAry;
+        }
+        console.log("temppAry:"+temppAry)
+        console.log(tempary[0][0])
+        for (var a = 0;a<7;a++)
+        {
+            for (var b = 0;b<8;b++)
+            {
+                schmodel.classSch[a][b].startTime = tempary[index][0];
+                schmodel.classSch[a][b].endtime = tempary[index][1];
+                index++;
+            }
+        }
+        console.log(schmodel.classSch);
+        return schmodel.classSch;
+    }
+    //初始化一个数组
+    function getArray(type) {
+            var arr = [];
+            for (var a = 0;a<7;a++)
+            {
+                var arr1 = [];
+                for (var b = 0;b<8;b++)
+                {
+                    var dic = new Object();
+                    dic.startTime = "00:00";
+                    dic.endtime = "00:00";
+                    arr1[b] = dic;
+                }
+                arr[a] = arr1;
+
+            }
+            return arr;
+    }
+
+
+    //    var timeInstall = document.getElementById("timeInstall");
+//    function  chuxian(){
+//        classSZ.style.display = 'none';
+//        timeInstall.style.display = 'block';
+//    }
+//
+//    function queren(){
+//        classSZ.style.display = 'block';
+//        timeInstall.style.display = 'none';
+//    }
+
+    //开关按钮
+    //mui(".mui-switch").switch();
+
+//    //点击选择时间
+//    var weekes = document.getElementById("weekes");
+//    //seven.style.display='block';
+//    function aaa() {
+//        if(weekes.style.display=="none"){
+//            weekes.style.display='block';
+//        }else{
+//            weekes.style.display='none';
+//        }
+//    }
+//    //日期点击事件
+//    var list = document.getElementsByClassName('weekesDay');
+//    //console.log(list);
+//    var week = document.getElementById("week");
+//    for(var k=0;k<list.length;k++){
+//        list[k].onclick = function(){
+//            week.innerHTML =this.innerHTML;
+//            weekes.style.display='none';
+//        }
+//    }
+    //上课时间段选择
+    var timeButton = document.getElementsByClassName('timeButton');
+    for(var k=0;k<timeButton.length;k++){
+        timeButton[k].onclick = function(e){
+            console.log(e.target)
+            targ = e.target;
+            var dtpicker = new mui.DtPicker({
+                "type": "time"
+            })
+            var tt=this;
+            dtpicker.show(function(e) {
+                tt.innerText = e.h.value+":"+e.i.value;
+                //mui('.mui-popover').popover('toggle',tt);
+                //var impot1 = document.getElementById('impot');
+                //impot1.style.top = '20%';
+                timeChange()
+            })
+        }
+    }
+    var timeButton2 = document.getElementsByClassName('timeButton2');
+    for(var k=0;k<timeButton2.length;k++){
+        timeButton2[k].onclick = function(e){
+            //console.log(this);
+            targ = e.target;
+            var dtpicker = new mui.DtPicker({
+                "type": "time"
+            })
+            var tt=this;
+            dtpicker.show(function(e) {
+                tt.innerText = e.h.value+":"+e.i.value;
+                //mui('.mui-popover').popover('toggle',tt);
+                //var impot2 = document.getElementById('impot');
+                //impot2.style.top = '20%';
+                timeChange()
+            })
+        }
+    }
+    //时间更改，sschmode2更改
+    function timeChange(){
+        var start = document.getElementsByClassName("timeButton")
+        var end = document.getElementsByClassName("timeButton2")
+        for(var i=0;i<start.length;i++){
+            schmode2[DateIndex][i].startTime = start[i].innerHTML
+            schmode2[DateIndex][i].endtime = end[i].innerHTML
+        }
+        schmodeTest = schmode2
+        console.log(schmode2)
+    }
+
+    //确认保存
+    function confirm(){
+        console.log("111")
+        mui('.mui-popover').popover('hide');
+        schmodeString =AntiParsing()
+        console.log(schmodeString)
+        window.location.href="PalmSchool.html?openid="+openid+"&stuid="+stuid+"&index="+schmodeString;
+    }
+
+    //时间反解析
+    var schmodeString=""
+    var Count=0
+    function AntiParsing(){
+    for(var i=0;i<schmode2.length;i++){
+        for(var j=0;j<8;j++){
+            Count++;
+            if(Count!=56){
+                schmodeString = schmodeString.concat(schmode2[i][j].startTime+"-"+schmode2[i][j].endtime+",")
+            }
+            else{
+                schmodeString = schmodeString.concat(schmode2[i][j].startTime+"-"+schmode2[i][j].endtime)
+            }
+        }
+    }
+        console.log("schmodeString"+schmodeString)
+        return schmodeString
+    }
+
+    //保存设置
+    function confirm1(){
+
+        mui('.mui-popover').popover('toggle');
+        var impot2 = document.getElementById('impot');
+        impot2.style.top = '20%';
+        impot2.style.left = '1.5%';
+    }
+</script>
+</html>

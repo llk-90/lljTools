@@ -1,0 +1,257 @@
+.user{
+    border:0px solid red;
+    width:94%;
+    margin-left:3%;
+    margin-top:2%;
+    height:66px;
+    background-color:white;
+    position: relative;
+}
+#enclosure{
+    border:0px solid red;
+    width:94%;
+    margin-left:3%;
+    margin-top:50px;
+    height:66px;
+    background-color:white;
+}
+#lo1{
+    border:0px solid red;
+    display:block;
+    height:66px;
+    line-height:66px;
+    width:170px;
+    font-size:15px;
+    float: left;
+    color:#737780;
+    position:absolute;
+    left:27%;
+}
+.change{
+    font-size:13px;
+    border:0px solid red;
+    display:block;
+    height:66px;
+    width: 90px;
+    line-height:66px;
+    color:#a0aec9;
+    float:right;
+}
+#weizhi{
+    border:0px solid red;
+    width: 30px;
+    height: 30px;
+    margin-top:18px;
+    margin-left:18px;
+    float: left;
+}
+#touxiang{
+    width: 45px;
+    height: 45px;
+    border-radius:50%;
+    margin-top:10px;
+    margin-left:10px;
+}
+#down{
+    width: 18px;
+    height: 11px;
+    position: absolute;
+    top:27px;
+    right:20px;
+}
+.time{
+    border:0px solid blue;
+    width:250px;
+    height:25px;
+    position: absolute;
+    left: 78px;
+    top: 10px;
+}
+.time span{
+    font-size: 16px;
+    font-family:"幼圆";
+    font-weight: bold;
+}
+.notes{
+    font-size:13px;
+    font-family:"SimHei";
+    position: absolute;
+    left: 78px;
+    top: 35px;
+    color:#ced2dd;
+}
+.where{
+    border:0px solid red;
+    width:94%;
+    margin-left:3%;
+    height: auto;
+    padding: 0;
+    margin-top:1px;
+    margin-bottom: 0;
+    background-color:white;
+}
+.place{
+    border:0px solid red;
+    width:94%;
+    margin-left:3%;
+    height: auto;
+    padding: 0;
+    margin-top:1px;
+    margin-bottom: 0;
+    background-color:#eaeef9;
+}
+.place li{
+    list-style-type:none;
+    width:100%;
+    height:50px;
+    border:0px solid black;
+    position: relative;
+    margin: 0;
+    margin-top: 1px;
+    padding: 0;
+    background-color: white;
+}
+.place-1{
+    border:0px solid red;
+    display:block;
+    height: 50px;
+    line-height:50px;
+    width:40px;
+    font-size:15px;
+    margin-left: 17px;
+    float: left;
+    color:#737780;
+}
+.place-2{
+    border:0px solid red;
+    display:block;
+    height: 50px;
+    line-height:50px;
+    width:160px;
+    font-size:15px;
+    color:#737780;
+    position: absolute;
+    left:27%;
+    overflow-y:hidden;
+}
+.place-3{
+    border:0px solid red;
+    display:block;
+    height: 50px;
+    line-height:50px;
+    width:40px;
+    font-size:13px;
+    color:#a0aec9;
+    float: right;
+}
+.where li{
+    list-style-type:none;
+    width:100%;
+    height:50px;
+    border:0px solid black;
+    margin: 0;
+    padding: 0;
+    background-color: white;
+}
+.where span{
+    font-size:14px;
+    color:#9398ab;
+}
+.location{
+    border: 0px solid red;
+    width:30%;
+    float: left;
+    display: block;
+    height:30px;
+    line-height: 30px;
+    margin-left:7%;
+    margin-top:10px;
+}
+.when{
+    border: 0px solid red;
+    display: block;
+    height:30px;
+    line-height: 30px;
+    float: right;
+    margin-right:9%;
+    margin-top:10px;
+}
+#moreBig{
+    border:0px solid red;
+    width:94%;
+    height:40px;
+    margin-left:3%;
+    background-color:white;
+    position: absolute;
+    margin-top: 0px;
+    box-shadow:0px -3px 10px white;
+    text-align:center;
+}
+#mmore{
+    border:0px solid red;
+    width:94%;
+    height:40px;
+    margin-left:3%;
+    background-color:white;
+    text-align: center;
+    margin-top:1px;
+}
+#lless{
+    border:0px solid red;
+    width:94%;
+    height:40px;
+    margin-left:3%;
+    background-color:white;
+    text-align: center;
+    display:none;
+    margin-top:1px;
+}
+#moreLess{
+    border:0px solid red;
+    width:94%;
+    height:40px;
+    margin-left:3%;
+    background-color:white;
+    position: absolute;
+    margin-top: 0px;
+    box-shadow:0px -18px 20px white;
+    text-align:center;
+    display:none;
+}
+.more{
+    border:0px solid blue;
+    display: block;
+    width: 30%;
+    height:30px;
+    margin-left: 35%;
+}
+.xian{
+    height:1px;
+    border:none;
+    border-top:1px solid #eaeef9;
+    width:86%;
+    position: relative;
+    left:7%;
+    margin:0;
+    padding:0;
+}
+#seven{
+    border:0px solid red;
+    width:94%;
+    margin:0;
+    padding: 0;
+    margin-left:3%;
+    margin-top: 1px;
+    height:auto;
+    position:absolute;
+    z-index: 999;
+    text-align: center;
+    background-color:white;
+}
+#seven li{
+    list-style-type:none;
+    height:60px;
+}
+#seven span{
+    line-height:60px;
+}

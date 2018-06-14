@@ -1,0 +1,210 @@
+<!doctype html>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <title>视频资料</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+        <script src="../js/config.js" type="text/javascript" charset="utf-8"></script>
+        <link href="../css/mui.min.css" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="../css/video_picture.css" />
+        <link rel="stylesheet" type="text/css" href="../css/icon/dropdown/iconfont.css" />
+        <style type="text/css">
+            html,
+            body,
+            .mui-content {
+                height: 100%!important;
+                background-color: white;
+            }
+            
+            .mui-table-view-cell:before,
+            .mui-table-view-cell:after {
+                height: 0;
+            }
+            
+            .subject {
+                text-align: center;
+                line-height: 70px;
+                font-weight: 700;
+                background-color: #0A92E6;
+                color: white;
+            }
+        </style>
+    </head>
+
+    <body>
+        <header class="mui-bar mui-bar-nav">
+            <ul>
+                <li class="self-select" data-checked="false">
+                    <div>
+                        <span class="gradeShow">
+                            年级
+                        </span>
+                        <span class="mui-icon mui-icon-arrowdown"></span>
+                    </div>
+                    <ul class="insert-pointer-grade">
+                    </ul>
+                </li>
+                <li class="self-select" data-checked="false">
+                    <div>
+                        <span class="authShow">
+                            权限
+                        </span>
+                        <span class="mui-icon mui-icon-arrowdown"></span>
+                    </div>
+                    <ul class="insert-pointer-auth">
+                    </ul>
+                </li>
+            </ul>
+        </header>
+        <div class="mui-content">
+            <ul class="mui-table-view insert-pointer-list">
+            </ul>
+        </div>
+        <script src="../js/mui.min.js"></script>
+        <script src="../js/loginValidate.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../js/template.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../js/zepto.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+        <script src="//cdn.bootcss.com/jquery-weui/0.8.0/js/jquery-weui.min.js"></script>
+        <script id="data-temp" type="text/html">
+            <div class="mui-pull-left mui-col-xs-4 mui-col-sm-4 to-detail subject" data-id="{{id}}">
+                {{subjectName}}
+            </div>
+            <div class="mui-pull-left mui-col-xs-8 mui-col-sm-8 to-detail" data-id="{{id}}">
+                <p class="mui-ellipsis">{{time}}</p>
+                <p class="mui-ellipsis">{{title}}</p>
+                <p class="mui-ellipsis" style="margin-top: 7px;">{{auth_name}}</p>
+            </div>
+        </script>
+        <script type="text/javascript">
+            mui.init();
+            var params = {
+                grade: '',
+                commodityId: ''
+            };
+            var tableGrade = $(".insert-pointer-grade");
+            var tableAuth = $(".insert-pointer-auth");
+            var tableList = $(".insert-pointer-list");
+            $(function() {
+                $.getJSON('/coursewareApp/gradetList.webapp',
+                    function(data) {
+                        var htmls = [];
+                        $.each(data.data, function(i, o) {
+                            htmls.push('<li data-id="' + o.id + '" data-text="'+o.text+'">');
+                            htmls.push('<a href="#">' + o.text + '</a>');
+                            htmls.push("</li>");
+                        });
+                        tableGrade.append(htmls.join(""));
+                    }
+                );
+                $.getJSON('/memberAuthApp/list.webapp',
+                    function(data) {
+                        var htmls = [];
+                        $.each(data.data, function(i, o) {
+                            htmls.push('<li data-id="' + o.id + '" data-text="'+o.name+'">');
+                            htmls.push('<a href="#">' + o.name + '</a>');
+                            htmls.push("</li>");
+                        });
+                        tableAuth.append(htmls.join(""));
+                    }
+                );
+                getData();
+            }); //
+            var canGetData = true;
+
+            function getData() {
+                if(canGetData) {
+                    canGetData = false;
+                    tableList.html('');
+                    $.getJSON('/coursewareApp/list.webapp', {
+                            grade: params.grade,
+                            commodityId: params.commodityId,
+                            type: 2
+                        },
+                        function(data) {
+                            $.each(data.data, function(i, o) {
+                                var html = template("data-temp", o);
+                                var li = document.createElement('li');
+                                li.className = 'mui-table-view-cell self-mui-table-view-cell';
+                                li.innerHTML = html;
+                                tableList.append(li);
+                            });
+                            canGetData = true;
+                        }
+                    );
+                }
+            }
+
+            $(".insert-pointer-grade").on("tap", 'li', function() {
+                var grade = this.getAttribute('data-id');
+                var text = this.getAttribute('data-text');
+                $(".gradeShow").text(text);
+                params.grade = grade;
+                getData();
+            });
+            $(".insert-pointer-auth").on("tap", 'li', function() {
+                var commodityId = this.getAttribute('data-id');
+                var text = this.getAttribute('data-text');
+                $(".authShow").text(text);
+                params.commodityId = commodityId;
+                getData();
+            });
+
+            tableList.on("tap", ".to-detail", function() {
+                var id = this.getAttribute("data-id");
+                $.getJSON('/coursewareApp/clickCount.webapp', {
+                        coursewareId: id
+                    },
+                    function(data) {
+                        if(data && data["success"]) {
+                            window.location.assign(encodeURI("/coursewareApp/toDetails.webapp?coursewareId=" + id));
+                        }
+                    }
+                );
+            });
+
+            function getParams() {
+                var result = {};
+                var str = decodeURI(window.location.search);
+                console.log(str);
+                var strs = str.substring(1, str.length).split("&");
+                for(i in strs) {
+                    var v = strs[i];
+                    var vs = v.split("=");
+                    result[vs[0]] = vs[1] || '';
+                    //                  console.log(i+":"+strs[i]);
+                }
+                return result;
+            }
+            var selfSelect = $(".self-select");
+            $("header").on("tap",".self-select",function(){
+                var self = $(this);
+                var checked = this.getAttribute("data-checked");
+                if(checked == "true") {
+                    console.log("true");
+                    selfSelect.removeClass("lihover");
+                    selfSelect.attr("data-checked", false);
+                    var $icon = self.find(".mui-icon");
+                    $icon.removeClass("mui-icon-arrowup");
+                    $icon.addClass("mui-icon-arrowdown");
+                } else {
+                    console.log("false");
+                    selfSelect.removeClass("lihover");
+                    $(this).addClass("lihover");
+                    selfSelect.attr("data-checked", false);
+                    this.setAttribute("data-checked", true);
+                    
+                    var $iconOther = selfSelect.find(".mui-icon");
+                    $iconOther.removeClass("mui-icon-arrowup");
+                    $iconOther.addClass("mui-icon-arrowdown");
+                    
+                    var $icon = self.find(".mui-icon");
+                    $icon.removeClass("mui-icon-arrowdown");
+                    $icon.addClass("mui-icon-arrowup");
+                }
+            });
+        </script>
+    </body>
+
+</html>

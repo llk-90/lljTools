@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>教师绑定</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <link href="../../css/mui.css" rel="stylesheet"/>
+    <link href="../../css/mui.min.css" rel="stylesheet"/>
+    <link href="../../css/mui.picker.css" rel="stylesheet" />
+    <link href="../../css/mui.poppicker.css" rel="stylesheet" />
+    <link href="../../css/app/buka/replaceDetail.css" rel="stylesheet" />
+    <script src="../../js/iBaby2.jquery-2.1.0.min.js"></script>
+    <script src="../../js/mui.min.js"></script>
+    <script src="../../js/mui.picker.js"></script>
+    <script src="../../js/mui.poppicker.js"></script>
+    <style>
+        .nav_badge{
+            position: absolute;
+            z-index: 99;
+            margin-left: -10px;
+            color: #dd524d;
+            background-color: #ffffff;
+        }
+        .mui-scrollbar{
+            display: none;
+        }
+    </style>
+    <link href="../../css/app/geren/recharge.css" rel="stylesheet"/>
+    <style>
+        .index_content img{
+            width: 100%;
+            vertical-align: top;
+        }
+        .index_content p{
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+    <script src="../../js/app/common/zepto.js"></script>
+    <script src="../../js/app/common/popup.js"></script>
+    <script src="../../js/app/login/class.js"></script>
+    <script src="../../js/app/common/Common.js"></script>
+</head>
+<body>
+<div class="mui-content wb100" style="padding: 10px 10px;margin:0;">
+    <div class="supplementary">
+        <h1>填写资料</h1>
+        <div class="s-1">
+            <div class="h">
+                <span id="school">学校名称</span>
+                <input id="myschool" type="text" name="name" value="">
+            </div>
+        </div>
+
+        <div class="s-1" >
+            <div class="h">
+                <span>班级名称</span>
+                <input id="class" type="text" name="name" value="">
+            </div>
+        </div>
+
+        <div class="s-1">
+            <div class="h">
+                <span>教师姓名</span>
+                <input id="linkman" type="text" name="name" value="">
+            </div>
+            <div class="h">
+                <span>联系电话</span>
+                <input id="phoneNum"  type="text" name="name" value="">
+            </div>
+        </div>
+
+        <div class="s-2">
+            <label>
+                <span>填写验证码</span>
+                <input id="myCheckNum" type="text" name="name" value="">
+                <a id='get_code' href="javascript:;" class="yanzhengma" onclick='sendMessage(60)'>获取验证码</a>
+            </label>
+        </div>
+        <div class="s-3">
+            <a href="javascript:;" onclick="sub()">确定绑定</a>
+        </div>
+    </div>
+</div>
+<label for="Addr" id="" class="address" style="visibility: hidden">
+    <span></span>
+    <input type="text" name="Addr" id="Addr" readonly placeholder="">
+</label>
+<div id="addressSelectWrapper" style="">
+    <div id="addressSelect">
+        <div class="tip">
+            <h3>所在地区</h3>
+            <button type="button" id="cancel"></button>
+        </div>
+        <div id="address">
+            <ul class="selected-address" >
+                <li class="lastarea" id="lastprovince">请选择</li>
+                <li class="lastarea" id="lastcity">请选择</li>
+                <li class="lastarea" id="lastarea">请选择</li>
+                <li class="lastarea" id="lasttown">请选择</li>
+            </ul>
+            <div class="address-content" style="position: relative;width: 100%;height: 100%;overflow: hidden">
+                <ul id="province"></ul>
+                <ul id="city"></ul>
+                <ul id="area"></ul>
+                <ul id="town"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script type="text/javascript">
+    var flag = false;
+    var obj;
+
+    $(function () {
+        // 地址选择器遮罩层打开与关闭
+        $("#myschool").click(function(e){
+            $("#addressSelectWrapper").show();
+            initAddress();
+            e.stopPropagation();
+        });
+        $(document).click(function () {
+            $("#addressSelectWrapper").hide();
+        });
+        $("#cancel").click(function () {
+            $("#addressSelectWrapper").hide();
+        });
+        $("#addressSelect").click(function (e) {
+            e.stopPropagation();
+        });
+
+    });
+
+    //初始化地址选择
+    function initAddress() {
+        $("#Addr").cityLinkage({
+            containerId: 'addressSelectWrapper',
+            getSelectedCode:function(){return $("#Addr").data("code");},
+            callback:function(data) {
+                $("#Addr").val(data.addr).data("code",data.town.code);
+            }
+        });
+
+    }
+
+    function checkShow(){
+
+    }
+//    选择学校
+    function toSchool(){
+        window.location.href="../login/schoolChoose.html";
+    }
+    var school=[];
+    var className=[];;
+    var  Stuname=[];
+    var  IcNo=[];
+    var userclass;
+    var linkman;
+    var ClassID
+    var SchoolID
+    (function($, doc) {
+        $.init();
+        $.ready(function() {
+            //选择班级
+            var userclass = new $.PopPicker();
+            var showUserPickerButton1 = doc.getElementById('class');
+            var list = [];
+            //var openId = GetQueryString("openId");
+            showUserPickerButton1.addEventListener('tap', function(event) {
+                $.ajax("/weixiplusBing/getAllClass.webapp", {
+                    data: {
+                       // openId:openId,
+                        SchoolId:SchoolID
+                    },
+                    dataType: 'json',
+                    type: 'post',
+                    timeout: 10000, //超时时间设置为10秒；
+                    crossDomain: true,
+                    success: function (data){
+                        for(var i=0;i<data.classInfo.length;i++){
+                            var info = new Object();
+                            info.text = data.classInfo[i].ClassName;
+                            info.value = data.classInfo[i].ClassId;
+                            list[i] = info;
+                        }
+                        userclass.setData(list)
+                        userclass.show(function(items) {
+                            //返回 false 可以阻止选择框的关闭
+                            showUserPickerButton1.value = JSON.stringify(items[0].text);
+                            ClassID = JSON.stringify(items[0].value);
+                            //return false;
+                        });
+                    },
+                    error: function(e) {
+                        console.log(e);
+                        console.log(1);
+                        mui.toast("服务器正在维护");
+                    }
+                });
+
+            }, false);
+        });
+
+
+    })(mui, document);
+
+    var checkFlag = true;
+    //图片选择
+    function cho(){
+    }
+
+    //确认补办
+    function onsubmit(){
+
+    }
+
+    //卡片数量不能小于0
+    function cardNum(){
+        if($("#num").val()<0){
+            $("#num").val(0);
+        }
+    }
+    //提交
+    function ons(){
+        var reg=/^1[3|4|5|7|8][0-9]\d{4,8}$/;
+        var mobile = $("#phoneNum").val();
+        if(mobile==null || mobile=="" || !reg.exec(mobile))
+        {
+            connect()
+        }
+        else
+        {
+            mui.toast("发送");
+        }
+    }
+    //弹框
+    function connect() {
+        //var info = document.getElementById("info");
+        var btnArray = ['是', '否'];
+        mui.confirm('请填写正确格式的手机号码', '提交失败', btnArray, function(e) {
+            if (e.index == 0) {
+                // 点击联系客服弹出框上的“是”按钮';
+            } else {
+                //点击联系客服弹出框上的“否”按钮'
+                cancle();
+            }
+        });
+    };
+
+
+
+
+    //</sc/*****************************点击获取验证码************************************/
+
+    //var p1 = /^(13[0-9]|15[0-9]|18[0-9])\d{8}$/;
+    var p1 = /^(13[0-9]|14[0-9]|15[0-9]|18[0-9])\d{8}$/;
+    var issend = true;
+    var verifyCode = "";
+    //↓↓↓↓修改 4.17，使刷新不会中断倒计时↓↓↓↓
+    var maxtime;
+    if(window.name==''){
+        maxtime = 2*60;
+    }else{
+        maxtime = window.name;
+        sendMessage(maxtime);
+    }
+    //↑↑↑↑修改 4.17，使刷新不会中断倒计时↑↑↑↑
+    function sendMessage(t) {
+        var openId = GetQueryString('openid');
+        var phoneNum = document.getElementById("phoneNum");
+        if (issend) {
+            if (phoneNum.value != null&&phoneNum.value.length != 0) {
+                if (!p1.test(phoneNum.value)) {
+                    phoneNum.value = '';
+                    mui.toast('请输入正确的手机号码');
+                    phoneNum.focus();
+                    return;
+                } else {
+                    issend = false;
+                    mui.ajax('/weixiplusBing/getCode.webapp', {
+                        data: {
+                            phone_num: phoneNum.value,
+                            openId:openId
+                        },
+                        dataType: 'json',
+                        type: 'post',
+                        timeout: 10000,
+                        success: function(data) {
+                            if (data.errorcode.code==0)
+                            {
+                                mui.toast('验证码下发成功');
+                                for (var i = 1; i <= t; i++) {
+                                    window.setTimeout("update(" + i + "," + t + ")", i * 1000);
+                                }
+                            }
+                            else {
+                                mui.toast('验证码下发失败');
+                            }
+                        },
+                        error: function(xhr, type, errorThrown) {
+                            mui.toast('网络异常，稍后再试!');
+                        }
+                    });
+                }
+            } else {
+                mui.toast('手机号码不能为空!');
+                return;
+            }
+        }
+    }
+
+    function update(num, t) {
+        var getCode = document.getElementById("get_code");
+        if (num == t) {
+            getCode.innerHTML = '重新发送';
+            issend = true;
+        } else {
+            var time = t - num;
+            getCode.innerHTML = time + '秒后重发';
+        }
+    }
+    function sub(){
+        var openId =GetQueryString('openid');
+        var contact_person = $("#linkman").val();
+        var phone_num =$("#phoneNum").val();
+        var verifycode = $("#myCheckNum").val();
+        mui.ajax('/teacherBing/saveTeacherBingInfo.webapp', {
+            data: {
+                openId: openId,
+                SchoolID:SchoolID,
+                classID:ClassID,
+                contact_person:contact_person,
+                phone_num:phone_num,
+                verifycode :verifycode
+                
+            },
+            dataType: 'json',
+            type: 'post',
+            timeout: 10000,
+            success: function(data) {
+                if (data.errorcode.code==0)
+                {
+                	window.location.href =  window.location.href="../../html/common/teacherResult.html?type=0&mainstr=成功&substr=绑定成功&openId=" + openId
+                }
+                else {
+                    mui.toast('提交失败');
+                }
+            },
+            error: function(xhr, type, errorThrown) {
+                mui.toast('网络异常，稍后再试!');
+            }
+        });
+    }
+</script>
+</html>

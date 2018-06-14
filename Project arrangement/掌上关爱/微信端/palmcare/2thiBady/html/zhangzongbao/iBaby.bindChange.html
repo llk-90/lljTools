@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>绑定切换</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="../../css/mui.min.css">
+    <link rel="stylesheet" href="../../css/app/zhangzongbao/iBody.bind.css">
+    <script src="../../js/app/common/Common.js"></script>
+    <script src="../../js/iBaby2.jquery-2.1.0.min.js"></script>
+    <script src="../../js/app/zhangzongbao/iBoy.bindChange.js"></script>
+    <!--浮动按钮-->
+    <link rel="stylesheet" href="../../css/app/common/SuspendedBall.css">
+    <script src="../../js/mui.min.js"></script>
+    <script src="../../js/app/common/PublicJs.js"></script>
+    <script src="../../js/app/common/SuspendedBall.js"></script>
+
+</head>
+<body>
+    <div class="content" style="margin-top: 3%;width: 95%;margin-left:0px">
+        <div id="mui-card" class="mui-card" style="width: 100%;border: 0px;box-shadow: none">
+
+        </div>
+    </div>
+</body>
+
+<script>
+    $(function () {
+        SuspendedBall.Add();//添加悬浮球
+        // SuspendedBall.BoxHtml("<ul class=\"SMenu\">" + $("#MenuInfo").html() + "</ul>");//添加菜单框的内容当然，具体的样式和里面的内容需要自己去写
+        SuspendedBall.Move();//这个就是让悬浮球动起来的方法。为啥单独写个不写到add方法里面呢？因为你可以在页面中直接写入悬浮球的两个div。这个方法里面可以添加一个参数，这个参数是个function。当鼠标抬起的时候会调用到这个方法。
+    });
+</script>
+</html>

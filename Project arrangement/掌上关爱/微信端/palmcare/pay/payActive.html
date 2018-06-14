@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta name="apple-mobile-web-app-status-bar-style"
+	content="black-translucent">
+<meta http-equiv="cache-control" content="private">
+<meta http-equiv="expires" content="0">
+<title>支付页面</title>
+<link rel="stylesheet" href="../iBaby/css/iBaby.bind.css">
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="../iBaby/js/iBaby.location/mui.min.js"></script>
+<script type="text/javascript" src="../iBaby/js/iBady.Common.js"></script>
+<script src="../iBaby/js/iBaby2.jquery-2.1.0.min.js"></script>
+<style type="text/css">
+#kecheng {
+	display: none;
+}
+
+#img_kecheng {
+	padding-left: 10px;
+	padding-right: 15px;
+	padding-top: 5px;
+}
+
+input::-webkit-input-placeholder {
+	text-align: center;
+	font-size: 16px;
+}
+
+.lable {
+	color: gray;
+}
+</style>
+<!---------------------------------------- css样式 ------------------------------------------->
+<script src="../js/mui.min.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript">
+	function getUrlParame() {
+		var phone;
+		var stuName;
+		// 获取url中的参数
+		var url = location.search; // 获取url中"?"符后的字串
+		if (url.indexOf("?") != -1) {
+			var str = url.substr(1);
+			var strs = str.split("&");
+			for (var i = 0; i < strs.length; i++) {					
+					phone = strs[1].split("=")[1];
+					stuName = decodeURI(strs[2].split("=")[1]); 
+					$("#phone1").val(phone);
+					$("#stuName").val(stuName);
+			}
+		}
+	}
+
+	function GetQueryString(name) {
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+		var r = window.location.search.substr(1).match(reg);
+		if(r != null) return unescape(r[2]);
+		return null;
+	}
+	
+	function checkUploadDate() {
+		// 如果名称为空或者半径为空
+		var stu_school = $("#stu_school").val();
+		var stu_class = $("#stu_class").val();
+		var stuName = $("#stuName").val();
+		var phone2 = $("#phone2").val();
+		var accept_address = $("#accept_address").val();
+		if (stu_school.length == 0 || stu_school == null) {
+			showToast("请输入学校");
+			return false;
+		}
+
+		if (stu_class.length == 0 || stu_class == null) {
+			showToast("请输入班级");
+			return false;
+		}
+		if (phone2.length == 0 || phone2 == null) {
+			showToast("请输入收货号码");
+			return false;
+		}
+		if (accept_address.length == 0 || accept_address == null) {
+			showToast("请输入收货地址");
+			return false;
+		}
+		pay();
+	}
+
+	function pay() {
+		var stu_school = document.getElementById("stu_school").value;//学校
+		var stu_class = document.getElementById("stu_class").value;//班级
+		var stuName = document.getElementById("stuName").value;//姓名
+		var phone1 = document.getElementById("phone1").value;//办理号码
+		var phone2 = document.getElementById("phone2").value;//收货号码
+		var accept_address = document.getElementById("accept_address").value;//收货地址
+		var openid = GetQueryString('openid'); //openid
+
+		$.getJSON('/child/activeController/saveActive.webapp',
+						{
+							stu_school : encodeURI(stu_school),
+							stu_class : encodeURI(stu_class),
+							stuName :  encodeURI(stuName),
+							phone1 : phone1,
+							phone2 : phone2,
+							accept_address : encodeURI(accept_address),
+							openid : openid
+						},
+						function(data) {
+							if (data && data["success"] == true) {
+								var callAppParam = data["callAppParam"];
+								WeixinJSBridge
+										.invoke(
+												'getBrandWCPayRequest',
+												{
+													"appId" : callAppParam["appId"], //公众号名称，由商户传入     
+													"timeStamp" : callAppParam["timeStamp"], //时间戳，自1970年以来的秒数     
+													"nonceStr" : callAppParam["nonceStr"], //随机串     
+													"package" : callAppParam["package"],
+													"signType" : callAppParam["signType"], //微信签名方式：     
+													"paySign" : callAppParam["paySign"]
+												//微信签名 
+												},
+												function(res) {
+													canPay = true;
+													if (res.err_msg == "get_brand_wcpay_request:ok") {
+														mui
+																.toast('支付成功&等待客服联系');
+													} else if (res.err_msg == "get_brand_wcpay_request:cancel") {
+														mui.toast('支付取消');
+													} else if (res.err_msg == "get_brand_wcpay_request:fail") {
+														mui.toast('支付失败');
+													}
+													//使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+												});
+							} else if (data && data["success"] == false) {
+								alert(data['msg']);
+								canPay = true;
+							} else {
+								alert('网络异常');
+								canPay = true;
+							}
+						});
+
+	}
+</script>
+</head>
+<body id="ibaby_id_1" onload="getUrlParame()">
+	<section class="tTrail-lay moveAnima"
+		style="left: 0%; animation-delay: 0.119955ms;">
+		<div
+			style="width: 100%; height: 200px; background-image: url(../huodong/img/yuantiao.jpg);">
+			<span></span>
+		</div>
+		<div id="ibaby_id_33" class="m-box safe-mange">
+			<section id="ibaby_id_36" class="m-box school-sign">
+				<h3 style="color: gray; height: auto; text-align: center;">填写收货信息</h3>
+				<form action="activeController/saveActive" id="activeForm"
+					method="post">
+					<div class="box-ct">
+
+						<div class="item">
+							<label class="lable">学校:</label> <input id="stu_school"
+								name="school" class="in-put tRail-name" type="text"
+								maxlength="10" placeholder="请输入您宝贝学校"> <span
+								class="icon-remove hid-del-bt"></span>
+						</div>
+
+						<div class="item">
+							<label class="lable">班级:</label> <input id="stu_class"
+								name="class" class="in-put tRail-name" type="text"
+								maxlength="16" placeholder="请输入您宝贝的班级"> <span
+								class="icon-remove hid-del-bt"></span>
+						</div>
+
+						<div class="item">
+							<label class="lable">学生姓名:</label> <input id="stuName"
+								name="stuName" class="in-put tRail-name" type="text"
+								maxlength="10" placeholder="请输入您宝贝姓名" readonly="readonly"> <span
+								class="icon-remove hid-del-bt"></span>
+						</div>
+						
+						<div class="item">
+							<label class="lable">办理号码:</label> <input id="phone1"
+								name="phone1" class="in-put tRail-name" type="tel"
+								maxlength="11" readonly="readonly"> <span
+								class="icon-remove hid-del-bt"></span>
+						</div>
+						
+						<div class="item">
+							<label class="lable">收货地址:</label> <input id="accept_address"
+								name="address" class="in-put tRail-name" type="text"
+								maxlength="10" placeholder="请输入收货地址"> <span
+								class="icon-remove hid-del-bt"></span>
+						</div>
+
+						<div class="item">
+							<label class="lable">收货联系号码:</label> <input id="phone2"
+								name="phone2" class="in-put tRail-name" type="tel"
+								maxlength="16" placeholder="请输入联系号码"> <span
+								class="icon-remove hid-del-bt"></span>
+						</div>
+
+						<div style="padding-left: 17%">支付预存话费金额:200元</div>
+					</div>
+				</form>
+				<div class="item">
+					<div style="width: 100%; margin: 0 auto;" id="login_btn_div">
+						<button type="button"
+							style="width: 100%; border: solid 0px; color: #fff; text-align: center; margin-bottom: 10px;"
+							id="keepadd" class="bt login-bt" onclick="checkUploadDate()">同意支付
+						</button>
+					</div>
+				</div>
+			</section>
+		</div>
+		<div
+			style="text-align: center; background-color: #00AFF0; display: none; position: fixed; margin: auto; left: 0; right: 0; top: 0; bottom: 0; width: 95%; height: 40px; border-radius: 7px; line-height: 40px;"
+			id="tsk"></div>
+	</section>
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>消息通知</title>
+		<script src="../js/config.js" type="text/javascript" charset="utf-8"></script>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<style>
+			html,
+			body {
+				margin: 0;
+				padding: 0;
+			}
+			
+			body {
+				background-color: #F7F7F7 !important;
+			}
+			
+			.mui-input-row input {
+				border-radius: 0;
+				height: 50px;
+				background-color: #ECECEC;
+			}
+			
+			.mui-input-row {
+				height: 80px !important;
+				float: left;
+			}
+			
+			.mui-content-padded {
+				margin: 20px;
+			}
+			
+			.image {
+				width: 60px;
+				height: 60px;
+				border-radius: 50px;
+			}
+			
+			.d-input-text {
+				float: left;
+				margin-top: 2%;
+				margin-left: 3%;
+				border-radius: 10px;
+				padding: 0%;
+				width: 65%;
+				background-color: #F7F7F7;
+				color: #8E8E8E;
+				font-size: 13px;
+				table-layout: fixed;
+				word-break: break-all;
+				overflow: hidden;
+			}
+			
+			.d-input-title {
+				float: left;
+				margin-top: 2%;
+				margin-left: 3%;
+				border-radius: 10px;
+				padding: 0%;
+				width: 100%;
+				background-color: #F7F7F7;
+				color: #040404;
+				font-size: 16px;
+				font-weight: bold;
+				table-layout: fixed;
+				word-break: break-all;
+				overflow: hidden;
+			}
+			
+			.d-input-time {
+				float: left;
+				margin-top: 2%;
+				margin-left: 2%;
+				width: 100%;
+			}
+			
+			.d-message-number {
+				float: left;
+				margin-top: 3%;
+				margin-left: 3%;
+				width: 23px;
+				height: 23px;
+				border-radius: 33px;
+				background-color: red;
+			}
+			
+			.in-time {
+				color: #8E8E8E;
+				font-size: 12px;
+				height: 50px;
+				text-align: center;
+			}
+			
+			.in-message {
+				color: #FFF;
+				font-size: 12px;
+				padding: 35%;
+			}
+			
+			.d-ta-text {
+				border-radius: 10px;
+				width: 100%;
+				height: 45px;
+				background-color: #FFFFFF;
+				color: #8E8E8E;
+				font-size: 14px;
+				font-weight: bold;
+				border: none;
+			}
+			
+			.d-input-time input {
+				border-radius: 10px;
+				width: 100%;
+				background-color: #F7F7F7;
+				color: #8E8E8E;
+				font-size: 10px;
+				float: right;
+				font-weight: bold;
+				border: none;
+			}
+			
+			.mui-bar {
+				-webkit-box-shadow: 0 0 0px rgba(0, 0, 0, 0);
+				box-shadow: 0 0 0px rgba(0, 0, 0, 0);
+			}
+		</style>
+	</head>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/loginValidate.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/template.js" type="text/javascript" charset="utf-8"></script>
+	<script id="data-temp" type="text/html">
+		<li class="mui-table-view-cell mui-media" data-id="{{lm_send_user_id}}">
+			<a href="">
+				<div class="mui-col-xs-3 mui-col-sm-3 mui-pull-left">
+					<!--<img class="image" src="../images/cbd.jpg" />-->
+					<img class="image" src="{{photo}}" />
+				</div>
+				<div class="mui-col-xs-8 mui-col-sm-8 mui-pull-left">
+					<b class="mui-name">{{name}}的家长</b>
+					<p class="mui-ellipsis" style="margin-top: 10px">{{lm_content}}</p>
+				</div>
+				<div class="mui-col-xs-1 mui-col-sm-1 mui-pull-left">
+					<div class="d-input-time">
+						<span class="in-time">{{create_time}}</span>
+					</div>
+					<div class="d-message-number">
+						<span class="in-message">{{ant}}</span>
+					</div>
+				</div>
+			</a>
+		</li>
+	</script>
+
+	<body>
+		<div class="mui-content">
+			<div class="insert-pointer">
+
+			</div>
+
+		</div>
+	</body>
+	<script type="text/javascript">
+		function getvalue(param)
+{
+     var reg = new RegExp("(^|&)"+ param +"=([^&]*)(&|$)");
+     var r = window.location.search.substr(1).match(reg);
+     if(r!=null)return  unescape(r[2]); return null;
+}
+	</script>
+	<script type="text/javascript">
+		mui.init({
+			swipeBack: false //启用右滑关闭功能
+		});
+		var table = document.body.querySelector('.insert-pointer');
+		var user_ids = getvalue('user_id');
+		//var user_ids='e95316b7fe25451ab6dbcf7400b27157s';
+		mui.ajax("/messageList/list.webapp", {
+			data: {
+				lm_receive_user_id: user_ids
+			},
+			dataType: 'json', //服务器返回json格式数据
+			type: 'post', //HTTP请求类型
+			timeout: 10000, //超时时间设置为10秒；
+			success: function(data) {
+				if(data.length<=0||data==null){
+					mui.toast("没有相关留言信息");
+					return;
+				}
+				mui.each(data, function(i, item) {
+					var jisShuJu = {
+						photo: item.photo,
+						lm_send_user_id: item.lm_send_user_id,
+						lm_content: item.lm_content,
+						ant: item.ant,
+						create_time: item.create_time,
+						name:item.sname
+					}
+					var html = template("data-temp", jisShuJu);
+					var li = document.createElement('ul');
+					li.className = 'mui-table-view';
+					li.innerHTML = html;
+					table.insertBefore(li, table.firstChild);
+					mui('.mui-content').on('tap', 'li', function() {
+					var lm_send_user_id = this.getAttribute("data-id");
+				    var urls="messageContent.html?lm_send_user_id="+lm_send_user_id+"&user_id="+user_ids;
+				    window.location.assign(encodeURI(urls));
+       		        location.href=urls;
+        });
+				});
+			},
+			error: function(xhr, type, errorThrown) {
+				mui.toast(type + errorThrown);
+			}
+		});
+		
+	</script>
+
+</html>

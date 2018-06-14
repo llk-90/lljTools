@@ -1,0 +1,338 @@
+/* ::::: http://www.17sucai.com/preview/549/2015-11-04/%E6%97%A5%E5%8E%86%E6%8F%92%E4%BB%B6-%E9%80%89%E6%8B%A9%E6%97%A5%E6%9C%9F%E8%8C%83%E5%9B%B4/dateRange.css ::::: */
+
+html,
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+form,
+fieldset,
+input,
+textarea,
+p,
+blockquote,
+th,
+td,
+iframe,
+hr {
+	margin: 0px;
+	padding: 0px;
+}
+
+body {
+	font: 12px/1.6 Tahoma, microsoft yahei, "微软雅黑", "宋体";
+}
+
+address,
+caption,
+cite,
+dfn,
+em,
+th,
+var {
+	font-style: normal;
+	font-weight: normal;
+}
+
+caption,
+th {
+	text-align: left;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0px;
+}
+
+select,
+input,
+label,
+button,
+textarea {
+	margin: 0px;
+	padding: 0px;
+	overflow: visible;
+}
+
+input {
+	padding: 2px 0px 1px;
+}
+
+.ta_calendar2 {}
+
+.ta_calendar {
+	background-color: rgb(255, 255, 255);
+	font-size: 12px;
+	text-align: left;
+	z-index: 100;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+}
+
+.i_pre{
+	background: transparent url('prev.png') no-repeat scroll 0% 0%;;
+	background-size: 100% auto; 
+	cursor: pointer;
+}
+.i_next{
+	background: transparent url('next.png');
+	background-size: 100% auto; 
+	cursor: pointer;
+}
+.ta_calendar td.ta_dateRangeSelected,
+.ta_calendar td.first,
+.ta_calendar td.last,
+.ta_calendar td.today {
+	background: transparent url('mark.png') no-repeat right top;
+	cursor: pointer;
+}
+.ta_calendar td.markday{
+	background: transparent url('mark.png') no-repeat right top;
+	background-size:35%;
+	cursor: pointer;
+}
+
+.i_pre,
+.i_next {
+	width: 23px;
+	height: 23px;
+	display: inline-block;
+}
+
+.i_pre {
+	background-position: 0px 0px;
+}
+
+.i_pre:hover {
+	//background-position: 6px 0px;
+}
+
+.i_next {
+	background-position: -23px 0px;
+}
+
+.i_next:hover {
+	//background-position: -17px 0px;
+}
+
+.ta_calendar td.ta_dateRangeGray {
+	color: rgb(187, 187, 187);
+	cursor: default;
+}
+
+.ta_calendar td.first::after,
+.ta_calendar td.today::after {
+	content: "入住";
+	display: block;
+	font-size: 10px;
+	color: rgb(255, 255, 255);
+}
+
+.ta_calendar td.last::after {
+	content: "离店";
+	display: block;
+	font-size: 10px;
+	color: rgb(255, 255, 255);
+}
+
+.ta_calendar table {
+	font-size: 12px;
+	border-spacing: 0px 7px;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+.ta_calendar table caption {
+	text-align: center;
+	height: 60px;
+	line-height: 60px;
+	font-size: 19px;
+	box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
+	background-image: url(title_bg.png);
+	color: #FFF;
+}
+
+.ta_calendar table thead tr {
+	background: #e3e3e3 none repeat scroll 0% 0%;
+}
+.ta_calendar table thead th {
+	cursor: pointer;
+	text-align: center;
+	height: 40px;
+	border: 1px solid #e3e3e3;
+}
+
+.ta_calendar table td:first-child {
+	height: 0px;
+}
+
+.ta_calendar table tbody td {
+	text-align: center;
+	white-space: nowrap;
+	font-family: "Tahoma";
+	background: #FFF none repeat scroll 0% 0%;
+	height: 40px;
+	width: 14%;
+	border: 1px solid #e3e3e3;
+}
+
+.ta_calendar_cont {
+	position: relative;
+}
+
+.ta_calendar_cont .i_pre,
+.ta_calendar_cont .i_next {
+	position: absolute;
+	top: 17px;
+}
+
+.ta_calendar_cont .i_pre {
+	left: 10px;
+}
+
+.ta_calendar_cont .i_next {
+	right: 10px;
+}
+
+.ta_calendar_footer {
+	border-top: 1px solid rgb(229, 229, 229);
+	background: rgb(250, 250, 250) none repeat scroll 0% 0%;
+	padding-top: 6px;
+	height: 34px;
+}
+
+.ta_calendar_footer .frm_btn {
+	float: right;
+}
+
+.ta_calendar_footer .frm_msg {
+	float: left;
+	vertical-align: middle;
+}
+
+.ta_ipt_text,
+.ta_ipt_textarea,
+.ta_ipt_text_s {
+	border: 1px solid rgb(204, 204, 204);
+	box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset;
+	color: rgb(85, 85, 85);
+	font-size: 12px;
+	height: 16px;
+	line-height: 16px;
+	padding: 6px 4px;
+	position: relative;
+	transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
+	vertical-align: middle;
+	width: 180px;
+	z-index: 2;
+}
+
+.ta_ipt_text_s {
+	width: 80px;
+}
+
+.ta_btn {
+	-moz-border-bottom-colors: none;
+	-moz-border-left-colors: none;
+	-moz-border-right-colors: none;
+	-moz-border-top-colors: none;
+	background-color: rgb(245, 245, 245);
+	background-image: -moz-linear-gradient(center top, rgb(254, 254, 254), rgb(245, 245, 245));
+	background-repeat: repeat-x;
+	border-color: rgb(202, 202, 202) rgb(202, 202, 202) rgb(179, 179, 179);
+	border-image: none;
+	border-radius: 2px;
+	border-style: solid;
+	border-width: 1px;
+	box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.05);
+	color: rgb(51, 51, 51);
+	cursor: pointer;
+	display: inline-block;
+	font-family: "΢���ź�", "����";
+	font-size: 12px;
+	line-height: 20px;
+	margin-bottom: 0px;
+	outline: 0px none;
+	padding: 3px 12px;
+	text-align: center;
+}
+
+.ta_btn:hover,
+.ta_btn:active,
+.ta_btn.active,
+.ta_btn.disabled,
+.ta_btn[disabled] {
+	color: rgb(51, 51, 51);
+}
+
+.ta_btn:hover {
+	background-color: rgb(254, 254, 254);
+	background-image: none;
+	color: rgb(51, 51, 51);
+	text-decoration: none;
+	transition: background-position 0.1s linear 0s;
+}
+
+.ta_btn:focus {
+	outline: thin dotted rgb(51, 51, 51);
+	outline-offset: -2px;
+}
+
+.ta_btn.active,
+.ta_btn:active {
+	background-color: rgb(230, 230, 230);
+	background-image: none;
+	box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15) inset, 0px 1px 2px rgba(0, 0, 0, 0.05);
+	outline: 0px none;
+}
+
+.ta_btn {
+	margin: 0px 5px 0px 0px;
+	vertical-align: top;
+}
+
+.ta_btn:hover {
+	background-position: 0px -16px;
+}
+
+.ta_btn_primary {
+	background-color: rgb(180, 214, 111);
+	background-image: -moz-linear-gradient(center top, rgb(199, 225, 132), rgb(162, 204, 89));
+	border: 1px solid rgb(136, 171, 74);
+	color: rgb(86, 116, 15);
+}
+
+.ta_btn_primary:hover {
+	background-color: rgb(92, 150, 219);
+	background-image: -moz-linear-gradient(center top, rgb(116, 165, 237), rgb(71, 137, 205));
+	border: 1px solid rgb(40, 106, 177);
+	color: rgb(255, 255, 255);
+}
+
+.cf::after {
+	clear: both;
+}
+
+.cf::before,
+.cf::after {
+	content: "";
+	display: table;
+}
+
+.cf::before,
+.cf::after {
+	content: "";
+	display: table;
+}

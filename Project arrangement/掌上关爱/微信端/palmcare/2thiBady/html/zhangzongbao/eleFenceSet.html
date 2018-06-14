@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>电子围栏</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <!--引入mui.css文件-->
+    <link rel="stylesheet" href="../../css/mui.min.css">
+    <!--引入自定义css文件-->
+    <link rel="stylesheet" href="../../css/app/zhangzongbao/fence/eleFenceSet.css">
+    <script src="../../js/iBaby2.jquery-2.1.0.min.js"></script>
+    <script src="../../js/app/common/cvi_busy_lib.js"></script>
+    <script src="../../js/app/common/Common.js"></script>
+</head>
+<body style="margin:0px; padding: 0px; background-color:#eaeef9;">
+    <div class="user" >
+        <img id="touxiang" src="../../img/zhangzongbao/toux.jpg" alt="头像">
+        <div class="time">
+            <span id="days"></span>
+        </div>
+        <span class="notes">最多查看最近7天的历史记录</span>
+        <img id="down" src="../../img/zhangzongbao/down.png" alt="下" onclick="aaa()">
+    </div>
+    <ul id="seven" style="display:none;">
+    </ul>
+    <ul class="where">
+        <!--<li>-->
+            <!--<span class="location">进入游戏厅</span>-->
+            <!--<span class="when">18:50</span>-->
+        <!--</li>-->
+            <!--<hr class="xian">-->
+    </ul>
+    <div id="moreBig">
+        <a   class="more" href="javascript:void(0)" ><span id="moreBiga" style="color:#9398ab;font-family:'微软雅黑';font-size:13px;height:30px;line-height:30px;display: block">查看更多</span></a>
+    </div>
+    <!--<div id="moreLess">-->
+        <!--<a   class="more" href="javascript:void(0)" onclick="aClick2()"><span id="moreBigb" style="color:#9398ab;font-family:'微软雅黑';font-size:13px;height:30px;line-height:30px;">点击收起</span></a>-->
+    <!--</div>-->
+
+    <!--定位-->
+    <div id="enclosure"  >
+        <img id="weizhi" src="../../img/zhangzongbao/location.png" alt="头像">
+        <!--<span id="lo1">深圳市罗湖区泥岗东路</span>-->
+        <!--<a href="eleFence.html"><span class="change">修改</span></a>-->
+        <span onclick="addWeilan()" class="change">添加监控区域</span>
+    </div>
+    <ul class="place" id="infoFen" style="margin-top:2px">
+        <!--<li>-->
+            <!--<span class="place-1">学校</span>-->
+            <!--<span class="place-2">深圳市南山区白石路</span>-->
+            <!--<a href="eleFence.html"><span class="place-3">修改</span></a>-->
+        <!--</li>-->
+    </ul>
+    <!--<div id="mmore">-->
+        <!--<a href="javascript:void(0)" onclick="moreClick()"><span style="color:#9398ab;font-family:'微软雅黑';font-size:13px;height:40px;line-height:40px;">展开</span></a>-->
+    <!--</div>-->
+    <!--<div id="lless">-->
+        <!--<a href="javascript:void(0)" onclick="lessClick()"><span style="color:#9398ab;font-family:'微软雅黑';font-size:13px;height:40px;line-height:40px;">收起</span></a>-->
+    <!--</div>-->
+
+</body>
+
+
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/iBaby2.jquery-2.1.0.min.js"></script>
+<script>
+    //检测字符串长度
+    $(function(){
+        create();
+        Reminit()
+    })
+ //   check();
+//    function check(){
+//        var lo1 = document.getElementById("lo1");
+//        var str = lo1.innerHTML;
+//        if(str.length>10){
+//            var str2 = str.substring(0,10)+"...";
+//        }
+//        lo1.innerHTML=str2;
+//    }
+
+    //修改位置初始化加载数据
+    var place = document.body.querySelector('.place');
+//  var i1;
+//   for(i1=0;i1<4;i1++){
+//       var li1 = document.createElement('li');
+//       li1.innerHTML='<span class="place-1">学校</span><span class="place-2">深圳市南山区白石路啊啊啊啊</span><a href="eleFence.html"><span class="place-3">修改</span></a>';
+//       place.appendChild(li1);
+//    }
+    cchange();
+    //点击展开加载数据
+    var mmore =document.getElementById('mmore');
+    var lless =document.getElementById('lless');
+//    function  moreClick(){
+//        for(var j1=i1;j1<10;j1++){
+//            var li1 = document.createElement('li');
+//            li1.innerHTML='<span class="place-1">学校</span><span class="place-2">深圳市南山区白石路吾问无为谓我</span><a href="eleFence.html"><span class="place-3">修改</span></a>';
+//            place.appendChild(li1);
+//        }
+//        mmore.style.display = 'none';
+//        lless.style.display = 'block';
+//        cchange();
+//    }
+//    //点击收起重新加载数据
+//    function lessClick() {
+//        place.innerHTML=" ";
+//        for(i1=0;i1<4;i1++){
+//            var li1 = document.createElement('li');
+//            li1.innerHTML='<span class="place-1">学校</span><span class="place-2">深圳市南山区白石路</span><a href="eleFence.html"><span class="place-3">修改</span></a>';
+//            place.appendChild(li1);
+//        }
+//        lless.style.display='none';
+//        mmore.style.display = 'block';
+//        cchange();
+//    }
+    //位置选择事件
+    function cchange() {
+        var place2 = document.getElementsByClassName('place-2');
+        var lo1 = document.getElementById("lo1");
+        for(var k=0;k<place2.length;k++){
+            place2[k].onclick = function(){
+                lo1.innerHTML =this.innerHTML;
+                if(lo1.innerHTML.length>10){
+                    var str2 = lo1.innerHTML.substring(0,10)+"...";
+                    lo1.innerHTML=str2;
+                }
+            }
+//            if(place2[k].innerHTML.length>10){
+//                var str4 = place2[k].innerHTML.substring(0,9)+"...";
+//                place2[k].innerHTML = str4;
+//            }
+        }
+
+    }
+
+    //初始化加载数据
+//    var table = document.body.querySelector('.where');
+//    var i;
+//    for(i=0;i<5;i++){
+//        var li = document.createElement('li');
+//        var hr = document.createElement('hr');
+//        hr.className='xian';
+//        li.innerHTML=' <span class="location">进入游戏厅</span> <span class="when">18:50</span>';
+//        table.appendChild(li);
+//        table.appendChild(hr);
+//    }
+    var morBig =document.getElementById('moreBig');
+    var moreLess =document.getElementById('moreLess');
+    //点击更多加载数据
+    function  aClick1(){
+        for(var j=i;j<17;j++){
+            var li = document.createElement('li');
+            var hr = document.createElement('hr');
+            hr.className='xian';
+            li.innerHTML=' <span class="location">进入游戏厅</span> <span class="when">18:50</span>';
+            table.appendChild(li);
+            table.appendChild(hr);
+        }
+        moreLess.style.display='block';
+        morBig.style.display = 'none';
+    }
+    //点击收起重新加载数据
+    function aClick2() {
+        table.innerHTML=" ";
+        for(i=0;i<5;i++){
+            var li = document.createElement('li');
+            var hr = document.createElement('hr');
+            hr.className='xian';
+            li.innerHTML=' <span class="location">进入游戏厅</span> <span class="when">18:50</span>';
+            table.appendChild(li);
+            table.appendChild(hr);
+        }
+        moreLess.style.display='none';
+        morBig.style.display = 'block';
+    }
+    //点击选择时间
+    var seven = document.getElementById("seven");
+    //seven.style.display='block';
+    function aaa() {
+        if(seven.style.display=="none"){
+            seven.style.display='block';
+        }else{
+            seven.style.display='none';
+        }
+    }
+    //日期点击事件
+    var list = document.getElementsByClassName('week');
+    var days = document.getElementById("days");
+    for(var k=0;k<list.length;k++){
+        list[k].onclick = function(){
+            days.innerHTML =this.innerHTML;
+            seven.style.display='none';
+        }
+    }
+
+    function create() {
+        var xval=getBusyOverlay('viewport',{color:'white', opacity:0.75, text:'加载中', style:'text-shadow: 0 0 3px black;font-weight:bold;font-size:16px;color:white'},{color:'#59bf6b', size:70, type:'o'});
+        var url = location.search; //获取url中"?"符后的字串
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            strs = str.split("&");
+            for(var i = 0; i < strs.length; i ++) {
+                openid=strs[0].split("=")[1];
+                studentId=strs[1].split("=")[1];
+            }
+        }
+        //获取今日时间
+       var taday = Today();
+       document.getElementById("days").innerHTML=taday
+        mui.ajax(baseURL+"/weilan/getDate.webapp", {
+            data: {},
+            dataType: 'json', //服务器返回json格式数据
+            type: 'post', //HTTP请求类型
+            timeout: 10000, //超时时间设置为10秒；
+            async:false,
+            beforeSend:function(){
+                if(xval) {
+                    xval.settext("加载中，请稍后......");
+                }
+            },
+            success: function(data) {
+                xval.remove();
+                console.log(data)
+                if(data.result ="succ"){
+                    //监控记录
+                    var div=document.getElementById('seven');
+                    mui.each(data.recordDate, function(i, listValues) {
+                        //监控记录的值
+                        var li= document.createElement('li');
+                        li.setAttribute("onclick","record(this)");
+                        var span=document.createElement("span");
+                        span.setAttribute("class","week");
+                        //獲取日期
+                        span.innerText=listValues.substring(0,6)+","+listValues.substring(6,9);
+                        li.appendChild(span);
+                        div.appendChild(li);
+                    });
+                }
+                else
+                {
+                    mui.toast("获取信息失败");
+                }
+            },
+            error: function(xhr, type, errorThrown) {
+                mui.toast("获取信息失败");
+            }
+        });
+
+        //获取围栏名称
+        var stuId =GetQueryString('stuid')
+        mui.ajax(baseURL+"/weilan/selectWeilanName.webapp", {
+            data: {
+                studentId:stuId
+            },
+            dataType: 'json', //服务器返回json格式数据
+            type: 'post', //HTTP请求类型
+            timeout: 10000, //超时时间设置为10秒；
+            async:false,
+            success: function(data) {
+                console.log(data);
+                if(data.result ="succ"){
+                    //监控区域
+                    var ui=document.getElementById('infoFen');
+                    mui.each(data.fencinglist, function(i, listValues) {
+                        //监控區域
+                        //ui.setAttribute("class","box-ct");
+                        var li= document.createElement('li');
+                        li.setAttribute("id",listValues.fencingId);
+                        var span1=document.createElement("span");
+                        var span2= document.createElement("span");
+//                        div.setAttribute("class","div_name");
+//                        div.setAttribute("id",listValues.fencingId);
+//                        div.innerText=decodeURI(listValues.fencingName);
+                        span1.setAttribute("class","place-1");
+                        console.log(listValues.fencingName.length);
+                        if(listValues.fencingName.length>2){
+                            listValues.fencingName =  listValues.fencingName.substring(0,2)
+                        }
+                        span1.innerText=decodeURI(listValues.fencingName);
+                        span2.setAttribute("class","place-2");
+                        span2.setAttribute("type","hidden");
+                        span2.setAttribute("id",listValues.desc);
+                        //隐藏输入框：存放desc(经纬度，半径)
+//                        var input=document.createElement("input");
+//                        input.setAttribute("type","hidden");
+//                        input.setAttribute("id",listValues.desc);
+                        if(i<5){
+                            var a= document.createElement('a');
+                            var span3 = document.createElement("span");
+                            a.setAttribute("onclick","updateWeilan(this)");
+                            a.setAttribute("class","update_add");
+                            span3.setAttribute("class","place-3");
+                            //span.setAttribute("class","update_add");
+                            //span.setAttribute("style","display: block;margin-left: 53%;margin-right:10px;border:none;padding-left: -20px;padding-right: -20px;");
+                            span3.innerText="修改";
+                            //去除点击事件
+                            //$("span").removeAttr("onclick");
+                            a.appendChild(span3)
+                            li.appendChild(span1);
+                            li.appendChild(span2);
+                            li.appendChild(a);
+                        }else{
+                            var a1= document.createElement('a');
+                            var span3 = document.createElement("span");
+                            a1.setAttribute("onclick","updateWeilan(this)");
+                            span3.setAttribute("class","place-3");
+                            a1.setAttribute("class","update_add");
+                            //span.setAttribute("style","display: block;margin-left: 53%;margin-right:10px;border:none;padding-left: -20px;padding-right: -20px;");
+                            span3.innerText="修改";
+                            //去除点击事件
+                            //$("span").removeAttr("onclick");
+                            a1.appendChild(span3)
+                            var a2= document.createElement('a');
+                            var span4 = document.createElement("span");
+                            a2.setAttribute("onclick","delete_weilan(this)");
+                            a2.setAttribute("class","delete");
+                            span4.setAttribute("class","place-3");
+                            //span.setAttribute("class","update_add");
+                            //span.setAttribute("style","display: block;margin-left: 53%;margin-right:10px;border:none;padding-left: -20px;padding-right: -20px;");
+                            span4.innerText="删除";
+                            a1.appendChild(span3);
+                            a2.appendChild(span4);
+                            li.appendChild(span1);
+                            li.appendChild(span2);
+                            li.appendChild(a1);
+                            li.appendChild(a2);
+                        }
+
+
+
+                        ui.appendChild(li);
+                    });
+                }
+                else
+                {
+                    mui.toast("获取信息失败");
+                }
+
+            },
+            error: function(xhr, type, errorThrown) {
+                mui.toast("获取信息失败");
+            }
+        });
+    };
+    //跳转到围栏修改页面
+    function updateWeilan(t){
+        studentId = GetQueryString('stuid')
+        openid = GetQueryString('openid')
+        var fencingId=$(t).parent("li").attr("id");
+        var value=$(t).parent("li").children("span").first().text();
+        //获取经纬度，半径
+        var strDesc=$(t).parent("li").children("span").last().attr("id");
+        strs = strDesc.split(",");
+        for(var i = 0; i < strs.length; i++) {
+            // 纠偏后的经纬度
+            var lng=strs[3];
+            var lat=strs[4];
+            var radius=strs[2];
+        }
+        console.log("fencingId:"+fencingId+" "+"value:"+value+" "+"strs:"+strs)
+
+        if("update_add"==$(t).attr("class")){
+            window.location.href="eleFence.html?"+"update=修改"+"&value="+value+"&fencingId="+fencingId+"&stuId="+studentId+"&lng="+lng+"&lat="+lat+"&radius="+radius+"&disabled=true"+"&openid="+openid;
+            //window.location.href="../iBaby/iBaby.fence_update.html?"+"update=修改"+"&value="+value+"&fencingId="+fencingId+"&stuId="+studentId+"&lng="+lng+"&lat="+lat+"&radius="+radius+"&disabled=true"+"&openid="+openid;
+        }else{
+            window.location.href="eleFence.html?"+"update=修改"+"&value="+value+"&fencingId="+fencingId+"&stuId="+studentId+"&lng="+lng+"&lat="+lat+"&radius="+radius+"&disabled=false"+"&openid="+openid;
+            //window.location.href="../iBaby/iBaby.fence_update.html?"+"update=修改"+"&value="+value+"&fencingId="+fencingId+"&stuId="+studentId+"&lng="+lng+"&lat="+lat+"&radius="+radius+"&disabled=false"+"&openid="+openid;
+        }
+    }
+
+    function Reminit() {
+        var xval=getBusyOverlay('viewport',{color:'white', opacity:0.75, text:'加载中', style:'text-shadow: 0 0 3px black;font-weight:bold;font-size:16px;color:white'},{color:'#59bf6b', size:70, type:'o'});
+        console.log("484848484848")
+        var stuId = GetQueryString('stuid')
+        mui.ajax(baseURL+"/weilan/selectWeilanRecord.webapp", {
+            data: {
+                stuId: stuId,
+                date: "2018-03-08"
+            },
+            dataType: 'json', //服务器返回json格式数据
+            type: 'post', //HTTP请求类型
+            timeout: 10000, //超时时间设置为10秒；
+            async:false,
+            beforeSend:function(){
+                if(xval) {
+                    xval.settext("加载中，请稍后......");
+                }
+            },
+            success: function (data) {
+                xval.remove();
+                console.log(data)
+                if (data.statCode = "200") {
+                    if (data.alarmInfoList.length == 0) {
+                        var str = "无监护记录。";
+                        document.getElementById("moreBiga").innerHTML = str
+                    }
+                    //    var table = document.body.querySelector('.where');
+//                        var i;
+//                        for(i=0;i<5;i++){
+//                        var li = document.createElement('li');
+//                        var hr = document.createElement('hr');
+//                        hr.className='xian';
+//                        li.innerHTML=' <span class="location">进入游戏厅</span> <span class="when">18:50</span>';
+//                        table.appendChild(li);
+//                        table.appendChild(hr);
+//    }
+                    else {
+                        var str = "监护记录如下:";
+                        $("#span").append(str);
+                        //监控记录详情
+                        var table = document.body.querySelector('.where');
+//
+                        mui.each(data.alarmInfoList, function (i, listValues) {
+                            backData = data.alarmInfoList;
+                            var str = listValues.areaDesc;
+                            var stateNum = str.substring(0, 1);
+                            if (stateNum == "1") {
+                                var strState = "进入"
+                            } else if (stateNum == "2") {
+                                var strState = "离开"
+                            } else {
+                                var strState = "进入，离开"
+                            }
+                            var name = str.substring(48);
+                            area = str.substring(2, 21);
+
+                            var li = document.createElement('li');
+                            var hr = document.createElement('hr');
+                            hr.className = 'xian';
+                            li.innerHTML = ' <span class="location">' + area + '</span> <span class="when">18:50</span>';
+                            table.appendChild(li);
+                            table.appendChild(hr);
+//                            var tr2=document.createElement("tr");
+//                            tr2.setAttribute("style","text-align: center; border-bottom: 1px solid #E8E8E8;");
+//
+//                            var td5=document.createElement("td");
+//                            td5.innerText=name;
+//
+//
+//                            var td6=document.createElement("td");
+//                            maps(area,i);
+//                            td6.setAttribute("id","td"+i);
+//
+//                            var td7=document.createElement("td");
+//                            td7.innerText=listValues.alarmTime;
+//
+//                            var td8=document.createElement("td");
+//                            td8.innerText=strState;
+//
+//                            tr2.appendChild(td5);
+//                            tr2.appendChild(td6);
+//                            tr2.appendChild(td7);
+//                            tr2.appendChild(td8);
+//                            table.appendChild(tr2);
+                        });
+                    }
+
+                    //$("#record_count").html(data.totalSize);
+                }
+                else {
+                    mui.toast("获取信息失败");
+                }
+
+
+            },
+            error: function (xhr, type, errorThrown) {
+                mui.toast("系统正在维护,请稍后重试！！！");
+            }
+        });
+
+    }
+
+    //获取今日时间
+    function Today(){
+        var weekday=new Array(7)
+        weekday[0]="天"
+        weekday[1]="一"
+        weekday[2]="二"
+        weekday[3]="三"
+        weekday[4]="四"
+        weekday[5]="五"
+        weekday[6]="六"
+        var today = new Date();
+        var month = today.getMonth()+1;
+        var date = today.getDate();
+        var day = today.getDay();
+        (month<10) ? month='0'+month : month=month;
+        (date<10) ? date='0'+date : date=date;
+        return month+"月"+date+"日"+", 星期"+weekday[day];
+    }
+
+    function addWeilan(){
+        studentId = GetQueryString('stuid');
+        openid = GetQueryString('openid');
+        window.location.href="eleFence.html?"+"update=添加"+"&stuId="+studentId+"&openid="+openid;
+    }
+
+    //删除围栏信息
+    function delete_weilan(t){
+        var xval=getBusyOverlay('viewport',{color:'white', opacity:0.75, text:'加载中', style:'text-shadow: 0 0 3px black;font-weight:bold;font-size:16px;color:white'},{color:'#59bf6b', size:70, type:'o'});
+        var name=$(t).parent("li").children("span").first().text();
+        var fencingId=$(t).parent("li").attr("id");
+        var stuId = GetQueryString('stuid')
+        //获取围栏名称
+        mui.ajax(baseURL+"/weilan/deleteWeilanMsg.webapp", {
+            data: {
+                studentId:stuId,
+                fencingId:fencingId
+            },
+            dataType: 'json', //服务器返回json格式数据
+            type: 'post', //HTTP请求类型
+            timeout: 10000, //超时时间设置为10秒；
+            async:false,
+            beforeSend:function(){
+                if(xval) {
+                    xval.settext("加载中，请稍后......");
+                }
+            },
+            success: function(data) {
+                xval.remove();
+                if(data.statCode =="200"){
+                    mui.toast("删除成功");
+                    window.location.reload();
+                }
+                else
+                {
+                    mui.toast("删除失败！！！");
+                }
+            },
+            error: function(xhr, type, errorThrown) {
+                mui.toast("服务器正在维护,请稍后重试！！！");
+            }
+        });
+    };
+    //监护记录详细
+    function record(t){
+        var value=t.children[0].innerText;
+        var strDate=$(t).attr("id");
+        console.log(t);
+        var days = document.getElementById("days");
+        days.innerText = t.innerText;
+        seven.style.display = "none";
+        //	var lng="106.555";
+        //	var lat="29.565";
+        //window.location.href="../iBaby/jiankong_record.html?"+"value="+value+"&lng="+lng+"&lat="+lat+"&stuId="+studentId+"&strDate="+strDate;
+        //window.location.href="../iBaby/jiankong_record.html?"+"value="+value+"&stuId="+studentId+"&strDate="+strDate+"&openid="+openid;
+    }
+
+</script>
+</html>

@@ -1,0 +1,39 @@
+#main-section {
+	width: 100%;
+	margin-bottom: 0px;
+}
+
+.list-item {
+	border: solid 1px #F43C5B;
+	border-bottom-width: 0px;
+	height: 40px;
+}
+
+.item-li {
+	font-size: 0.8em;
+	height: 10px;
+	text-align: left;
+	width: 30%;
+	line-height: 10px;
+}
+
+.btn-li {
+	width: 90%;
+	margin-left: 5%;
+	margin-top: 10px;
+	text-align: center;
+	display: inline-flex;
+	justify-content: space-between;
+}
+
+.detail {
+	width: 60px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	-o-text-overflow: ellipsis;
+}
+.zong{}
+.diyi{float:left;}
+.dier{float:left;}
+.disan{float:left;}

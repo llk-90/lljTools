@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>补卡办理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="../../css/app/geren/personalInformation.css">
+    <link rel="stylesheet" href="../../css/mui.min.css">
+    <link rel="stylesheet" href="../../css/app/common/SuspendedBall.css">
+    <link rel="stylesheet" href="../../css/app/buka/cardReplacementList.css">
+    <script src="../../js/iBaby2.jquery-2.1.0.min.js"></script>
+    <script src="../../js/app/buka/cardReplacementList.js"></script>
+    <script src="../../js/mui.min.js"></script>
+    <!--浮动按钮-->
+    <link rel="stylesheet" href="../../css/app/common/SuspendedBall.css">
+    <script src="../../js/app/common/PublicJs.js"></script>
+    <script src="../../js/app/common/SuspendedBall.js"></script>
+
+</head>
+<body>
+<div class="top" style="z-index: 999">
+<div class="icon" style="">
+<img src="../../img/buka/iconData.png"style="width: 100%" >
+</div>
+    <div class="text" style="color: #8B8B8B;font-family: 'Adobe Fan Heiti Std B'">
+    填写资料
+    </div>
+    <div class="replace">
+        <button type="button" class="mui-btn" style="background-color: transparent;border: transparent;margin-top: 6%;font-size: 1rem;color: #007aff;font-family: 'Microsoft YaHei UI Light';margin-left: -0.5rem" onclick="replace()">
+            补办
+        </button>
+    </div>
+</div>
+<!--<div class="mui-content">-->
+<!--<div id="cardBox" class="cardBox">-->
+<!--<div class="card">-->
+<!--<img src="../../img/buka/card0.png" style="width: 100%;margin-left:0rem;">-->
+    <!--<p style="display: flex;margin-top: -43%;margin-left:6.5%;font-size: 0.5rem;color: white">132123132</p>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+</body>
+
+<script type="text/javascript">
+    mui.init({
+        gestureConfig: {
+            doubletap: true
+        },
+        subpages:[{
+            url:'pullrefresh_sub.html',
+            id:'pullrefresh_sub.html',
+            styles:{
+                top: '160px',
+                bottom: '0px',
+            }
+        }]
+    });
+    var contentWebview = null;
+    document.querySelector('body').addEventListener('doubletap',function () {
+        if(contentWebview==null){
+            contentWebview = plus.webview.currentWebview().children()[0];
+        }
+        contentWebview.evalJS("mui('#pullrefresh').pullRefresh().scrollTo(0,0,100)");
+    });
+</script>
+
+<script>
+    $(function () {
+        SuspendedBall.Add();//添加悬浮球
+        // SuspendedBall.BoxHtml("<ul class=\"SMenu\">" + $("#MenuInfo").html() + "</ul>");//添加菜单框的内容当然，具体的样式和里面的内容需要自己去写
+        SuspendedBall.Move();//这个就是让悬浮球动起来的方法。为啥单独写个不写到add方法里面呢？因为你可以在页面中直接写入悬浮球的两个div。这个方法里面可以添加一个参数，这个参数是个function。当鼠标抬起的时候会调用到这个方法。
+    });
+</script>
+</html>

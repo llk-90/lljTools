@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="WeixiplusCommon">
+
+	<select id="selectStuUserid" parameterType="pd" resultType="pd">
+		SELECT
+		topen.icon AS icon,
+		stu.UserName AS UserName,
+		par.ParUserName AS
+		ParUserName,
+		cla.ClassName AS ClassName,
+		cla.ClassId as ClassId,
+		stu.IcNo AS IcNo,
+		stu.StudentId
+		AS StudentId
+		FROM
+		t_user_weixin topen,
+		qry_stuparent_info par,
+		qry_student_info stu,
+		qry_batch_class cla
+		WHERE
+		par.StudentId =
+		stu.StudentId
+		AND stu.ClassId = cla.ClassId
+		AND
+		topen.uw_parent_id=par.ParentId
+		AND topen.uw_open_id = #{openId}
+		ORDER
+		BY
+		topen.create_time DESC
+		LIMIT 1
+	</select>
+
+	<select id="selectStuUserid2" parameterType="pd" resultType="pd">
+		SELECT
+		topen.icon AS icon,
+		stu.UserName AS UserName,
+		par.ParUserName AS
+		ParUserName,
+		cla.ClassName AS ClassName,
+		stu.IcNo AS IcNo,
+		stu.StudentId
+		AS StudentId
+		FROM
+		t_user_weixin topen,
+		qry_stuparent_info par,
+		qry_student_info stu,
+		qry_batch_class cla
+		WHERE
+		par.StudentId =
+		stu.StudentId
+		AND stu.ClassId = cla.ClassId
+		AND
+		topen.uw_parent_id=par.ParentId
+		AND topen.uw_open_id = #{openId}
+		ORDER
+		BY
+		topen.create_time DESC
+	</select>
+
+	<!-- 获取余额 -->
+	<select id="selectStuOprInf" parameterType="pd" resultType="pd">
+		select
+		xft_xyinf.AccountNo,
+		xft_xyinf.LeftJE,
+		xft_xyinf.PayTime
+		from
+		xft_xyinf where xft_xyinf.AccountNo= #{accountNo} AND SchoolId =
+		#{schoolid}
+		UNION all
+		select
+		xft_xyoper.AccountNo,
+		xft_xyoper.LeftJE,
+		xft_xyoper.PayTime
+		from xft_xyoper where xft_xyoper.AccountNo=
+		#{accountNo} AND SchoolId
+		= #{schoolid} ORDER BY PayTime desc
+	</select>
+	<!-- 获取IC卡号 -->
+	<select id="selecticnum" parameterType="pd" resultType="pd">
+		SELECT
+		IcNo
+		FROM
+		t_user_student
+		WHERE
+		us_user_id = #{us_user_id}
+	</select>
+
+	<!-- 获取学生姓名，学校id，班级id -->
+	<select id="selectstuinfo" parameterType="pd" resultType="pd">
+		SELECT
+		UserName,ClassId
+		FROM
+		qry_student_info
+		WHERE IcNo = #{IcNo}
+	</select>
+
+	<!-- 获取学生学校班级 -->
+	<select id="selectstuclass" parameterType="pd" resultType="pd">
+		SELECT *
+		FROM
+		qry_batch_school INNER JOIN qry_batch_class ON
+		qry_batch_school.SchoolID =
+		qry_batch_class.SchoolId
+		WHERE
+		qry_batch_class.ClassId = #{ClassId}
+	</select>
+
+	<!-- 根据openid 获取用户的考勤次数信息 -->
+	<select id="selectatteinfo" parameterType="pd" resultType="pd">
+		<!-- SELECT type,signin_time,signout_time,modify_time FROM guanai_attendance_info 
+			WHERE IcNo=( SELECT IcNo FROM t_user_student WHERE us_user_id=( SELECT uw_user_id 
+			FROM t_user_weixin WHERE uw_open_id = #{openId} ) )AND DATE_FORMAT(signin_time,'%Y-%m')=DATE_FORMAT(NOW(),'%Y-%m') 
+			GROUP BY signin_time desc -->
+
+		select
+		id,
+		IcNo,
+		DATE_FORMAT(MIN(times),'%d %H:%i:%s') as date,
+		states,
+		amAndPm,
+		type
+		from guanai_attendance_info
+		where IcNo = #{IcNo}
+		and type = '0'
+		and times like CONCAT(#{date},"%")
+	    and DATE_FORMAT(times,'%H-%m-%d') between '00:00:00' and '08:00:00'
+
+		UNION ALL
+		select
+		id,
+		IcNo,
+		DATE_FORMAT(MIN(times),'%d %H:%i:%s') as date,
+		states,
+		amAndPm,
+		type
+		from guanai_attendance_info
+		where IcNo = #{IcNo}
+		and type = '1'
+		and times like CONCAT(#{date},"%")
+		and DATE_FORMAT(times,'%H-%m-%d') between '08:00:00' and '12:00:00'
+
+		UNION ALL
+		SELECT
+		id,
+		IcNo,
+		DATE_FORMAT(MIN(times),'%d %H:%i:%s') as date,
+		states,
+		amAndPm,
+		type
+		from guanai_attendance_info
+		where IcNo = #{IcNo}
+		and type = '0'
+		and times like CONCAT(#{date},"%")
+		and DATE_FORMAT(times,'%H-%m-%d') between '12:00:00' and '13:00:00'
+
+		UNION ALL
+		select
+		id,
+		IcNo,
+		DATE_FORMAT(MIN(times),'%d %H:%i:%s') as date,
+		states,
+		amAndPm,
+		type
+		from guanai_attendance_info
+		where IcNo = #{IcNo}
+		and type = '1'
+		and times like CONCAT(#{date},"%")
+		and DATE_FORMAT(times,'%H-%m-%d') between '13:00:00' and '16:30:00'
+	</select>
+
+	<!-- 根据openid获取用户IC卡号 -->
+	<select id="selecticnobyopenid" parameterType="pd" resultType="pd">
+		SELECT
+		IcNo
+		FROM
+		t_user_student
+		WHERE
+		us_user_id = (SELECT uw_user_id FROM
+		t_user_weixin WHERE uw_open_id = #{openId})
+	</select>
+
+	<!-- 根据openid获取同班同学签到时间 -->
+	<select id="selectsignintimerank" parameterType="pd" resultType="pd">
+		SELECT g.IcNo,g.signin_time
+		FROM guanai_attendance_info g INNER JOIN
+		qry_student_info q ON g.IcNo = q.IcNo
+		WHERE q.ClassId =
+		(
+		SELECT
+		ClassId
+		FROM
+		qry_student_info INNER JOIN t_user_student ON
+		qry_student_info.IcNo =
+		t_user_student.IcNo
+		WHERE
+		t_user_student.us_user_id =
+		(
+		SELECT uw_user_id FROM t_user_weixin WHERE
+		uw_open_id = #{openId})) AND
+		DATE_FORMAT(signin_time,'%Y-%m-%d')=DATE_FORMAT(#{querydate},'%Y-%m-%d')
+		ORDER BY signin_time
+	</select>
+
+
+	<select id="getRank" parameterType="pd" resultType="String">
+		select 
+		  b.rowno as rowmo
+		from 
+		(
+		select 
+		gai.IcNo,
+		gai.times,
+		<![CDATA[(@rowno:=@rowno+1)]]> as rowno 
+		from qry_student_info
+		qsi,guanai_attendance_info gai,(select <![CDATA[(@rowno:=0)]]>) b 
+		where qsi.IcNo = gai.IcNo and qsi.ClassId = #{ClassId} and times like CONCAT(#{date},"%")
+		ORDER BY gai.times asc) b 
+		where b.IcNo =#{IcNo} ORDER BY b.times
+		asc limit 1
+	</select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

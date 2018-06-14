@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>学生管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <!--mui.css文件-->
+    <link rel="stylesheet" href="../../css/mui.min.css">
+    <!--自定义css文件-->
+    <link rel="stylesheet" href="../../css/app/geren/student.css">
+    <script src="../../js/mui.min.js"></script>
+    <script src="../../js/iBaby2.jquery-2.1.0.min.js"></script>
+    <script src="../../js/app/common/Common.js"></script>
+    <script src="../../js/app/common/cvi_busy_lib.js"></script>
+</head>
+<body style="margin:0px; padding: 0px; background-color:#eaeef9;">
+
+    <div id="content" style="width:100%;border:0px solid red;">
+        <!--学生区域-->
+        <!--<div class="student">-->
+            <!--<img class="perlogo" src="../../img/geren/perlogo.png" alt="用户" >-->
+            <!--<div class="sanjiao"></div>-->
+            <!--<span>选中</span>-->
+            <!--<form class="mui-input-group1">-->
+                <!--<div class="mui-input-row">-->
+                    <!--<label style="padding-left:0px;padding-right:0px;width:68px;height:80%;font-size:14px;position:absolute;top:1%;color:#6c6c6c;">用&nbsp;&nbsp;户&nbsp;&nbsp;名:</label>-->
+                    <!--<input type="text" value="sde00341" style="background-color:#eaeef9;color:#6c6c6c;height:100%; width:78%;padding-left:3%;position:absolute;left:72px;font-size:15px;">-->
+                <!--</div>-->
+                <!--<div class="mui-input-row">-->
+                    <!--<label style="padding-left:0px;padding-right:0px;width:68px;height:80%;font-size:14px;position:absolute;top:1%;color:#6c6c6c;">设备编号:</label>-->
+                    <!--<input type="text" value="Ed12333332332" style="background-color:#eaeef9;height:100%;color:#6c6c6c; width:78%;padding-left:3%;position:absolute;left:72px;font-size:15px;">-->
+                <!--</div>-->
+                <!--<div class="mui-input-row">-->
+                    <!--<label style="padding-left:0px;padding-right:0px;width:68px;height:80%;font-size:14px;position:absolute;top:1%;color:#6c6c6c;">班&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;级:</label>-->
+                    <!--<input type="text" readonly="readonly" value="五年三班" style="color:#c0c6d4;background-color:#eaeef9;height:100%; width:78%;padding-left:3%;position:absolute;left:72px;font-size:15px;">-->
+                <!--</div>-->
+                <!--<div class="mui-input-row">-->
+                    <!--<label style="padding-left:0px;padding-right:0px;width:68px;height:80%;font-size:14px;position:absolute;top:1%;color:#6c6c6c;">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名:</label>-->
+                    <!--<input type="text"  readonly="readonly" value="罗大帅" style="color:#c0c6d4;background-color:#eaeef9;height:100%; width:78%;padding-left:3%;position:absolute;left:72px;font-size:15px;">-->
+                <!--</div>-->
+
+                <!--<button type="button" class="mui-btn mui-btn-warning" style="margin-top: 20px;width: 100%;height:45px;margin-left: 0%">-->
+                    <!--解除绑定-->
+                <!--</button>-->
+
+            <!--</form>-->
+        <!--</div>-->
+    </div>
+    <div style="width:100%;height:60px;background-color:white;border:0px solid blue;position:fixed;bottom:0px;left:0px;">
+        <button type="button" class="mui-btn" onclick="btnAction2()" style=" border:0px solid red;margin-top: 10px;width: 100%;height:40px;font-size:16px;color:#c0c6d4;">增&nbsp;加&nbsp;绑&nbsp;定</button>
+    </div>
+
+
+
+    <script>
+        var openid = GetQueryString("openid");
+        $.ajax(baseURL+"/personal/getStudentInfo.webapp", {
+            data: {
+                openId:openid
+            },
+            dataType: 'json',
+            type: 'post',
+            timeout: 10000, //超时时间设置为10秒；
+            crossDomain: true,
+            success: function (data){
+                if(data.errorcode.code==0){
+
+                    //console.log(data);
+                    Initialization(data);
+                    //configView(data);
+                    //mui("#slider").slider({interval: 3000});
+                }
+                else {
+                    mui.toast(data.errorcode.errMsg);
+                }
+            },
+            error: function(e) {
+                console.log(e);
+                console.log(1);
+                mui.toast("服务器正在维护");
+            }
+        });
+        var content = document.getElementById("content");
+        function Initialization(data){
+            for(var i=0;i<data.studentInfo.length;i++){
+                var icno =data.studentInfo[i].IcNo.toString();
+                if(i==0){
+                    var div = document.createElement('div');
+                    div.className = 'student';
+                    div.innerHTML = '<img class="perlogo" src="../../img/geren/perlogo.png" alt="用户" ><div class="sanjiao"></div> <span>选中</span>'+
+                            '<form class="mui-input-group1">'+
+                            '<div class="mui-input-row">'+
+                            '<label style="padding-left:0px;padding-right:0px;width:68px;height:80%;font-size:14px;position:absolute;top:1%;color:#6c6c6c;">学&nbsp;&nbsp;生&nbsp;&nbsp;名:</label>'+
+                            '<input type="text" readonly="readonly" value=" '+data.studentInfo[i].UserName+' " style="color:#c0c6d4;background-color:#eaeef9;height:100%; width:78%;padding-left:3%;position:absolute;left:72px;font-size:15px;">'+
+                            '</div>'+
+                            '<div class="mui-input-row">'+
+                            '<label style="padding-left:0px;padding-right:0px;width:68px;height:80%;font-size:14px;position:absolute;top:1%;color:#6c6c6c;">IC&nbsp;&nbsp;卡&nbsp;   号:</label>'+
+                            '<input type="text" readonly="readonly" value=" '+data.studentInfo[i].IcNo+' " style="color:#c0c6d4;background-color:#eaeef9;height:100%; width:78%;padding-left:3%;position:absolute;left:72px;font-size:15px;">'+
+                            '</div>'+
+                            '<div class="mui-input-row">'+
+                            '<label style="padding-left:0px;padding-right:0px;width:68px;height:80%;font-size:14px;position:absolute;top:1%;color:#6c6c6c;">班&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;级:</label>'+
+                            '<input type="text" readonly="readonly" value=" '+data.studentInfo[i].ClassName+' " style="color:#c0c6d4;background-color:#eaeef9;height:100%; width:78%;padding-left:3%;position:absolute;left:72px;font-size:15px;">'+
+                            '</div>'+
+                            '<div class="mui-input-row">'+
+                            '<label style="padding-left:0px;padding-right:0px;width:68px;height:80%;font-size:14px;position:absolute;top:1%;color:#6c6c6c;">家&nbsp;&nbsp;长&nbsp;&nbsp;名:</label>'+
+                            '<input type="text"  readonly="readonly" value=" '+data.studentInfo[i].ParUserName+' " style="color:#c0c6d4;background-color:#eaeef9;height:100%; width:78%;padding-left:3%;position:absolute;left:72px;font-size:15px;">'+
+                            '</div>'+
+                            '<button type="button" class="mui-btn mui-btn-warning" onclick="btnAction(&apos;'+icno+'&apos;)" style="margin-top: 20px;width: 100%;height:45px;margin-left: 0%">点击切换</button>'+
+                            '</form>';
+                    content.appendChild(div);
+                    continue;
+                }
+                var div = document.createElement('div');
+                div.className = 'student';
+                div.innerHTML = '<img class="perlogo" src="../../img/geren/perlogo.png" alt="用户" >'+
+                        '<form class="mui-input-group1">'+
+                        '<div class="mui-input-row">'+
+                        '<label style="padding-left:0px;padding-right:0px;width:68px;height:80%;font-size:14px;position:absolute;top:1%;color:#6c6c6c;">学&nbsp;&nbsp;生&nbsp;&nbsp;名:</label>'+
+                        '<input type="text" readonly="readonly" value=" '+data.studentInfo[i].UserName+' " style="color:#c0c6d4;background-color:#eaeef9;height:100%; width:78%;padding-left:3%;position:absolute;left:72px;font-size:15px;">'+
+                        '</div>'+
+                        '<div class="mui-input-row">'+
+                        '<label style="padding-left:0px;padding-right:0px;width:68px;height:80%;font-size:14px;position:absolute;top:1%;color:#6c6c6c;">IC&nbsp;&nbsp;卡&nbsp;   号:</label>'+
+                        '<input type="text" readonly="readonly" value=" '+data.studentInfo[i].IcNo+' " style="color:#c0c6d4;background-color:#eaeef9;height:100%; width:78%;padding-left:3%;position:absolute;left:72px;font-size:15px;">'+
+                        '</div>'+
+                        '<div class="mui-input-row">'+
+                        '<label style="padding-left:0px;padding-right:0px;width:68px;height:80%;font-size:14px;position:absolute;top:1%;color:#6c6c6c;">班&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;级:</label>'+
+                        '<input type="text" readonly="readonly" value=" '+data.studentInfo[i].ClassName+' " style="color:#c0c6d4;background-color:#eaeef9;height:100%; width:78%;padding-left:3%;position:absolute;left:72px;font-size:15px;">'+
+                        '</div>'+
+                        '<div class="mui-input-row">'+
+                        '<label style="padding-left:0px;padding-right:0px;width:68px;height:80%;font-size:14px;position:absolute;top:1%;color:#6c6c6c;">家&nbsp;&nbsp;长&nbsp;&nbsp;名:</label>'+
+                        '<input type="text"  readonly="readonly" value=" '+data.studentInfo[i].ParUserName+' " style="color:#c0c6d4;background-color:#eaeef9;height:100%; width:78%;padding-left:3%;position:absolute;left:72px;font-size:15px;">'+
+                        '</div>'+
+                        '<button type="button" class="mui-btn mui-btn-warning" onclick="btnAction(&apos;'+icno+'&apos;)" style="margin-top: 20px;width: 100%;height:45px;margin-left: 0%">点击切换</button>'+
+                        '</form>';
+                content.appendChild(div);
+            }
+            var div = document.createElement('div');
+            div.className = 'boem';
+            content.appendChild(div);
+        }
+
+        function btnAction2(){
+            window.location.href = "../../html/login/BingPage.html?openid="+openid;
+        }
+
+        function btnAction(IcNo){
+            var xval=getBusyOverlay('viewport',{color:'white', opacity:0.75, text:'加载中', style:'text-shadow: 0 0 3px black;font-weight:bold;font-size:16px;color:white'},{color:'#59bf6b', size:70, type:'o'});
+            console.log(IcNo);
+            $.ajax(baseURL+"/personal/updateSelectedStu.webapp", {
+                data: {
+                    openId:openid,
+                    IcNo:IcNo
+                },
+                dataType: 'json',
+                type: 'post',
+                timeout: 10000, //超时时间设置为10秒；
+                crossDomain: true,
+                async:false,
+                beforeSend:function(){
+                    if(xval) {
+                        xval.settext("加载中，请稍后......");
+                    }
+                },
+                success: function (data){
+                    if(data.errorcode.code==0){
+                        xval.remove();
+                        window.location.href = "../../html/shouye/index.html?openid="+openid;
+
+                    }
+                    else {
+						xval.remove();
+                        mui.toast(data.errorcode.errMsg);
+                        console.log(data);
+                    }
+                },
+                error: function(e) {
+					xval.remove();	
+                    mui.toast("服务器正在维护");
+                }
+            });
+        }
+
+    </script>
+</body>
+</html>

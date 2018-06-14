@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta http-equiv="cache-control" content="private">
+<meta http-equiv="expires" content="0">
+	<script src="js/iBaby.user/iBaby.user.js"></script>
+	<script src="js/iBaby.location/mui.js"></script>
+	<script src="../iBaby/js/iBaby2.jquery-2.1.0.min.js"></script>
+	<script src="../iBaby/js/iBady.Common.js"></script>
+<title>掌踪宝</title>
+
+<link rel="stylesheet" href="css/iBaby.user.css">
+
+<style type="text/css">
+#kecheng{display:none;}
+#img_kecheng {
+    padding-left: 10px;
+    padding-right: 15px;
+    padding-top: 5px;
+}
+
+input::-webkit-input-placeholder{text-align: center;font-size:16px;}
+</style>
+</head>
+<body id="ibaby_id_1" onload="init();">
+<img style="position: absolute;margin-top:35%; left: 50%;display: none;background-color: gray;max-height: 32px;" id="loads" src="../images/jzx.gif ">
+<header></header>
+<section class="tTrail-lay moveAnima" style="left: 0%; animation-delay: 0.119955ms;">
+<section id="ibaby_id_29" class="per-info">
+<div id="ibaby_id_30">
+<div id="ibaby_id_31" class="per-head">
+<span id="ibaby_id_32">
+<img id="iconInfo" src="../iBaby/images/iBaby.bind/baby_boy1.png">
+</span>
+
+</div>
+</div>
+
+</section>
+<div id="ibaby_id_33" class="m-box safe-mange">
+<section id="ibaby_id_34" class="m-box trac-history">
+<h3 style="font-size:20px;color:#92a5b8;">选择头像</h3>
+<nav id="ibaby_id_35" class="track-top-nav">
+<a class="gray-col cg-t-bt ">
+<img src="../iBaby/images/iBaby.bind/baby_boy.png" id="img1" alt="" onclick="getImgInfo(&#39;1&#39;)">
+</a>
+<a class="gray-col cg-t-bt">
+<img src= "../iBaby/images/iBaby.bind/baby_boy1.png"id="img2" alt="" onclick="getImgInfo(&#39;2&#39;)">
+</a>
+<a  class="gray-col cg-t-bt">
+<img src= "../iBaby/images/iBaby.bind/baby_girl.png"id="img3" alt="" onclick="getImgInfo(&#39;3&#39;)">
+</a>
+<a  class="gray-col cg-t-bt">
+<img src="../iBaby/images/iBaby.bind/baby_girl1.png" id="img4" alt="" onclick="getImgInfo(&#39;4&#39;)">
+</a>
+<!-- 头像点击事件，点击后可以更换上面的头像 -->
+</nav>
+<input type="hidden" name="iconInfos" id="iconInfos" value="">
+</section>
+<section id="ibaby_id_36" class="m-box school-sign">
+<h3>基本信息</h3>
+<div class="box-ct">
+<div class="item">
+<label>宝贝姓名:</label>
+<input id="childname" class="in-put tRail-name" type="text" maxlength="12" readonly="readonly" >
+<span class="icon-remove hid-del-bt"></span>
+</div>
+<!---------------------------------------------- 昵称选项 ------------------------------------------->
+	<div class="item">
+		<label>设备号:</label><!-- <p style="margin-left:9px;"></p> -->
+		<input id="baby-imei" class="in-put tRail-name" type="text" maxlength="16"    placeholder= "请查看设备上粘贴的设备号" onblur="changeAccountValue()">
+		<span class="icon-remove hid-del-bt"></span>
+	</div>
+	<!--------------------------------------------- IMEI码选项 ------------------------------------------>
+<!-- <div class="item">
+<label>输入账号:</label>
+<input id="baby-account" class="in-put tRail-name" type="text" maxlength="20" placeholder="请查看设备上粘贴的编号" >
+<span class="icon-remove hid-del-bt"></span>
+</div> -->
+<input id="baby-account" class="in-put tRail-name" type="hidden" maxlength="20" placeholder="请查看设备上粘贴的编号" >
+<!---------------------------------------------- 输入账号 ------------------------------------------->
+
+<div class="item">
+<label>输入密码:</label>
+<input type="password" id="baby-password" class="in-put tRail-name"  maxlength="10" placeholder="初始密码：123456" >
+<span class="icon-remove hid-del-bt"></span>
+</div>
+<!---------------------------------------------- 输入密码 ------------------------------------------->
+
+
+<div class="item">
+<label>手机号码:</label>
+<input id="baby-phoneNum" class="in-put tRail-name" type="text" maxlength="11" placeholder="请输入设备安装的手机号" >
+<span class="icon-remove hid-del-bt"></span>
+</div>
+
+<div class="item go-school"
+			 style="
+             width:100%;
+             flex-direction: row;
+             align-items:center;
+             display : inline-flex;
+             justify-content:space-between;"
+			>
+		     <span>孩子性别:</span>
+		     <div  style=" align-items:center;width:43.2px;
+             display : inline-flex;" >
+			 <input type="radio"    name="sex" id="sex1"  value="0" checked="checked" onclick="checkBoxClick('sex','0')"></input>
+			 <span style="">男</span>
+			 </div>
+			 <div  style=" align-items:center; width:134.2px;
+             display : inline-flex;">
+			 <input type="radio"     name="sex"  id="sex2"  value="1" onclick="checkBoxClick('sex','1')"></input>
+             <span style="margin-right:85px;">女</span>
+             </div>
+			 </div>
+			<!------------------------------------------- 性别选项------------------------------------------ -->   
+	           <div class="item go-school"
+			 style="
+             width:100%;
+             flex-direction: row;
+             align-items:center;
+             display : inline-flex;
+             justify-content:space-between;"
+			>
+		     <span     style="width:59.3px;" >IC类型:</span>
+		     <div  style=" align-items:center;
+             display : inline-flex;" >
+			 <input type="radio"    name="gender" id="gender1" value="0"   checked="checked" onclick="checkBoxClick('type','0')"></input>
+			 <span style=""> 2.4G</span>
+			 </div>
+			 <div  style=" align-items:center;
+             display : inline-flex;">
+			 <input type="radio"     name="gender" id="gender2" value="1" onclick="checkBoxClick('type','1')"></input>
+             <span style="margin-right:85px;">13.65</span>
+             </div>
+			 </div>
+
+<!------------------------------------------- ic卡号种类------------------------------------------ -->
+
+<!--<div class="item">-->
+<!--<label>IC卡号码:</label>-->
+<!--<input id="tlenum" class="in-put tRail-name" type="text" maxlength="16" placeholder="输入IC卡号码（必填）" >-->
+<!--<span class="icon-remove hid-del-bt"></span>-->
+<!--</div>-->
+<input id="tlenum" class="in-put tRail-name" type="hidden" maxlength="16" placeholder="输入IC卡号码（必填）" >
+
+
+<!--&lt;!&ndash;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45; ic卡号 &#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&ndash;&gt;-->
+
+<!--<div class="item">-->
+<!--<label>IC卡名称:</label>-->
+<!--<input id="iccard" class="in-put tRail-name" type="text" maxlength="20" placeholder="输入IC卡名称（选填）" >-->
+<!--<span class="icon-remove hid-del-bt"></span>-->
+<!--</div>-->
+<input id="iccard" class="in-put tRail-name" type="hidden" maxlength="20" placeholder="输入IC卡名称（选填）" >
+<!------------------------------------------------ ic卡号名称 ------------------------------------------->
+</div>
+
+
+
+<div class="item">
+<div style="width:100%; margin: 0 auto;" id="login_btn_div">
+			 <button type="submit"
+				style="width: 100%; border: solid 0px; color: #fff; text-align: center;"
+				id="keepadd" class="bt login-bt"  onclick="checkBoxClick('submit','1')">确定保存
+				</button>  
+			<p style="margin: 20px;"></p>
+			<button type="submit"
+				style="width: 100%; border: solid 0px; color: #fff; text-align: center;"
+				id="keepadd" class="bt login-bt" onclick="checkBoxClick('back','1')">返回
+				</button>
+		</div>	
+</div>
+<!------------------------------------------------ 按钮------------------------------------------->
+
+
+
+</section>
+</div>
+</section>
+<div style="background-color:#00AFF0;display: none; position:fixed;margin:auto;left:0; right:0; top:0; bottom:0;width:95%; height:63px;border-radius: 7px;line-height: 63px;" id="tsk"></div>
+</body>
+
+</html>

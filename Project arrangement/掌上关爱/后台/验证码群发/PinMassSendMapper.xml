@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PinMassSendMapper">
+
+	<!--根据业务名查询学生信息 -->
+	<select id="firmlist" parameterType="pd" resultType="pd">
+		SELECT
+		marketingId,
+		firmName
+		FROM
+		hjy_firmoverview
+	</select>
+
+	<!--根据学生id获取学生的具体地区，家长信息 -->
+	<select id="queryStuInfo" parameterType="String" resultType="pd">
+		SELECT
+		DISTINCT
+		q3.CityId,
+		q3.SchoolID
+		FROM
+		qry_batch_school q3
+		WHERE
+		q3.SchoolID IN
+		(SELECT q1.SchoolId from qry_student_info q1 WHERE q1.StudentId =
+		#{hjy_s_id})
+	</select>
+
+	<!-- <select id="listPageEqlist" parameterType="page" resultType="pd"> SELECT 
+		DISTINCT f.StudentId ,f.UserName ,f.Sex ,f.ParentId ,f.ParUserName ,f.ParLoginName 
+		,b.SchoolId ,CASE e.hjy_order_status WHEN '0' THEN '未开通' WHEN '1' THEN '已开通未订阅' 
+		WHEN '2' THEN '已下发未验证' WHEN '3' THEN '已订阅' ELSE '未开通' END AS hjy_order_status 
+		,g.hjy_pin_code FROM qry_stuparent_info f INNER JOIN qry_student_info b ON 
+		f.StudentId = b.StudentId LEFT JOIN hjy_order_details e ON e.hjy_s_id = f.StudentId 
+		LEFT JOIN hjy_pin_group_send g ON g.hjy_s_id = f.StudentId WHERE 1=1 <if 
+		test="pd.hjy_order_status != null and pd.hjy_order_status !='' and pd.hjy_order_status 
+		== 0 "> AND f.StudentId NOT IN ( SELECT h.hjy_s_id from hjy_order_details 
+		h WHERE h.hjy_order_status in ('1','2','3') and h.hjy_firm_name = #{pd.firmType}) 
+		</if> <if test="pd.hjy_order_status != null and pd.hjy_order_status !='' 
+		and pd.hjy_order_status != 0"> and e.hjy_order_status = #{pd.hjy_order_status} 
+		and e.hjy_firm_name = #{pd.firmType} </if> <if test="pd.classParam != null 
+		and pd.classParam !=''"> and b.ClassId= #{pd.classParam} </if> <if test="schoolParam 
+		!= null and schoolParam !=''"> and b.SchoolId= #{pd.schoolParam} </if> <if 
+		test="pd.stuName !=null and pd.stuName !=''"> b.UserName = #{pd.stuName} 
+		</if> </select> -->
+
+	<select id="listPageEqlist" parameterType="Page" resultType="pd">
+		SELECT DISTINCT
+		b.StudentId
+		,b.UserName
+		,b.Sex
+		,tuw.uw_parent_id  as ParentId
+		,tuw.uw_parent_name as ParUserName
+		,tuw.phone_num  as ParLoginName
+		,b.SchoolId
+		,CASE e.hjy_order_status WHEN '0' THEN '未开通' WHEN '1' THEN '已开通未订阅'
+		WHEN '2' THEN '已下发未验证' WHEN '3' THEN '已订阅' ELSE '未开通' END AS
+		hjy_order_status
+		,g.hjy_pin_code
+		FROM t_user_weixin tuw
+		INNER JOIN t_user_student tus ON tuw.uw_user_id = tus.us_user_id
+		inner JOIN
+		qry_student_info b ON b.StudentId= tus.us_stu_id
+		INNER JOIN qry_batch_school qbs on b.SchoolId = qbs.SchoolID
+		INNER JOIN qry_city_info qci on qbs.CityId = qci.CityId
+		INNER JOIN qry_batch_class qbc on qbs.SchoolID = qbc.SchoolId
+		LEFT JOIN hjy_order_details e ON e.hjy_s_id = b.StudentId
+		LEFT JOIN hjy_pin_group_send g ON g.hjy_s_id = b.StudentId
+		WHERE 1=1
+		and qci.CityId=
+		(
+		<include refid="getCityIdByUserId" />
+		#{pd.userId})
+		)
+		<if test="pd.hjy_order_status != null and pd.hjy_order_status !=''">
+			AND e.hjy_order_status = #{pd.hjy_order_status}
+		</if>
+		<if test="pd.hjy_order_status != null and pd.hjy_order_status !=''">
+			and e.hjy_firm_name = #{pd.firmType}
+		</if>
+		<if test="pd.schoolParam !=null and pd.schoolParam !=''">
+			and qbs.SchoolID = #{pd.schoolParam}
+		</if>
+		<if test="pd.classParam !=null and pd.classParam !=''">
+			and qbc.ClassId = #{pd.classParam}
+		</if>
+		<if test="pd.stuName !=null and pd.stuName !=''">
+			and b.UserName = #{pd.stuName}
+		</if>
+	</select>
+
+
+
+	<!-- 批量更新状态 (已下发未验证) -->
+	<insert id="sendlist" parameterType="pd">
+		INSERT
+		hjy_order_details (
+		hjy_s_id,
+		hjy_create_phone_num,
+		hjy_create_time,
+		hjy_s_name,
+		hjy_firm_name,
+		hjy_order_status,
+		hjy_order_way
+		)
+		VALUES
+		(
+		#{StudentId},
+		#{ParLoginName},
+		#{time},
+		#{UserName},
+		#{firmName},
+		'2',
+		'1'
+		)
+	</insert>
+
+
+	<!-- 新增 -->
+	<sql id="getCityIdByUserId">
+		SELECT
+		city.CityId
+		FROM
+		qry_city_info city
+		INNER JOIN
+		T_USER_AREA_MANAGER T ON
+		T.UAM_ZONE_ID = city.ID
+		AND
+		T.UAM_USER_ID =(
+		SELECT K.PARENT_ID
+		FROM SYS_USER X,
+		SYS_USER K
+		WHERE
+		X.PARENT_ID=K.USER_ID AND X.USER_ID=
+	</sql>
+
+	<!--获取镇区 -->
+	<select id="getTown" parameterType="pd" resultType="pd">
+		select
+		TownId,
+		TownName
+		from qry_town
+		where
+		CityId =
+		(
+		<include refid="getCityIdByUserId" />
+		#{userId})
+		)
+	</select>
+
+	<!--获取镇区下的学校 -->
+	<select id="getSchByTownId" parameterType="pd" resultType="pd">
+		select
+		SchoolID,
+		SchoolName
+		from qry_batch_school
+		where TownId =#{townId}
+	</select>
+	<!--获取班级 -->
+	<select id="getClasses" parameterType="pd" resultType="pd">
+		select
+		ClassId,
+		ClassName
+		from qry_batch_class
+		where
+		SchoolId = #{schoolId}
+	</select>
+
+
+
+
+</mapper>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+ <script src="../InstantMessaging/js/IMindex.js"></script>
+<script src="../iBaby/js/iBaby.location/mui.min.js"></script>
+<link rel="stylesheet" href="../iBaby/css/mui.min.css">
+
+<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+ 
+<!-- 可选的Bootstrap主题文件（一般不使用） -->
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"></script>
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+ 
+</head>
+<body >
+<div  class="mui-row" style="width:100%;position:fixed;top:0px;height:20%;background-color:#FFFFCC">
+<div class="mui-row" style="height:50%;top:40%;background-color: ;width:40%; position:absolute">
+
+    <img src="../InstantMessaging/img/humen.png"  class="mui-col-sm-6 mui-col-xs-6"
+    style="width:64px;height:64px;"
+     >
+
+ <span  class="mui-col-sm-6 mui-col-xs-6"  style="top:40%;margin-left:10px" id="UserName">用户名</span>
+</div>
+
+
+</div>
+
+       <div id="slider" class="mui-slider"style="width:100%;position:fixed;bottom:10%;height:70%;" >
+        <div id="sliderSegmentedControl" 
+        style="height:10%"
+        class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+            <div class="block-style mui-row">
+                <div class="control-item-inline mui-col-sm-6 mui-col-xs-6"><a class="mui-control-item mui-active" href="#item1mobile">会话</a></div>
+                <div class="control-item-inline mui-col-sm-6 mui-col-xs-6"><a class="mui-control-item" href="#item2mobile">好友</a></div>
+                
+            </div>
+        </div>
+
+     
+ 
+
+        <div class="mui-slider-group"style="height:90%">
+            <!-- 会话 -->
+            <div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
+            
+   <p class="row"onclick="charWindow('testfriend')"><img src="../InstantMessaging/img/humen.png"  style="width:32px;height:32px;margin:20px;"  >  testfriend</p>
+  
+                             
+            
+            </div>
+            <!-- 好友 -->
+            <div id="item2mobile" class="mui-slider-item mui-control-content"> 
+             <ul class="mui-table-view"> 
+            <li class="mui-table-view-cell mui-collapse">
+            <a class="mui-navigate-right" href="#">我的好友</a>
+            <div class="mui-collapse-content"  id="fridendCont">
+ <p class="row"onclick="charWindow('testfriend')"><img src="../InstantMessaging/img/humen.png"  style="width:32px;height:32px;margin:20px;"  >  testfriend</p>
+  
+                             
+            </div>
+        </li>
+    </ul>
+            
+ 
+    
+    
+  
+            
+            
+            
+            </div>
+          
+        </div>
+    </div>
+
+ <div class="mui-row"; style="position:fixed;bottom:0;height:10%;width:100%; background-color:#FFFFCC">
+  <span class="mui-icon mui-icon mui-icon-personadd mui-col-sm-3 mui-col-xs-3" style="height:100%;text-align:center;top:30%;"onclick="AddFridend()"></span>
+  <span class="mui-icon mui-icon mui-icon mui-icon-paperplane mui-col-sm-3 mui-col-xs-3" style="height:100%;text-align:center;top:30%;"onclick="AddFridend()"></span>
+ 
+  <span class="mui-icon mui-icon mui-icon-personadd mui-col-sm-3 mui-col-xs-3" style="height:100%;text-align:center;top:30%;"onclick="AddFridend()"></span>
+ <!--退出  -->
+  <span class="mui-icon mui-icon mui-icon mui-icon-closeempty mui-col-sm-3 mui-col-xs-3" style="height:100%;text-align:center;top:30%;"onclick="BackLogin()"></span>
+  </div>
+  
+  
+ <!--拟态框  -->
+ <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align:center ;background-color:#F2F2F2">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel"  >添加好友</h4>
+            </div>
+            <!--主题  -->
+            <div class="modal-body">
+            <label  >查找好友</label>
+            <div class="row"> 
+            <input   class=" col-sm-8 col-xs-8" id="Fri-Num" 
+            style="height:34px";
+            placeholder="请输入好友账号"  >
+            <button type="submit" class="btn btn-success col-sm-4 col-xs-4 ">查找</button>
+            </div>
+  
+            
+            
+            </div>
+            <div class="modal-footer">
+      
+             <button class="btn btn-primary btn-lg btn-block" type="button"data-dismiss="modal"onclick="addFri()" >添加好友</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+</body>
+</html>

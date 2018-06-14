@@ -1,0 +1,59 @@
+.main{
+    border:0px solid red;
+    width:100%;
+    height: 126px;
+    background-color:white;
+    margin-left:0%;
+    margin-top:5px;
+    position: relative;
+}
+.main img{
+    border:0px solid red;
+    width: 90px;
+    height: 105px;
+    margin-top:10px;
+    margin-left:10px;
+}
+.title{
+    border:0px solid red;
+    width:200px;
+    display:block;
+    font-weight:bold;
+    font-size:15px;
+    position: absolute;
+    left:112px;
+    top:10px;
+    color: black;
+}
+.contant{
+    border:0px solid red;
+    width:219px;
+    position: absolute;
+    left:112px;
+    top:40px;
+}
+.contant p{
+    font-size:12px;
+    line-height:150%;
+}
+.autime {
+    position: absolute;
+    left:112px;
+    top:96px;
+}
+.autime span{
+    font-size:12px;
+
+}
+a>span:hover{
+    color: #59bf6b;
+}
+
+ul{
+      background-color: transparent;
+  }
+ul li{
+    background-color: white;
+}
+.mui-table-view:after{ height:0}
+.mui-table-view:before{ height:0}

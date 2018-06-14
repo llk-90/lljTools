@@ -1,0 +1,15 @@
+
+.mui-switch-blue.mui-active{
+    border-color: #4cd964;
+    background-color: #4cd964;
+}
+.mui-switch {
+    display: block;
+    height: 30px;
+    transition-timing-function: ease-in-out;
+    transition-property: background-color,border;
+    border: 2px solid #ddd;
+    border-radius: 20px;
+    background-color: #fff;
+    background-clip: border-box;
+}

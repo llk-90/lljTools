@@ -1,0 +1,21 @@
+  .nav_badge{
+        position: absolute;
+        z-index: 99;
+        margin-left: -10px;
+        color: #dd524d;
+        background-color: #ffffff;
+    }
+    .mui-scrollbar{
+    display: none;
+}
+</style>
+<link href="../HeJiaoYu/css/member_home.css" rel="stylesheet"/>
+<style>
+.index_content img{
+	width: 100%;
+	vertical-align: top;
+}
+.index_content p{
+	padding: 0;
+	margin: 0;
+}

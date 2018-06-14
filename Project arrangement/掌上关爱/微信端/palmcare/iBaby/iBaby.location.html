@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css">
+
+	<meta name="viewport"
+		  content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta content="yes" name="apple-mobile-web-app-capable">
+	<meta name="apple-mobile-web-app-status-bar-style"
+		  content="black-translucent">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0">
+
+	<!--<script type="text/javascript" -->
+	<!--src="http://api.map.baidu.com/api?v=2.0&ak=D2b4558ebed15e52558c6a766c35ee73"></script>-->
+	<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+	<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.3&key=58bcf024f9b7930fc2a43b3554b1672b"></script>
+	<script src="js/iBady.Common.js"></script>
+	<link rel="stylesheet" href="css/mui.css">
+	<!--<script src="js/iBaby.location/mui.js"></script>-->
+	<script src="js/iBaby.location/mui.min.js"></script>
+	<!--<link rel="stylesheet" href="css/mui.min.css">-->
+	<script src="js/iBaby.location/mui.dtpicker.js"></script>
+	<link rel="stylesheet" href="css/mui.dtpicker.css">
+
+	<script src="js/iBaby.location/mui.poppicker.js"></script>
+	<link rel="stylesheet" href="css/mui.poppicker.css">
+	<script src="js/iBaby.location/mui.picker.js"></script>
+	<link rel="stylesheet" href="css/mui.picker.css">
+	<style type="text/css">
+		.amap-container {
+			cursor: url(http://api.map.baidu.com/images/openhand.cur), default;
+		}
+
+		.amap-drag {
+			cursor: url(http://api.map.baidu.com/images/closedhand.cur), default;
+		}
+	</style>
+	<title>定位和轨迹</title>
+	<link rel="stylesheet" href="css/iBaby.location.css">
+	<link rel="stylesheet" type="text/css" href="css/amap.css">
+	<style>
+		body {
+			font-size: 18px;
+		}
+
+		.track-data-list a {
+			display: -webkit-box;
+			line-height: 44px;
+			text-align: left;
+			font-weight: normal;
+			color: #333;
+			border-bottom: 1px solid #D8D8D8;
+			position: relative;
+			padding-right: 10px;
+		}
+		.custom-cell-detail
+		{
+			/*position: fixed;*/
+			width: 30%;
+			margin-left: 70%;
+			text-align: right;
+		}
+	</style>
+
+
+	<script type="text/javascript">
+        //获取所有点的坐标
+        // =================test===============================
+        var lineAry = [];//初始化轨迹数组
+        var posAry = [];//初始化定位数组
+        var marker;
+        var polyline;
+        var passedPolyline;
+        var infoWindow;
+        //        var icon = "http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png";
+        var icon = "images/iBaby.location/redPoint.png";
+        // =================test===============================
+        var map; //百度地图对象
+        var car; //图标
+        var timer; //定时器
+        var index = 0; //记录播放到第几个point
+        var playBtn, pauseBtn, resetBtn,amapInfoDiv; //几个控制按钮
+        var rightParnel;//右侧面板
+
+        var chooseddates;
+        var choosedday;
+        var choosedata;
+
+        function GetQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if(r != null) return unescape(r[2]);
+            return null;
+        }
+
+        function positionInfo() {
+            var openid = GetQueryString('openid');
+            var stuid = GetQueryString('stuid');
+            var d = {
+                openid: openid,
+                stuId: stuid,
+                stat: "none"
+            };
+            setTimeout(function() {
+                mui.ajax("/terminalStatusApp/terminalStatus.webapp", {
+                    data: d,
+                    dataType: 'json', //服务器返回json格式数据
+                    type: 'post', //HTTP请求类型
+                    timeout: 10000, //超时时间设置为10秒；
+                    success: function(data) {
+                        var statCode = data.statCode;
+
+                        var speed = data.speed;
+                        var updateTime = data.updateTime;
+                        var isGps = data.isGps;
+
+                        document.getElementById("speed").value = speed;
+                        document.getElementById("updateTime").value = updateTime;
+                        document.getElementById("isGps").value = isGps;
+                        if ( statCode == '200' ) {
+                            posAry.push([data.lng, data.lat]);
+                            initChooseModel();
+                            trackInfo(true);
+                            init();
+                        }else{
+                            mui.toast("请求数据失败");
+                        }
+                    },
+                    error: function(xhr, type, errorThrown) {
+                        mui.toast("请求数据失败");
+                    }
+                });
+            }, 100);
+        }
+
+        function trackInfo(isfirst) {
+
+            var openid = GetQueryString('openid');
+            var stuid = GetQueryString('stuid');
+            var d = {
+                openid: openid,
+                stuId: stuid,
+                startTime: choosedata.formatStartTime,
+                endTime: choosedata.formatEndTime
+            };
+            setTimeout(function() {
+                mui.ajax("/historyTrackApp/detailTrack.webapp", {
+                    data: d,
+                    dataType: 'json', //服务器返回json格式数据
+                    type: 'post', //HTTP请求类型
+                    timeout: 10000, //超时时间设置为10秒；
+                    success: function(data) {
+
+                        var statCode = data.statCode;
+                        var totalSize = data.totalSize;
+
+                        if ( statCode == '200' ) {
+                            lineAry.splice(0,lineAry.length);
+                            mui.each(data.trackList, function(i, item) {
+                                lineAry.push([item.lng,item.lat]);
+                            });
+                            drawGuiji(isfirst);//绘制轨迹
+
+                        }else{
+                            mui.toast("请求数据失败");
+                        }
+                    },
+                    error: function(xhr, type, errorThrown) {
+                        mui.toast("请求数据失败");
+                    }
+                });
+            }, 100);
+        }
+        //轨迹绘画
+        function drawGuiji(isfirst) {
+            if (lineAry.length ==0) {
+                mui.toast("该时间段没有查询到轨迹信息");
+            }
+            if(isfirst==false){map.clearMap();}
+
+            marker = new AMap.Marker({
+                map: map,
+//            position: [116.397428, 39.90923],
+                offset:new AMap.Pixel(-1, -10),
+                position: lineAry[0],
+                icon: icon,
+                autoRotation: true
+            });
+            console.log(lineAry[0]+"A");
+            marker.on('moving',function(e){
+                passedPolyline.setPath(e.passedPath);
+            });
+            map.setFitView();
+            // 绘制轨迹
+            polyline = new AMap.Polyline({
+                map: map,
+                path: lineAry,
+                strokeColor: "#00A",  //线颜色
+                // strokeOpacity: 1,     //线透明度
+                strokeWeight: 3,      //线宽
+                // strokeStyle: "solid"  //线样式
+            });
+            passedPolyline = new AMap.Polyline({
+                map: map,
+                // path: lineAry,
+                strokeColor: "#F00",  //线颜色
+                // strokeOpacity: 1,     //线透明度
+                strokeWeight: 3,      //线宽
+                // strokeStyle: "solid"  //线样式
+            });
+            if(isfirst==true){map.setZoomAndCenter(17, posAry[0]);}
+        }
+        //地图展示
+        function init() {
+
+            playBtn = document.getElementById("play");
+            resetBtn = document.getElementById("reset");
+
+            var speedVal = document.getElementById("speed").value;
+            var updateTimeVal = document.getElementById("updateTime").value;
+            var isGpsVal;
+            if (document.getElementById("isGps").value == 1) {
+                isGpsVal = "GPS卫星定位";
+            } else if(document.getElementById("isGps").value == 0){
+                isGpsVal = "基站定位";
+            } else {
+                isGpsVal = "wifi定位";
+            }
+            //设置侧栏时间
+            var dd = new Date();
+            var y = dd.getFullYear();
+            var m = dd.getMonth()+1;//获取当前月份的日期
+            var d = dd.getDate();
+            var w = transNums(dd.getDay());
+
+            var cell = document.getElementById("t-day-up");
+            var mhd = m +"月"+d+"日,"+"星期"+w;
+            cell.innerText = mhd;
+
+            var cell2 = document.getElementById("t-time-down");
+            var hhmm = "00:00到23:59"
+            cell2.innerText = hhmm;
+
+            map = new AMap.Map('map_canvas', {
+                zoom: 17,
+                center: posAry[0],
+//            center: [116.397428, 39.90923],
+            });
+            console.log(lineAry[0]+"B");
+            //添加地图控件
+            AMap.plugin(['AMap.ToolBar'],function(){
+                map.addControl(new AMap.ToolBar());
+            })
+
+
+            AMap.event.addDomListener(document.getElementById('play'), 'click', function() {
+                infoWindow.close();
+                if (lineAry.length > 0){
+                    marker.moveAlong(lineAry, 500);
+//                    mui.toast("播放完了");
+                }
+            }, false);
+            AMap.event.addDomListener(document.getElementById('reset'), 'click', function() {
+                marker.stopMove();
+            }, false);
+
+            openInfo(speedVal,updateTimeVal,isGpsVal);
+            //点亮操作按钮
+            playBtn.disabled = false;
+
+        }
+        //显示窗口信息
+        function openInfo(speed,time,model) {
+            //构建信息窗体中显示的内容
+            var info = [];
+            info.push("<div><div><img style=\"float:left;\" src=\" http://webapi.amap.com/images/autonavi.png \"/></div> ");
+            info.push("<div style=\"padding:0px 0px 0px 4px;font-size: 12px;\"><b>速度:</b>"+speed +" km/h");
+            info.push("<b>时间:</b>"+time);
+            info.push("<b>定位:</b>"+model+"</div>");
+            infoWindow = new AMap.InfoWindow({
+                content: info.join("<br/>"),  //使用默认信息窗体框样式，显示信息内容
+                offset: new AMap.Pixel(20, 10)
+            });
+            infoWindow.open(map, posAry[0]);
+            console.log(posAry[0]+"C");
+        }
+
+//创建时间选择器 根据不同的点击事件当为true则显示日期，当为false为显示时间
+		function showDateSelectWithType(isDate) {
+			if (isDate=='date')
+			{
+                var today = new Date();
+                var dd = new Date();
+                dd.setDate(dd.getDate()-6);//获取7天前的日期
+                var dtpicker = new mui.DtPicker({
+                    type: "date",
+                    beginDate: new Date(dd.getFullYear(), dd.getMonth(),dd.getDate()),//设置开始日期
+                    endDate: new Date(today.getFullYear(), today.getMonth(),today.getDate()),//设置结束日期
+                })
+                dtpicker.show(function(e) {
+                    var dateAry = e.text.split("-");
+                    var date = new Date(dateAry[0],dateAry[1]-1,dateAry[2]);
+                    choosedata.week = transNums(date.getDay());
+                    choosedata.year = dateAry[0];
+                    choosedata.month = dateAry[1];
+                    choosedata.day = dateAry[2];
+                    choosedata.startTime="00:00";
+                    choosedata.endTime="23:59";
+                    choosedata.formatStartTime=choosedata.year+"-"+choosedata.month+"-"+choosedata.day+" "+choosedata.startTime;
+                    choosedata.formatEndTime=choosedata.year+"-"+choosedata.month+"-"+choosedata.day+" "+choosedata.endTime;
+                    comfireClick(1);
+                    trackInfo(false);
+                })
+			}
+			else if ('start')
+			{
+                //showToast("请选择开始时间");
+                var dtpicker = new mui.DtPicker({
+                    type: "time"
+                })
+                dtpicker.show(function(e) {
+                    choosedata.startTime=e.text;
+                    //showToast("请选择结束时间");
+                    var dtpicker1 = new mui.DtPicker({
+                        type: "time"
+                    })
+                    dtpicker1.show(function(f) {
+                        choosedata.endTime=f.text;
+                        choosedata.formatStartTime=choosedata.year+"-"+choosedata.month+"-"+choosedata.day+" "+choosedata.startTime;
+                        choosedata.formatEndTime=choosedata.year+"-"+choosedata.month+"-"+choosedata.day+" "+choosedata.endTime;
+                        comfireClick(1);
+                        trackInfo(false);
+
+                    })
+                })
+
+
+			}
+				else
+			{
+
+			}
+        }
+        //创建选择模型
+        function initChooseModel() {
+             var date = new Date();
+            choosedata = new Object();
+            var cusdate = new Date();
+            choosedata.year = date.getFullYear();
+            choosedata.month = date.getMonth()+1;
+            choosedata.day = date.getDate();
+            choosedata.week = transNums(date.getDay());
+            choosedata.startTime="00:00";
+            choosedata.endTime="23:59";
+            choosedata.formatTime;
+            choosedata.uptimestr;
+            choosedata.uptimestr = document.getElementById("t-day-up").innerText;
+            choosedata.downtimestr;
+            choosedata.downtimestr = document.getElementById("t-time-down").innerText;
+            var subdate = new Date();
+            var y = subdate.getFullYear();
+            var m = subdate.getMonth()+1;
+            (m<10) ? m='0'+m : m=m;
+            var d = subdate.getDate();
+            (d<10) ? d='0'+d : d=d;
+            choosedata.formatStartTime=y+"-"+m+"-"+d+" 00:00";
+            choosedata.formatEndTime=y+"-"+m+"-"+d+" 23:59";
+//            reloadRightDivDate();
+            mui('.mui-scroll-wrapper').scroll({
+                scrollY: true, //是否竖向滚动
+                scrollX: false, //是否横向滚动
+                startX: 0, //初始化时滚动至x
+                startY: 0, //初始化时滚动至y
+                indicators: true, //是否显示滚动条
+                deceleration:0.0006, //阻尼系数,系数越小滑动越灵敏
+                bounce: false //是否启用回弹 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+            });
+        }
+
+        //初始化侧边栏日期
+        function reloadRightDivDate() {
+            var date = new Date();
+            for (var a = 0;a<7;a++)
+            {
+                var dd = new Date();
+                dd.setDate(dd.getDate()-a);//获取AddDayCount天后的日期
+                var y = dd.getFullYear();
+                var m = dd.getMonth()+1;//获取当前月份的日期
+                var d = dd.getDate();
+                var w = transNums(dd.getDay());
+                if (m<10) {
+                    m='0'+m;
+                }
+                if (d<10) {
+                    d='0'+d;
+                }
+                var cellstr = "Date-item-"+a;
+                var cell = document.getElementById(cellstr);
+                var mhd = m +"月"+d+"日,"+"星期"+w;
+
+                cell.innerText = mhd;
+            }
+        }
+
+        //阿拉伯转大写
+        function transNums(day) {
+            switch (day)
+            {
+                case 1:{return "一";}
+                    break;
+                case 2:{return "二";}
+                    break;
+                case 3:{return "三";}
+                    break;
+                case 4:{return "四";}
+                    break;
+                case 5:{return "五";}
+                    break;
+                case 6:{return "六";}
+                    break;
+                case 0:{return "日";}
+                    break;
+                default:{}
+            }
+        }
+
+        function getAddDateDay(count) {
+            var dd = new Date();
+            dd.setDate(dd.getDate()-count);//获取AddDayCount天后的日期
+            var y = dd.getFullYear();
+            var m = dd.getMonth()+1;//获取当前月份的日期
+            var d = dd.getDate();
+            var w = transNums(dd.getDay());
+            var h = dd.getHours();
+            var min = dd.getMinutes();
+            if (m<10) {
+                m='0'+m;
+            }
+            if (d<10) {
+                d='0'+d;
+            }
+            if (min<10) {
+                min='0'+min;
+            }
+            choosedata.month = m;
+            choosedata.year = y;
+            choosedata.day = d;
+            choosedata.week = w;
+
+            return y+":"+m+":"+d+":"+h+":"+min;
+        }
+
+        //点击日期相应事件
+        function dateClick(elementId) {
+            var cell = document.getElementById("choose-date-title");
+            cell.innerText = "选择日期: "+document.getElementById(elementId).innerText;
+            var redId = elementId;
+            if (redId=="Date-item-0")
+            {
+                choosedata.formatTime = getAddDateDay(0);
+            }
+            else if(redId=="Date-item-1")
+            {
+                choosedata.formatTime = getAddDateDay(1);
+            }
+            else if(redId=="Date-item-2")
+            {
+                choosedata.formatTime = getAddDateDay(2);
+            }
+            else if(redId=="Date-item-3")
+            {
+                choosedata.formatTime = getAddDateDay(3);
+            }
+            else if(redId=="Date-item-4")
+            {
+                choosedata.formatTime = getAddDateDay(4);
+            }
+            else if(redId=="Date-item-5")
+            {
+                choosedata.formatTime = getAddDateDay(5);
+            }
+            else if(redId=="Date-item-6")
+            {
+                choosedata.formatTime = getAddDateDay(6);
+            }
+        }
+        //展示右侧面板
+        function showparnew() {
+            if (mui('.mui-off-canvas-wrap').offCanvas().isShown())
+            {
+                return;
+            }
+
+            mui('.mui-off-canvas-wrap').offCanvas().show();
+
+        }
+
+        //点击确定按钮
+        function comfireClick(type) {
+            mui('.mui-off-canvas-wrap').offCanvas('close');
+            switch (type)
+            {
+                case 1://如果是确定
+                {
+                    var uptimalable = document.getElementById("t-day-up");
+                    var downdaylable = document.getElementById("t-time-down");
+                    if (typeof(choosedata.month) == "undefined"||typeof(choosedata.day) == "undefined"||typeof(choosedata.week) == "undefined")
+                    {
+                        uptimalable.innerText = choosedata.uptimestr;
+                    }
+                    else
+                    {
+                        uptimalable.innerText = choosedata.month+"月"+choosedata.day+"日"+",星期"+choosedata.week;
+                    }
+                    if (typeof(choosedata.startTime) == "undefined"||typeof(choosedata.endTime) == "undefined")
+                    {
+                        downdaylable.innerText = choosedata.downtimestr;
+                    }
+                    else {
+                        downdaylable.innerText = choosedata.startTime +"到"+choosedata.endTime;
+                    }
+//                    choosedata.formatStartTime=choosedata.year+"-"+choosedata.month+"-"+choosedata.day+" "+choosedata.startTime;
+//                    choosedata.formatEndTime=choosedata.year+"-"+choosedata.month+"-"+choosedata.day+" "+choosedata.endTime;
+//                    trackInfo(false);
+                }
+                    break;
+                case 0://如果是点击取消
+                {}
+                    break;
+            }
+        }
+
+        //初始化日期选择器
+        function showDateChoose(isStart) {
+            var dtpicker = new mui.DtPicker({
+                type: "date",
+                beginDate: new Date(2015, 04, 25),//设置开始日期
+                endDate: new Date(2016, 04, 25),//设置结束日期
+            })
+            dtpicker.show(function(e) {
+                var label = document.getElementById("time-choosetime-title");
+                var subdate = new Date();
+                var y = subdate.getFullYear();
+                var m = subdate.getMonth()+1;
+                var d = subdate.getDate();
+
+                choosedata.formatEndTime=y+":"+m+":"+d+":23:59";;
+                if (isStart==true)//如果是开始时间
+                {
+                    choosedata.startTime = e.text;
+                    choosedata.formatStartTime=y+":"+m+":"+d+":"+choosedata.startTime;
+                    label.innerText = "选择时间:"+choosedata.startTime+"-"+choosedata.endTime;
+                }
+                else //如果是结束时间
+                {
+                    choosedata.endTime = e.text;
+                    choosedata.formatStartTime=y+":"+m+":"+d+":"+choosedata.endTime;
+                    label.innerText = "选择时间:"+choosedata.startTime+"-"+choosedata.endTime;
+                }
+                console.log(e);
+            })
+        }
+	</script>
+</head>
+
+<body onload="positionInfo();">
+<!-- 侧滑导航根容器 -->
+<!--<div class="mui-off-canvas-wrap mui-draggable mui-slide-in">-->
+<!--<div class="mui-off-canvas-wrap  mui-slide-in">-->
+	<!-- 菜单容器 -->
+	<!--<aside class="mui-off-canvas-right">-->
+		<!--<div class="mui-scroll-wrapper">-->
+			<!--<div class="mui-scroll">-->
+				<!-- 菜单具体展示内容 -->
+				<!--此处为菜单内容-->
+				<!--<header class="head-tit" id="head">-->
+					<!--<span>定位和轨迹-时间选择</span>-->
+				<!--</header>-->
+
+				<!--<ul class="mui-table-view mui-table-view-chevron mui-table-view-inverted">-->
+					<!--<div class="mui-table-view-cell">-->
+						<!--<a id="choose-date-title" class="custom-cell" style="background-color: #96d1ba;">-->
+							<!--选择日期:-->
+						<!--</a>-->
+					<!--</div>-->
+					<!--<div class="mui-table-view-cell">-->
+						<!--<button style="color: white ;text-align: left;left:1%;width:150%;height: 120%;border: hidden;background-color: inherit" class="custom-cell" id="Date-item-0" onclick="javascript:dateClick('Date-item-0')">-->
+							<!--Item 1-->
+						<!--</button>-->
+					<!--</div>-->
+					<!--<div class="mui-table-view-cell" >-->
+						<!--<button style="color: white ;text-align: left;left:1%;width:150%;height: 120%;border: hidden;background-color: inherit" class="custom-cell" id="Date-item-1" onclick=dateClick("Date-item-1")>-->
+							<!--Item 2-->
+						<!--</button>-->
+					<!--</div>-->
+					<!--<div class="mui-table-view-cell">-->
+						<!--<button style="color: white ;text-align: left;left:1%;width:150%;height: 120%;border: hidden;background-color: inherit" class="custom-cell" id="Date-item-2" onclick=dateClick("Date-item-2")>-->
+							<!--Item 3-->
+						<!--</button>-->
+					<!--</div>-->
+					<!--<div class="mui-table-view-cell">-->
+						<!--<button style="color: white ;text-align: left;left:1%;width:150%;height: 120%;border: hidden;background-color: inherit" class="custom-cell" id="Date-item-3" onclick=dateClick("Date-item-3")>-->
+							<!--Item 4-->
+						<!--</button>-->
+					<!--</div>-->
+					<!--<div class="mui-table-view-cell">-->
+						<!--<button style="color: white ;text-align: left;left:1%;width:150%;height: 120%;border: hidden;background-color: inherit" class="custom-cell" id="Date-item-4" onclick=dateClick("Date-item-4")>-->
+							<!--Item 5-->
+						<!--</button>-->
+					<!--</div>-->
+					<!--<div class="mui-table-view-cell">-->
+						<!--<button style="color: white ;text-align: left;left:1%;width:150%;height: 120%;border: hidden;background-color: inherit" class="custom-cell" id="Date-item-5" onclick=dateClick("Date-item-5")>-->
+							<!--Item6-->
+						<!--</button>-->
+					<!--</div>-->
+					<!--<div class="mui-table-view-cell">-->
+						<!--<button style="color: white ;text-align: left;left:1%;width:150%;height: 120%;border: hidden;background-color: inherit" class="custom-cell" id="Date-item-6" onclick=dateClick("Date-item-6")>-->
+							<!--Item 6-->
+						<!--</button>-->
+					<!--</div>-->
+				<!--</ul>-->
+				<!--<ul class="mui-table-view mui-table-view-chevron mui-table-view-inverted">-->
+					<!--<div class="mui-table-view-cell" style="background-color:#96d1ba">-->
+						<!--<a id="time-choosetime-title" class="custom-cell" >-->
+							<!--选择时间：00:00 - 23:59-->
+						<!--</a>-->
+
+					<!--</div>-->
+					<!--<div class="mui-table-view-cell">-->
+						<!--<button style="color: white ;text-align: left;left:1%;width:150%;height: 120%;border: hidden;background-color: inherit" class="custom-cell mui-navigate-right"  onclick=showDateChoose(true)>-->
+							<!--开始时间-->
+						<!--</button>-->
+					<!--</div>-->
+					<!--<div class="mui-table-view-cell">-->
+						<!--<button style="color: white ;text-align: left;left:1%;width:150%;height: 120%;border: hidden;background-color: inherit" class="custom-cell mui-navigate-right"  onclick=showDateChoose(false)>-->
+							<!--结束时间-->
+						<!--</button>-->
+					<!--</div>-->
+					<!--<div class="mui-table-view-cell">-->
+						<!--<input type="button" value="取消"  class="custom-cell mui-navigate-right" style="width: 40%;margin-left: 10%;background-color: inherit;border: inherit;color: #96d1ba"  onclick="comfireClick(0)">-->
+						<!--<input type="button" value="确定" class="custom-cell mui-navigate-right" style=" width: 40%;background-color: inherit;border: inherit;color: #96d1ba" onclick="comfireClick(1)">-->
+					<!--</div>-->
+				<!--</ul>-->
+			<!--</div>-->
+		<!--</div>-->
+	<!--</aside>-->
+	<!-- 主页面容器 -->
+	<!--<div class="mui-inner-wrap">-->
+		<!-- 主页面标题 -->
+		<!--<header class="mui-bar mui-bar-nav" style="background-color:#96d1ba">-->
+			<!--<a class="mui-icon mui-action-menu mui-icon-bars mui-pull-right"></a>-->
+			<!--<h1 class="mui-title" style=";color: white;font-size:20px;">定位和轨迹</h1>-->
+		<!--</header>-->
+		<!--<div class="mui-content">-->
+			<!--<div class="mui-scroll">-->
+				<!-- 主界面具体展示内容 -->
+               <header class="head-tit"style="background-color: #96d1ba;">
+	               <span>定位和轨迹</span>
+               </header>
+				<nav class="track-top-nav" id="d1" style="display: -webkit-box;">
+
+					<input class="mui-action-menu" name="play" id="play" type="button" readonly="true"
+						   value="播放轨迹"
+						   style="font-size:18px;-webkit-appearance: none; display: block; -webkit-box-flex: 1; text-align: center; line-height: 44px; padding-left: 10px; border: 0px; background-color: white; color: #96d1ba;">
+					<input name="reset" id="reset" type="button" readonly="true"
+						   value="停止播放"
+						   style="font-size:18px;-webkit-appearance: none; display: block; -webkit-box-flex: 1; text-align: center; line-height: 44px; padding-left: 10px; border: 0px; background-color: white; color: #96d1ba;">
+
+					<!--<input type="button" id="cg-t-bt" class="mui-action-menu" onclick="showparnew()"-->
+					<!--style="height: 100%;width: 40%;color: #96d1ba;border: 0px;" value="日期切换">-->
+
+					<!--&lt;!&ndash;<label class="t-day" id="t-day-up" style="position: absolute;left: 15%;top: 10%;"></label>&ndash;&gt;-->
+					<!--&lt;!&ndash;<label class="t-time" style="position: absolute;left: 15%;" id="t-time-down"></label>&ndash;&gt;-->
+
+					<!--&lt;!&ndash;<div style="position: absolute;right:-5%;top:25%;" class="gray-col icon-ar-back"></div>&ndash;&gt;-->
+					<!--</input>-->
+					<!--<input id="cg-t-bt" class="mui-action-menu" type="button" readonly="true" onclick="showparnew()"-->
+						   <!--value="日期选择"-->
+						   <!--style="font-size:18px;-webkit-appearance: none; display: block; -webkit-box-flex: 1; text-align: center; line-height: 44px; padding-left: 10px; border: 0px; background-color: white; color: #96d1ba;">-->
+				</nav>
+
+				<section class="track-map" style="width: 100%;height: 82%;">
+					<div id="map_canvas" style="width: 100%; z-index: 1; height: 100%; position: relative;"
+						 class="amap-container">
+
+						<div style="display: inline-flex;justify-content: space-between;width: 100%;height: 30px;background-color: #00CCFF">
+							<label style="position: absolute;z-index: 999;background-color: rgba(0,0,0,0.4);width: 100%;height: 30px;line-height: 30px;text-align: center;color: white;font-size: 15px">可显示最近7天的轨迹</label>
+						</div>
+						<div style="display: inline-flex;justify-content: space-between;width: 100%;height: 30px;background-color: #00CCFF">
+							<label class="t-day" id="t-day-up" style="position: absolute;z-index: 999;background-color: rgba(0,0,0,0.4);width: 50%;height: 30px;line-height: 30px;text-align: center;color: white;font-size: 15px" onclick="showDateSelectWithType('date')"></label>
+							<label class="t-time" id="t-time-down" style="position: absolute;z-index: 999;background-color: rgba(0,0,0,0.4);right:0px;width: 50%;height: 30px;line-height: 30px;text-align: center;color: white;font-size: 15px" onclick="showDateSelectWithType('start')"></label>
+						</div>
+					</div>
+				</section>
+
+
+
+
+
+			<!--</div>-->
+		<!--</div>-->
+	<!--</div>-->
+<!--</div>-->
+<div  id="tsk" style=" z-index: 9999; font: 'Hiragino Kaku Gothic ProN';text-align: center;color: white;font-size:1.5em;background-color:#00AFF0;display: none; position:fixed;margin:auto;left:0; right:0; top:0; bottom:0;width:95%; height:63px;border-radius: 7px;line-height: 63px;"></div>
+<input id="speed" type="hidden" >
+<input id="updateTime" type="hidden" >
+<input id="isGps" type="hidden" >
+</body>
+</html>

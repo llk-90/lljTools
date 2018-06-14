@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>掌踪宝</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <!--自定义css-->
+    <link rel="stylesheet" href="../../css/app/zhangzongbao/iBody.bind.css">
+    <!--mui标准css-->
+    <link rel="stylesheet" href="../../css/mui.min.css">
+    <link rel="stylesheet" href="../../css/app/common/on-off.css">
+    <!--浮动按钮-->
+    <link rel="stylesheet" href="../../css/app/common/SuspendedBall.css">
+    <script src="../../js/app/common/cvi_busy_lib.js"></script>
+    <script src="../../js/mui.min.js"></script>
+    <script src="../../js/iBaby2.jquery-2.1.0.min.js"></script>
+    <script src="../../js/app/common/PublicJs.js"></script>
+    <script src="../../js/app/common/SuspendedBall.js"></script>
+    <!--自定义js-->
+    <script src="../../js/app/zhangzongbao/iBody.romote.js"></script>
+    <script src="../../js/app/common/Common.js"></script>
+</head>
+<body>
+<div class="content" style="margin-top: 3%;">
+    <!--第一层-->
+    <div id="xiumian" class="mui-card" style="width: 100%;border: 0px;box-shadow: none;margin: 0px;border-bottom: 1px solid gainsboro;" onclick="romoteClick('xiumian')">
+        <div class='from-child' style="">
+            <div style='width: 40%;height:4rem;display: flex;flex-direction: column;justify-content: space-around;' >
+                <label class='from-child-label' style="border-right: 0px;color: #999999">远程休眠</label>
+            </div>
+        </div>
+    </div>
+    <!--第二层-->
+    <div id="huanxing" class="mui-card" style="width: 100%;border: 0px;box-shadow: none;margin: 0px;margin: 0px;border-bottom: 1px solid gainsboro;" onclick="romoteClick('huanxin')">
+        <div class='from-child' style="">
+            <div style='width: 40%;height:4rem;display: flex;flex-direction: column;justify-content: space-around;'> <label class='from-child-label' style="border-right: 0px;color: #999999">远程唤醒</label>
+
+            </div>
+        </div>
+    </div>
+    <!--第三层-->
+    <div id="jianting1" class="mui-card" style="width: 100%;border: 0px;box-shadow: none;margin: 0px;margin: 0px;border-bottom: 1px solid gainsboro;" onclick="romoteClick('jiantinga')">
+        <div class='from-child' style="">
+            <div class="mui-table-view-cell" style='width:100%;height:4rem;display: flex;flex-direction: column;justify-content: space-around;padding-left: 0px' >
+                <label class='from-child-label' style="border-right: 0px;color: #999999" >家长一监听</label>
+            </div>
+        </div>
+    </div>
+    <!--第四层-->
+    <div id="jianting2" class="mui-card" style="width: 100%;border: 0px;box-shadow: none;margin: 0px;margin: 0px;border-bottom: 1px solid gainsboro;" onclick="romoteClick('jiantingb')">
+        <div class='from-child' style="">
+            <div class="mui-table-view-cell" style='width:100%;height:4rem;display: flex;flex-direction: column;justify-content: space-around;padding-left: 0px' >
+                <label class='from-child-label' style="border-right: 0px;color: #999999" >家长二监听</label>
+            </div>
+        </div>
+    </div>
+    <!--第五层-->
+    <div id="close" class="mui-card" style="width: 100%;border: 0px;box-shadow: none;margin: 0px;margin: 0px;border-bottom: 1px solid gainsboro;" onclick="romoteClick('close')">
+        <div class='from-child' style="">
+            <div style='width: 40%;height:4rem;display: flex;flex-direction: column;justify-content: space-around;'>
+                <label class='from-child-label' style="border-right: 0px;color: #999999">远程关机</label>
+            </div>
+        </div>
+    </div>
+    <!--第六层-->
+    <div id="huifu" class="mui-card" style="width: 100%;border: 0px;box-shadow: none;margin: 0px;margin: 0px;border-bottom: 1px solid gainsboro;" onclick="romoteClick('recover')">
+        <div class='from-child' style="">
+            <div style='width: 40%;height:4rem;display: flex;flex-direction: column;justify-content: space-around;'>
+                <label class='from-child-label' style="border-right: 0px;color: #999999">恢复出厂设置</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(function () {
+        SuspendedBall.Add();//添加悬浮球
+        // SuspendedBall.BoxHtml("<ul class=\"SMenu\">" + $("#MenuInfo").html() + "</ul>");//添加菜单框的内容当然，具体的样式和里面的内容需要自己去写
+        SuspendedBall.Move();//这个就是让悬浮球动起来的方法。为啥单独写个不写到add方法里面呢？因为你可以在页面中直接写入悬浮球的两个div。这个方法里面可以添加一个参数，这个参数是个function。当鼠标抬起的时候会调用到这个方法。
+    });
+</script>
+<!--<input type="button" style="margin-left: 20%;margin-top: 50px;width:60%;height: 40px;background-color: #96d1ba;border: rgba(0,0,0,0);border-radius: 20px;font-size:15px;color: white" value="返回 " onclick="romoteClick('back')">-->
+</body>
+</html>

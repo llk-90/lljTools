@@ -1,0 +1,35 @@
+ <!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- 引入 Bootstrap -->
+      <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+<!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->
+      <script src="https://code.jquery.com/jquery.js"></script>
+      <!-- 包括所有已编译的插件 -->
+ 
+<title>Insert title here</title>
+</head>
+<script type="text/javascript">
+var domianURL="";
+function start(){
+	$.ajax({
+		type : "POST",
+		url : domianURL + "/equipment2/startServer.webapp",
+		data : {
+		},
+		dataType : "json",
+		async:false,
+		success : function(data) {
+			 alert("server start success")
+		}
+	})
+}
+</script>
+<body>
+<button type="button" class="btn btn-primary" 
+    data-toggle="button" style="margin-left:100px;margin-top:100px" onclick="start()"> start Server
+</button>
+</body>
+</html>

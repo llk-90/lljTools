@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>请假处理通知</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <script src="../js/config.js" type="text/javascript" charset="utf-8"></script>
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<!--App自定义的css-->
+		<link rel="stylesheet" type="text/css" href="../css/app.css" />
+		<style>
+			.mid {
+				margin: 10px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			
+			.mui-bar-nav h3 {
+				line-height: 44px;
+				margin: 0;
+			}
+			
+			.mui-bar-nav h6 {
+				line-height: 44px;
+				margin: 0;
+			}
+			
+			.head h3 {
+				line-height: 44px;
+				margin: 0;
+			}
+			
+			.head h6 {
+				line-height: 44px;
+				margin: 0;
+			}
+			
+			.head {
+				height: 44px;
+				padding: 0px 15px 0px;
+				background-color: #FFFFFF;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--<div class="mui-bar mui-bar-nav">
+				<div class="mui-pull-left">
+					<h3>请假处理</h3>
+				</div>
+				<div class="mui-pull-right">
+					<h6>xx市第三中学教务处</h6>
+				</div>
+			</div>-->
+		<div class="mui-content">
+			<div class="head">
+				<div class="mui-pull-left">
+					<h3>请假处理通知</h3>
+				</div>
+				<div class="mui-pull-right">
+					<h6 id="school"></h6>
+				</div>
+			</div>
+			<div class="mid">
+
+			</div>
+			<div class="mui-scroll">
+				<div class="insert-pointer" id="bod">
+
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/loginValidate.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/template.js" type="text/javascript" charset="utf-8"></script>
+	<script id="data-temp" type="text/html">
+		<ul class="mui-table-view mui-table-view-striped mui-table-view-condensed">
+			<li class="mui-table-view-cell">
+				<div class="mui-table">
+					<div class="mui-table-cell mui-col-xs-12">
+						{{if l_state == 1 }}
+						<p class="mui-ellipsis" style="color: #007AFF;font-size: large;font-weight:bold;">批准请假</p> {{else if l_state == '-1'}}
+						<p class="mui-ellipsis" style="color: red;font-size: large;font-weight:bold;">否决请假</p> {{else}}
+						<p class="mui-ellipsis" style="color: green;font-size: large;font-weight:bold;">待批准请假</p> {{/if}}
+						{{if days == 1}}
+							<p class="mui-h6 mui-ellipsis">
+								关于{{if l_leave_type == 0}}
+									{{l_start_time}}全天的请假，
+								{{else if l_leave_type == 1}}
+									{{l_start_time}}上午的请假，
+								{{else if l_leave_type == -1}}
+									{{l_start_time}}下午的请假，
+								{{/if}}
+								{{if l_state == '1' }} 
+									审批通过 
+								{{else if l_state == '-1' }} 
+									审批否决 
+								{{/if}}
+							</p>
+						{{else if days >1 }}
+							<p class="mui-h6 mui-ellipsis">
+								{{l_start_time}}到{{l_end_time}}的{{days}}天请假，
+								{{if l_state == '1' }} 
+									审批通过 
+								{{else if l_state == '-1' }} 
+									审批否决 
+								{{/if}}
+							</p>
+						{{/if}}
+						<p class="mui-h6">
+							老师留言：{{l_replay_reason}}
+						</p>
+						<div style="margin-top: 1%">
+							<p class="mui-pull-left">【老师通知】</p>
+							<p class="mui-pull-right">{{l_approval_time}}</p>
+						</div>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</script>
+	<script>
+		mui.init(list());
+
+		function GetQueryString(name) {
+			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+			var r = window.location.search.substr(1).match(reg);
+			if(r != null) return unescape(r[2]);
+			return null;
+		}
+		function list() {
+			var table = document.body.querySelector('.insert-pointer');
+			var openid = GetQueryString('openid');
+			/*var user_id = '9854125ee749429ba6fa4a9c402a930d';*/
+			var d = {
+				openid: openid
+			};
+			setTimeout(function() {
+				mui.ajax("/leaveApp/listNotice.webapp", {
+					data: d,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						var school = data.school;
+						document.getElementById("school").innerText = school + "教务处";
+						mui.each(data.list, function(i, item) {
+							var html = template("data-temp", item);
+							var li = document.createElement('div');
+							/*li.className = 'sso';*/
+							li.setAttribute("data-id", item.l_id);
+							li.innerHTML = html;
+							table.insertBefore(li, table.firstChild);
+						});
+					},
+					error: function(xhr, type, errorThrown) {
+					}
+				});
+			}, 100);
+		}
+	</script>
+
+</html>

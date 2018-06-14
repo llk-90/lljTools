@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>生日</title>
+        <script src="../../../js/config.js" type="text/javascript" charset="utf-8"></script>
+		<!--标准mui.css-->
+		<link rel="stylesheet" type="text/css" href="../../../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../../css/common.css" />
+		<link rel="stylesheet" type="text/css" href="../../../css/mui.picker.min.css" />
+		<link rel="stylesheet" href="//cdn.bootcss.com/weui/0.4.3/style/weui.min.css">
+        <link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/0.8.0/css/jquery-weui.min.css">
+		<style>
+			html,
+            body {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+            }
+			body{
+            	background-color: #FFFFFF;
+            }
+            .mui-input-row input {
+                height: 50px;
+                float:left;
+        		background:none;
+            }
+            .mui-input-row {
+                height: 50px !important;
+            }
+            .mui-content-padded {
+                margin:2%;
+            }
+            .btn {
+                width: 96%;
+                height: 50px;
+                background-color: #197FEE;
+                color: #FFFFFF;
+                font-size: larger;
+                margin-left: 2%;
+                margin-top: 5%;
+            }
+			* {
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="mui-content-padded">
+            <h4 style="font-weight: 500; margin: 10px 0;">请选择出生日期：</h4>
+			<div class="mui-input-row" >
+                <input id="birthday" type="text"/>
+            </div>
+		</div>
+		<button id="btnSave" class="btn">保存</button>
+		
+		<script src="../../../js/mui.min.js"></script>	
+		<script src="../../../js/loginValidate.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../js/mui.picker.min.js"></script>
+		<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+        <script src="//cdn.bootcss.com/jquery-weui/0.8.0/js/jquery-weui.min.js"></script>
+		<script>
+			mui.init({
+				swipeBack: true //启用右滑关闭功能
+			});
+			var birthday = document.getElementById("birthday");
+			
+			birthday.addEventListener('tap', function() {
+				var picker = new mui.DtPicker({
+					"type": "date",
+					"beginYear":2000,
+					"endYear":2030
+				});
+				picker.show(function(rs) {
+					birthday.value = rs.text;
+					picker.dispose();
+				});
+			}, false);
+			
+			function getvalue(param) {
+				var str = decodeURI(window.location.search);
+				if(str.indexOf(param) != -1) {
+					var pos_start = str.indexOf(param) + param.length + 1;
+					var pos_end = str.indexOf("&", pos_start);
+					if(pos_end == -1) {
+						return str.substring(pos_start);
+					} else {
+						$.alert("没有此值~~");
+					}
+				}
+			}
+			birthday.value = getvalue('birthday');
+
+
+			var new_birthday = document.getElementById("birthday");
+
+			function localcheck() {
+				if(new_birthday.value == "") {
+					mui.toast('请选择出生日期！');
+					return false;
+				}
+				return true;
+			}
+			
+			var mask = mui.createMask();
+			document.getElementById("btnSave").addEventListener('tap', function() {
+				if(localcheck()) {
+					mask.show();
+					mui.ajax("/messageedit/updateTeacher.webapp", {
+						data: {
+							birthday: new_birthday.value
+						},
+						dataType: 'json', 
+						type: 'post', 
+						timeout: 10000, 
+						success: function(data) {
+							mask.close();
+							if(data.msg == "success") {
+								$.alert("修改成功",function(){
+									window.history.back();
+								});
+							} else {
+								$.alert("修改失败！");
+							}
+						},
+						error: function(xhr, type, errorThrown) {
+							$.alert("网络异常");
+						}
+					});
+				}
+			});
+		</script>
+	</body>
+

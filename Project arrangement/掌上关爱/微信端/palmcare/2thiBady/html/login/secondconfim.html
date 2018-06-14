@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<!--绑定首页面-->
+<html lang="en">
+<link rel="stylesheet" href="../../css/app/login/BingPage.css">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <!--标准mui.css-->
+    <link rel="stylesheet" href="../../css/mui.min.css">
+    <link rel="stylesheet" href="../../css/app/common/SuspendedBall.css">
+    <script  src="../../js/app/login/BingPage.js"></script>
+    <script src="../../js/iBaby2.jquery-2.1.0.min.js"type="text/javascript" ></script>
+    <script src="../../js/mui.min.js"type="text/javascript" ></script>
+    <script src="../../js/app/common/Common.js"></script>
+    <style>
+        .title {
+            margin: 20px 15px 10px;
+            color: #6d6d72;
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body style="padding: 0px;margin: 0px;background-color: #EAEEF9" onload="onload()">
+<div style="width: 100%;height:64px">
+    <label style=";color: white;z-index:100;position: absolute;font-size: 1.0em;text-align: center;width: 100%;height:64px;line-height:80px;vertical-align: bottom">绑定</label>
+    <img class="navi" src="../../img/login/navi.png" style="height: 64px;width: 100%;position: absolute">
+</div>
+<!--学校-->
+<ul class="mui-table-view" style="margin-top: 20px;width: 95%;margin-left: 2.5%">
+    <li class="mui-table-view-cell mui-media">
+        <a href="javascript:;">
+            <img class=" mui-pull-left" src="../../img/login/school.png"style="margin-top: 1%;height: 8%;width: 8%">
+            <div style="height: 30px;line-height: 30px">
+                <label style="height: 100%;line-height: 100%;margin-left: 10px">学校</label>
+                <button id="schoolChoose"  style="height: 100%;line-height: 100%;margin-left: 10px;border: 0px" onclick="schoolClick()">点击选择学校</button>
+            </div>
+        </a>
+    </li>
+</ul>
+
+<!--姓名-->
+<ul class="mui-table-view" style="margin-top: 20px;width: 95%;margin-left: 2.5%">
+    <li class="mui-table-view-cell mui-media">
+        <a href="javascript:;">
+            <img class=" mui-pull-left" src="../../img/login/name.png"style="margin-top: 1%;height:8%;width: 8%">
+            <div style="height: 30px;line-height: 30px">
+                <label style="height: 100%;line-height: 100%;margin-left: 10px">姓名</label>
+                <input id="stu_name" style="height: 100%;line-height: 100%;margin-left: 10px;border-width: 0px" placeholder="学生姓名"/>
+            </div>
+        </a>
+    </li>
+</ul>
+
+<!--手机号-->
+<ul class="mui-table-view" style="margin-top: 20px;width: 95%;margin-left: 2.5%">
+    <li class="mui-table-view-cell mui-media">
+        <a href="javascript:;">
+            <img class=" mui-pull-left" src="../../img/login/phone.png"style="margin-top: 1%;height:8%;width: 8%">
+            <div style="height: 30px;line-height: 30px">
+                <label style="height: 100%;line-height: 100%;margin-left: 10px">手机号</label>
+                <input id="phone" style="height: 100%;line-height: 100%;margin-left: 10px;border-width: 0px;width: 35%" placeholder="绑定手机号"/>
+                <div id="get_code" onclick="sendMessage(60)" class="mui-btn mui-btn-primary">
+                    获取验证码
+                </div>
+            </div>
+        </a>
+    </li>
+</ul>
+
+<!--验证码-->
+<ul class="mui-table-view" style="margin-top: 20px;width: 95%;margin-left: 2.5%">
+    <li class="mui-table-view-cell mui-media">
+        <a href="javascript:;">
+            <img class=" mui-pull-left" src="../../img/login/code.png"style="margin-top: 1%;height:8%;width: 8%">
+            <div style="height: 30px;line-height: 30px">
+                <label style="height: 100%;line-height: 100%;margin-left: 10px">验证码</label>
+                <input id="code_input" style="height: 100%;line-height: 100%;margin-left: 10px;border-width: 0px" placeholder="验证码"/>
+            </div>
+        </a>
+    </li>
+</ul>
+
+<!--IC卡号-->
+<ul class="mui-table-view" style="margin-top: 20px;width: 95%;margin-left: 2.5%">
+    <li class="mui-table-view-cell mui-media" style="vertical-align: middle">
+        <a href="javascript:;">
+            <img class=" mui-pull-left" src="../../img/login/sim.png"style="margin-top: 1%;height:8%;width: 8%">
+            <div style="height: 30px;line-height: 30px">
+                <label style="height: 100%;line-height: 100%;margin-left: 10px">IC卡号</label>
+                <input style="height: 100%;line-height: 100%;margin-left: 10px;border-width: 0px" placeholder="学生IC卡号（选填）"/>
+            </div>
+        </a>
+    </li>
+</ul>
+
+<button type="button" class="mui-btn mui-btn-warning" style="margin-top: 40px;width: 80%;margin-left: 10%" onclick="dobing()">
+    绑定
+</button>
+
+<!--悬浮按钮-->
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/iBaby2.jquery-2.1.0.min.js"></script>
+<script src="../../js/app/common/PublicJs.js"></script>
+<script src="../../js/app/common/SuspendedBall.js"></script>
+<script>
+    $(function () {
+        SuspendedBall.Add();//添加悬浮球
+        // SuspendedBall.BoxHtml("<ul class=\"SMenu\">" + $("#MenuInfo").html() + "</ul>");//添加菜单框的内容当然，具体的样式和里面的内容需要自己去写
+        SuspendedBall.Move();//这个就是让悬浮球动起来的方法。为啥单独写个不写到add方法里面呢？因为你可以在页面中直接写入悬浮球的两个div。这个方法里面可以添加一个参数，这个参数是个function。当鼠标抬起的时候会调用到这个方法。
+    });
+</script>
+
+</div>
+</body>
+</html>
