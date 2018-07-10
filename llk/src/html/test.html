@@ -1,117 +1,97 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
-    <title>浏览器定位</title>
+    <title>多关键字检索</title>
     <link rel="stylesheet" href="https://cache.amap.com/lbs/static/main1119.css"/>
-    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.6&key=2aeefdd18496c0acc8d53057a83e09e7"></script>
-    <script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script>
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.8&key=2aeefdd18496c0acc8d53057a83e09e7"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <style type="text/css">
-#upload{
-    background-color: #fff;
-    padding-left: 10px;
-    padding-right: 10px;
-    position: absolute;
-    font-size: 15px;
-    right: 55%;
-    top: 92%;
-    border-radius: 3px;
-    border: 1px solid #ccc;
-    line-height: 31px;
-}
-#in{
-    background-color: #fff;
-    padding-left: 10px;
-    padding-right: 10px;
-    position: absolute;
-    font-size: 12px;
-    right: 25%;
-    top: 92%;
-    border-radius: 3px;
-    border: 1px solid #ccc;
-    line-height: 20px;
-}
+ #upload{
+            position: absolute;
+            background-color: white;
+            max-height: 90%;
+            overflow-y: auto;
+            top: 10px;
+            right: 10px;
+            width: 280px;
+        }
 </style>
 </head>
 <body>
-<div id='container'></div>
-<button id="upload" onclick="upload()">上传定位</button>
-<button id="in"><img alt="" src="yuying.png" style="width: 20px; height: 20px; margin-top: 5px; margin-bottom: opx;margin-left: 20px;
-    margin-right: 20px;"></button>
+<div id="container"></div>
+<button id="upload" onclick="upload()">上传</botton>
 <script type="text/javascript">
-/***************************************
-由于Chrome、IOS10等已不再支持非安全域的浏览器定位请求，为保证定位成功率和精度，请尽快升级您的站点到HTTPS。
-***************************************/
-    var map, geolocation;var lng;var lat;
-    //加载地图，调用浏览器定位服务
-    map = new AMap.Map('container', {
+    var map = new AMap.Map("container", {
         resizeEnable: true,
         zoom:20
     });
-    
-    //消息体窗口
-    var infoWindow = new AMap.InfoWindow({offset: new AMap.Pixel(0, -30)});
-    
-     map.plugin('AMap.Geolocation', function() {
-        geolocation = new AMap.Geolocation({
-            enableHighAccuracy: true,//是否使用高精度定位，默认:true
-            timeout: 10000,          //超过10秒后停止定位，默认：无穷大
-            buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
-            zoomToAccuracy: true,      //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
-            buttonPosition:'RB',       //定位按钮停靠位置，默认：'LB'，左下角
-            showCircle: false,        //定位成功后用圆圈表示定位精度范围，默认：true
-            showButton: true,       //显示定位按钮，默认：true
-            showMarker: true        //定位成功后在定位到的位置显示点标记，默认：true
+    AMap.service(["AMap.PlaceSearch"], function() {
+        var placeSearch = new AMap.PlaceSearch({ //构造地点查询类
+            pageSize: 5,
+            city: "010", //城市
+            map: map,
+            panel: "panel"
         });
-        map.addControl(geolocation);
-        geolocation.getCurrentPosition();
-        AMap.event.addListener(geolocation, 'complete', onComplete);//返回定位信息
-        AMap.event.addListener(geolocation, 'error', onError);      //返回定位出错信息
+        //关键字查询
+        placeSearch.search('滨兴西苑5号楼',function(data,result){
+        	var pois = result.poiList.pois;
+        	for(var i=0; i<pois.length;i++){
+        		var name = pois[i].name;
+        		if(name ==="滨兴西苑5号楼"){
+        			  placeSearch.getDetails(pois[i].id, function(status, result) {
+        			        if (status === 'complete' && result.info === 'OK') {
+        			            placeSearch_CallBack(result);
+        			        }
+        			    });
+        		}
+        	}
+        	
+        });
     });
-    //解析定位结果
-    function onComplete(data) {
-    	lng = data.position.getLng();
-    	lat = data.position.getLat();
-    	alert(lng+"======"+lat);
-    	var lnglats = [
-            [lng, lat],
-            [120.187476,30.254382],
-            [120.217775,30.199615]
-        ];
-        var infoWindow = new AMap.InfoWindow({offset: new AMap.Pixel(0, -30)});
-        for (var i = 0, marker; i < lnglats.length; i++) {
-            var marker = new AMap.Marker({
-                position: lnglats[i],
-                map: map
-            });
-            marker.content = data.formattedAddress;
-            marker.on('click', markerClick);
-            marker.emit('click', {target: marker});
+    
+    var infoWindow = new AMap.InfoWindow({
+        autoMove: true,
+        offset: {x: 0, y: -30}
+    });
+    
+    function placeSearch_CallBack(data) {
+        var poiArr = data.poiList.pois;
+        console.log(poiArr);
+        for(var i=0;i<poiArr.length;i++){
+        //添加marker
+        var marker = new AMap.Marker({
+            map: map,
+            position: poiArr[i].location
+        });
+        poiName = poiArr[i].name;
+        address = poiArr[i].address;
+        map.setCenter(marker.getPosition());  
+        infoWindow.setContent(createContent(poiArr[i]));
+        //infoWindow.setContent(content);
+		infoWindow.open(map, marker.getPosition());
         }
-        function markerClick(e) {
-            infoWindow.setContent(e.target.content);
-            infoWindow.open(map, e.target.getPosition());
-        }
-        map.setFitView();
     }
-    
-    function markerClick(e) {
-        infoWindow.setContent(e.target.content);
-        infoWindow.open(map, e.target.getPosition());
+    //信息框
+    function createContent(poi) {  //信息窗体内容
+        var s = [];
+        s.push("<b>名称：" + poi.name+"</b>");
+        s.push("地址：" + poi.address);
+        s.push('客户姓名:<input type="text"  id="name" value=""/>');
+        s.push('联系方式:<input type="number" id="phone" value=""/>');
+        return s.join("<br>");
     }
+  var poiName;
+  var address;
     
-    //解析定位错误信息
-    function onError(data) {
-        //document.getElementById('tip').innerHTML = '定位失败';
-    } 
-    
-    
-    function upload(){
-    	alert('经度:' + lng +"------"+'纬:' + lat);
-        // 构造点标记
-    }
+function upload(){
+	alert($("#name").val());
+	alert($("#phone").val());
+	alert(address);
+	alert(poiName);
+}    
     
 </script>
 </body>
