@@ -87,10 +87,12 @@
   var address;
     
 function upload(){
-	alert($("#name").val());
-	alert($("#phone").val());
-	alert(address);
-	alert(poiName);
+	var str = "张三,李四,王五,刘良坤";
+	alert(str);
+	 var info = str.split(",");
+	for(var i = 0; i<info.length;i++){
+		alert(info[i]);
+	} 
 }    
     
 </script>
